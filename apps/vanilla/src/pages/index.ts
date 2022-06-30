@@ -28,7 +28,7 @@ function renderAnime(anime: IAnime) {
   <tr>
     <td class="image"><img src="${image}" alt=""></td>
     <td>${title_eng}</td>
-    <td>${title_jpn}/td>
+    <td>${title_jpn}</td>
     <td>${status}</td>
     <td>${type}</td>
   </tr>
