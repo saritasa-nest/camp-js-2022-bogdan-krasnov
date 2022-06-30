@@ -24,9 +24,9 @@ function getAnimeList(response: IAnimeResponse) {
  */
 function renderAnime(anime: IAnime) {
   const { title_eng, title_jpn, status, image, type } = anime;
-  document.querySelector('.table').innerHTML += `
+  document.querySelector('table').innerHTML += `
   <tr>
-    <td><img src="${image}" alt=""></td>
+    <td class="image"><img src="${image}" alt=""></td>
     <td>${title_eng}</td>
     <td>${title_jpn}/td>
     <td>${status}</td>
