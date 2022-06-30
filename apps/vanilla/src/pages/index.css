@@ -29,3 +29,24 @@ footer {
   background-color: rgb(26, 59, 88);
   margin: 50px 0 0 0;
 }
+
+.pagination {
+  text-align: center;
+}
+
+.pagination__page-number {
+  width: 500px;
+  border: 1px solid black;
+  padding: 10px;
+  margin: 50px auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pagination__page-number span {
+  margin: 0 20px;
+}
+
+.pagination__page-number button {
+  padding: 10px 20px;
+}

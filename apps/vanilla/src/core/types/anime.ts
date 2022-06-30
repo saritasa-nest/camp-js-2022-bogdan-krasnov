@@ -23,9 +23,15 @@ export interface IAnime {
 
 /** Interface for the anime response. */
 export interface IAnimeResponse {
+
+  /** Number of anime. */
   count: number;
+
+  /** Link to the next anime page. */
   next: string;
-  previous?: string;
+
+  /** Link to the next anime page. */
+  previous: string;
 
   /** List of anime. */
   results: IAnime[];
