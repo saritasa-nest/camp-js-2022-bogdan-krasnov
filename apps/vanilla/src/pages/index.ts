@@ -1,47 +1,15 @@
-import { IAnime, IAnimeResponse } from '../core/types/anime';
+import Table from './table';
 
-const DEFAULT_OFFSET = 0;
-function getPage(offset: number): void {
-  const RES_URL = `https://api.camp-js.saritasa.rocks/api/v1/anime/anime/?limit=5&offset=${offset}&ordering=id`;
-  fetch(RES_URL)
-    .then(response => response.json())
-    .then(data => {
-    getAnimeList(data);
-  });
-}
+// const DEFAULT_OFFSET = 0;
 
-getPage(DEFAULT_OFFSET);
+const RES_URL = 'https://api.camp-js.saritasa.rocks/api/v1/anime/anime/?limit=5&offset=0&ordering=id';
 
-/**
- * Anime get function.
- * @param response Anime response object.
- */
-function getAnimeList(response: IAnimeResponse): void {
-  response.results.map((anime: IAnime) => {
-    renderAnimeRow(anime);
-  });
-}
+window.addEventListener('load', () => {
+  new Table().getData(RES_URL);
+});
 
-/**
- * Anime rendering function.
- * @param anime Anime object.
- */
-function renderAnimeRow(anime: IAnime): void {
-  const { title_eng, title_jpn, status, image, type } = anime;
-  const table = document.querySelector<HTMLTableElement>('table');
-  if (table === null) {
-    throw new Error('no table');
-  }
-  table.innerHTML += `
-  <tr>
-    <td class="image"><img src="${image}" alt=""></td>
-    <td>${title_eng}</td>
-    <td>${title_jpn}</td>
-    <td>${status}</td>
-    <td>${type}</td>
-  </tr>
-  `;
-}
+// getPage(DEFAULT_OFFSET);
+
 
 // function nextPage(){
 //   console.log('123')
