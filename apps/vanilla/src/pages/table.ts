@@ -1,8 +1,8 @@
 import { getAnimeList } from '../core/utils/anime';
 
-  /**
-   * Table class.
-   */
+/**
+ * Table class.
+ */
 export default class Table {
   /**
    * Reception function with a configured URL.
