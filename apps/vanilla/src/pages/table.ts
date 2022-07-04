@@ -1,46 +1,92 @@
-import { getAnimeList } from '../core/utils/anime';
+import { IAnime, IAnimeResponse } from '../core/types/anime';
+import { renderAnime } from '../core/utils/anime';
+import { apiAnimeTable } from '../core/utils/api';
+import { createButtonPagination } from '../scripts/pagination';
 
 /**
- * Table class.
+ * Table anime class.
+ * @param currentPage Current Page.
+ * @param pageQuantity Page Quantity.
  */
 export default class Table {
-  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-  constructor(url: string | undefined) {
-    if (url) {
-      this.getData(url);
-    }
+  public constructor() {
+    this.currentPage = 1;
+    this.setPagination();
+    this.getAnimeList(apiAnimeTable());
   }
 
+  private currentPage: number | undefined;
+
+  // private pageQuantity: number | undefined; TODO
+
   /**
-   * Reception function with a configured URL.
-   * @param url Link to api data.
+   * Anime get function.
+   * @param response Anime response object.
    */
-  public getData(url: string): void {
-    fetch(url)
-      .then(response => response.json())
-      .then(animeListResponse => {
-        getAnimeList(animeListResponse);
-    })
-      .catch(() => {
-        throw new Error('error');
-      });
-    this.setPagination();
+  public async getAnimeList(response: Promise<IAnimeResponse>): Promise<void> {
+    const table = document.querySelector<HTMLTableElement>('table');
+    table.innerHTML = `
+    <tr>
+    <td>Image</td>
+    <td>Title english</td>
+    <td>Title japanese</td>
+    <td>Status</td>
+    <td>Type</td>
+    </tr>
+    `;
+    (await response).results.forEach((anime: IAnime) => {
+    renderAnime(anime);
+    });
   }
 
   /**
    * Pagination function.
    */
-  public setPagination(page: number = 1): void {
+  public setPagination(): void {
+    const pages = document.querySelector('.pagination');
 
-    const paginator = document.querySelector('.pagination');
+    const nextLink = createButtonPagination('Next');
+    const prevLink = createButtonPagination('Prev');
+    prevLink.classList.add('prev');
 
-    const nextLink = document.createElement('button');
-    nextLink.innerText = 'Next';
+    nextLink.addEventListener('click', () => {
+      this.updateCurrentPage(nextLink);
+    });
 
-    // nextLink.addEventListener('click', paginatorFunction);
-    if (paginator === null) {
+    prevLink.addEventListener('click', () => {
+      this.updateCurrentPage(prevLink);
+    });
+
+    if (pages === null) {
       throw new Error('no table');
     }
-    paginator.appendChild(nextLink);
+
+    /** @todo Make the button turn on when we go to the next page. */
+
+    // if (this.currentPage <= 1) {
+    //   prevLink.disabled = true;
+    // }
+    pages.appendChild(prevLink);
+    pages.appendChild(nextLink);
+  }
+
+  /**
+   * Refresh current page function.
+   * @param pageButton Button in page.
+   * @todo Fix checking for null and undefined.
+   */
+  public updateCurrentPage(pageButton: HTMLButtonElement): void {
+    if (this.currentPage === undefined) {
+      throw new Error('no table');
+    }
+    const pageValue = pageButton.innerText;
+    if (pageValue === 'Next') {
+      this.currentPage++;
+    }
+    if (pageValue === 'Prev' && this.currentPage > 1) {
+      this.currentPage--;
+    }
+    this.getAnimeList(apiAnimeTable(this.currentPage));
+
   }
 }
