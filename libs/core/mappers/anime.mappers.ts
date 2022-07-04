@@ -1,7 +1,7 @@
-import { AnimeDto } from '../dtos/genre.dto';
-import { Anime } from '../models/genre';
+import { AnimeDto } from '../dtos/anime.dto';
+import { Anime } from '../models/anime';
 
-export namespace GenreMapper {
+export namespace AnimeMapper {
 
   /**
    * Maps dto to model.
@@ -15,6 +15,7 @@ export namespace GenreMapper {
       titleJpn: dto.title_jpn,
       type: dto.type,
       status: dto.status,
+      aired: dto.aired,
     });
   }
 }

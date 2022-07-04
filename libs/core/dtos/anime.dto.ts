@@ -19,6 +19,14 @@ export interface AnimeDto {
 
   /** Anime status. */
   readonly status: string;
+
+  /** Anime aired. */
+  readonly aired: AiredDto;
+}
+
+interface AiredDto {
+  readonly start: string | null;
+  readonly end: string | null;
 }
 
 // /** Interface for the anime response. */

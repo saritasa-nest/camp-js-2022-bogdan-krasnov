@@ -22,7 +22,7 @@ export interface IAnime {
 }
 
 /** Interface for the anime response. */
-export interface IAnimeResponse {
+export interface IAnimeResponse<T> {
 
   /** Number of anime. */
   count: number;
@@ -34,5 +34,5 @@ export interface IAnimeResponse {
   previous: string;
 
   /** List of anime. */
-  results: IAnime[];
+  results: Array<T>;
 }

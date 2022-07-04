@@ -4,6 +4,13 @@ import { getAnimeList } from '../core/utils/anime';
  * Table class.
  */
 export default class Table {
+  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+  constructor(url: string | undefined) {
+    if (url) {
+      this.getData(url);
+    }
+  }
+
   /**
    * Reception function with a configured URL.
    * @param url Link to api data.
@@ -11,19 +18,20 @@ export default class Table {
   public getData(url: string): void {
     fetch(url)
       .then(response => response.json())
-      .then(data => {
-        getAnimeList(data);
+      .then(animeListResponse => {
+        getAnimeList(animeListResponse);
     })
       .catch(() => {
         throw new Error('error');
       });
-    this.pagePagination();
+    this.setPagination();
   }
 
   /**
    * Pagination function.
    */
-  public pagePagination(): void {
+  public setPagination(page: number = 1): void {
+
     const paginator = document.querySelector('.pagination');
 
     const nextLink = document.createElement('button');
