@@ -20,3 +20,14 @@ export function renderAnime(anime: Anime): void {
   </tr>
   `;
 }
+
+/**
+ * Function check for null and undefined.
+ * @param element Any element (div, button and so on).
+ */
+export function checkingNullUndefined(element: HTMLDivElement | null | undefined): HTMLDivElement {
+  if (element === null || element === undefined) {
+    throw new Error('error');
+  }
+  return element;
+}

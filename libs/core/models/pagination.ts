@@ -14,7 +14,7 @@ export class Pagination<T> extends Immerable {
   /** Array of items requested. */
   public readonly results: readonly T[];
 
-  public constructor(data: PostInitArgsPagination<T>) {
+  public constructor(data: InitArgsPagination<T>) {
     super();
     this.count = data.count;
     this.next = data.next;
@@ -23,4 +23,4 @@ export class Pagination<T> extends Immerable {
   }
 }
 
-type PostInitArgsPagination<T> = OmitImmerable<Pagination<T>>;
+type InitArgsPagination<T> = OmitImmerable<Pagination<T>>;

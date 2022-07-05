@@ -1,4 +1,6 @@
-import { IAnime, IAnimeResponse } from '../core/types/anime';
+import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
+import { Anime } from '@js-camp/core/models/anime';
+
 import { renderAnime } from '../core/utils/anime';
 import { apiAnimeTable } from '../core/utils/api';
 import { createButtonPagination } from '../scripts/pagination';
@@ -23,8 +25,9 @@ export default class Table {
    * Anime get function.
    * @param response Anime response object.
    */
-  public async setAnimeList(response: Promise<IAnimeResponse>): Promise<void> {
+  public async setAnimeList(response: Promise<PaginationDto<Anime>>): Promise<void> {
     const table = document.querySelector<HTMLTableElement>('table');
+
     table.innerHTML = `
     <tr>
     <td>Image</td>
@@ -34,7 +37,7 @@ export default class Table {
     <td>Type</td>
     </tr>
     `;
-    (await response).results.forEach((anime: IAnime) => {
+    (await response).results.forEach((anime: Anime) => {
     renderAnime(anime);
     });
   }
@@ -43,14 +46,22 @@ export default class Table {
    * Pagination function.
    */
   public setPagination(): void {
-    const pages = document.querySelector<HTMLDivElement>('.pagination');
-    const NUMBER_ADDITIONAL_BUTTON = 3;
+    const pagination = document.querySelector<HTMLDivElement>('.pagination');
+    /** @todo Creating function checking undefined and null for any element. */
+    if (pagination === null) {
+      throw new Error('no table');
+    }
+    if (this.currentPage === undefined) {
+      throw new Error('no table');
+    }
+    pagination.innerHTML = ``;
+    const COUNT_ADDITIONALLY_BUTTONS = 3;
 
     const nextButton = createButtonPagination('>>');
-    const prevButton = createButtonPagination('<<', true, );
-    const pointsButton = createButtonPagination('...', true)
-    const pageQuantityButton = createButtonPagination('1000')
-    // prevLink.classList.add('prev');
+    const prevButton = createButtonPagination('<<', true);
+    const pointsButton = createButtonPagination('...', true);
+
+    const pageQuantityButton = createButtonPagination('1000');
 
     nextButton.addEventListener('click', () => {
       this.updateCurrentPage(nextButton);
@@ -60,49 +71,47 @@ export default class Table {
       this.updateCurrentPage(prevButton);
     });
 
-    if (pages === null) {
-      throw new Error('no table');
-    }
-
-    /** @todo Make the button turn on when we go to the next page. */
-
-    // if (this.currentPage <= 1) {
-    //   prevLink.disabled = true;
-    // }
-    pages.appendChild(prevButton);
-    for (let i = 1; i <= NUMBER_ADDITIONAL_BUTTON; i++) {
-      const buttonNumber = createButtonPagination(i)
+    pagination.appendChild(prevButton);
+    for (let i = this.currentPage; i < COUNT_ADDITIONALLY_BUTTONS + this.currentPage; i++) {
+      const buttonNumber = createButtonPagination(String(i));
       buttonNumber.addEventListener('click', () => {
-        this.updateCurrentPage(buttonNumber)
-      })
-      pages.appendChild(buttonNumber);
+        this.updateCurrentPage(buttonNumber, i);
+      });
+      pagination.appendChild(buttonNumber);
     }
-    pages.appendChild(pointsButton);
-    pages.appendChild(pageQuantityButton  )
-    pages.appendChild(nextButton);
+    pagination.appendChild(pointsButton);
+    pagination.appendChild(pageQuantityButton);
+    pagination.appendChild(nextButton);
   }
+
+
 
   /**
    * Refresh current page function.
    * @param pageButton Button in page.
+   * @param indexButton Button by index.
    * @todo Fix checking for null and undefined.
    */
-  public updateCurrentPage(pageButton: HTMLButtonElement): void {
-    const pageValue = pageButton.innerText;
+  public updateCurrentPage(pageButton: HTMLButtonElement, indexButton = 0): void {
+    const pageValue = pageButton.getAttribute('innerText');
     if (this.currentPage === undefined) {
       throw new Error('no table');
     }
     if (pageValue === '>>') {
       this.currentPage++;
-      console.log(this.currentPage)
     }
     if (pageValue === '<<' && this.currentPage > 1) {
       this.currentPage--;
     }
+    if (Number(pageValue) === indexButton) {
+      this.currentPage = indexButton;
+    }
+
     /** @todo added if for buttonNumber(1,2,3 ...) */
     // if(pageValue === ''){
     //   this.currentPage = i;
     // }
     this.setAnimeList(apiAnimeTable(this.currentPage));
+    this.setPagination();
   }
 }

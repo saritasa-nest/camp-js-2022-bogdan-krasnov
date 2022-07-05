@@ -30,7 +30,7 @@ export class Anime extends Immerable {
     end: string | null;
   };
 
-  public constructor(data: PostInitArgsAnime) {
+  public constructor(data: InitArgsAnime) {
     super();
     this.image = data.image;
     this.titleEng = data.titleEng;
@@ -41,4 +41,4 @@ export class Anime extends Immerable {
   }
 }
 
-type PostInitArgsAnime = OmitImmerable<Anime>;
+type InitArgsAnime = OmitImmerable<Anime>;
