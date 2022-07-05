@@ -1,4 +1,4 @@
-import { Anime } from './../../../../../libs/core/models/anime';
+import { Anime } from '@js-camp/core/models/anime';
 
 /**
  * Anime rendering function.

@@ -7,20 +7,21 @@ export class Anime extends Immerable {
   public readonly id: number | undefined;
 
   /** Image. */
-  readonly image: string;
+  public readonly image: string;
 
   /** TitleEng. */
-  readonly titleEng: string;
+  public readonly titleEng: string;
 
   /** TitleJpn. */
-  readonly titleJpn: string;
+  public readonly titleJpn: string;
 
   /** Type. */
-  readonly type: string;
+  public readonly type: string;
 
   /** Status. */
-  readonly status: string;
+  public readonly status: string;
 
+  /** Aired. */
   public readonly aired: {
 
     /** Start. */

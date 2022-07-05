@@ -3,12 +3,13 @@ import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
 import axios, { AxiosInstance } from 'axios';
 
-import { SIZE_PAGE } from '../constants/anime';
+import { ORDERING_DEFAULT, SIZE_PAGE_DEFAULT } from '../constants/anime';
 
 /**
  * Prepared data for axios.
+ * @todo watch AxiosInstance from others.
  */
-const http: AxiosInstance =
+const apiAnime: AxiosInstance =
   axios.create({
     baseURL: import.meta.env.VITE_API_BASE,
     headers: {
@@ -23,12 +24,12 @@ const http: AxiosInstance =
  * @param currentPage Current page.
  * @param ordering Ordering page.
  */
-export async function apiAnimeTable(
+export async function animeResponseData(
   currentPage = 1,
-  sizePage = SIZE_PAGE,
-  ordering = '',
+  sizePage = SIZE_PAGE_DEFAULT,
+  ordering = ORDERING_DEFAULT,
 ): Promise<Pagination<Anime>> {
-  const response = await http.get(
+  const response = await apiAnime.get(
     `/anime/anime/?limit=${sizePage}&offset=${(currentPage - 1) * sizePage}&ordering=${ordering},id`,
   );
   const { data } = response;
