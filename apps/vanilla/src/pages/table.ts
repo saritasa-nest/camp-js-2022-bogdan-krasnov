@@ -12,7 +12,7 @@ export default class Table {
   public constructor() {
     this.currentPage = 1;
     this.setPagination();
-    this.getAnimeList(apiAnimeTable());
+    this.setAnimeList(apiAnimeTable());
   }
 
   private currentPage: number | undefined;
@@ -23,7 +23,7 @@ export default class Table {
    * Anime get function.
    * @param response Anime response object.
    */
-  public async getAnimeList(response: Promise<IAnimeResponse>): Promise<void> {
+  public async setAnimeList(response: Promise<IAnimeResponse>): Promise<void> {
     const table = document.querySelector<HTMLTableElement>('table');
     table.innerHTML = `
     <tr>
@@ -43,18 +43,21 @@ export default class Table {
    * Pagination function.
    */
   public setPagination(): void {
-    const pages = document.querySelector('.pagination');
+    const pages = document.querySelector<HTMLDivElement>('.pagination');
+    const NUMBER_ADDITIONAL_BUTTON = 3;
 
-    const nextLink = createButtonPagination('Next');
-    const prevLink = createButtonPagination('Prev');
-    prevLink.classList.add('prev');
+    const nextButton = createButtonPagination('>>');
+    const prevButton = createButtonPagination('<<', true, );
+    const pointsButton = createButtonPagination('...', true)
+    const pageQuantityButton = createButtonPagination('1000')
+    // prevLink.classList.add('prev');
 
-    nextLink.addEventListener('click', () => {
-      this.updateCurrentPage(nextLink);
+    nextButton.addEventListener('click', () => {
+      this.updateCurrentPage(nextButton);
     });
 
-    prevLink.addEventListener('click', () => {
-      this.updateCurrentPage(prevLink);
+    prevButton.addEventListener('click', () => {
+      this.updateCurrentPage(prevButton);
     });
 
     if (pages === null) {
@@ -66,8 +69,17 @@ export default class Table {
     // if (this.currentPage <= 1) {
     //   prevLink.disabled = true;
     // }
-    pages.appendChild(prevLink);
-    pages.appendChild(nextLink);
+    pages.appendChild(prevButton);
+    for (let i = 1; i <= NUMBER_ADDITIONAL_BUTTON; i++) {
+      const buttonNumber = createButtonPagination(i)
+      buttonNumber.addEventListener('click', () => {
+        this.updateCurrentPage(buttonNumber)
+      })
+      pages.appendChild(buttonNumber);
+    }
+    pages.appendChild(pointsButton);
+    pages.appendChild(pageQuantityButton  )
+    pages.appendChild(nextButton);
   }
 
   /**
@@ -76,17 +88,21 @@ export default class Table {
    * @todo Fix checking for null and undefined.
    */
   public updateCurrentPage(pageButton: HTMLButtonElement): void {
+    const pageValue = pageButton.innerText;
     if (this.currentPage === undefined) {
       throw new Error('no table');
     }
-    const pageValue = pageButton.innerText;
-    if (pageValue === 'Next') {
+    if (pageValue === '>>') {
       this.currentPage++;
+      console.log(this.currentPage)
     }
-    if (pageValue === 'Prev' && this.currentPage > 1) {
+    if (pageValue === '<<' && this.currentPage > 1) {
       this.currentPage--;
     }
-    this.getAnimeList(apiAnimeTable(this.currentPage));
-
+    /** @todo added if for buttonNumber(1,2,3 ...) */
+    // if(pageValue === ''){
+    //   this.currentPage = i;
+    // }
+    this.setAnimeList(apiAnimeTable(this.currentPage));
   }
 }

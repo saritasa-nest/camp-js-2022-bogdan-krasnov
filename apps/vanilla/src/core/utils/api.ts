@@ -1,8 +1,9 @@
+import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
+import { Anime } from '@js-camp/core/models/anime';
+import { Pagination } from '@js-camp/core/models/pagination';
 import axios, { AxiosInstance } from 'axios';
 
 import { SIZE_PAGE } from '../constants/anime';
-
-import { IAnimeResponse } from '../types/anime';
 
 const API_KEY = 'be606d33-4ab6-4a82-9567-83cac4106e09';
 
@@ -24,12 +25,12 @@ const http: AxiosInstance =
  */
 export async function apiAnimeTable(
   currentPage = 1,
-): Promise<IAnimeResponse> {
+  ordering = '',
+): Promise<Pagination<Anime>> {
   const response = await http.get(
-    `/anime/anime/?limit=${SIZE_PAGE}&offset=${(currentPage - 1) * SIZE_PAGE}&ordering=id`,
+    `/anime/anime/?limit=${SIZE_PAGE}&offset=${(currentPage - 1) * SIZE_PAGE}&ordering=${ordering},id`,
   );
   const { data } = response;
-  return data;
+  return PaginationMapper.fromDto(data);
 }
 
-// ordering: string,

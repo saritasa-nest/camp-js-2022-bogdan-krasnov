@@ -50,3 +50,8 @@ footer {
 .pagination__page-number button {
   padding: 10px 20px;
 }
+
+button {
+  margin: 20px 0 0px 0;
+  padding: 10px;
+}

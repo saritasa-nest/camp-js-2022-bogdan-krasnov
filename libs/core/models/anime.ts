@@ -39,6 +39,6 @@ export class Anime extends Immerable {
     this.status = data.status;
     this.aired = data.aired;
   }
-
-  type PostInitArgsAnime = OmitImmerable<Anime>;
 }
+
+type PostInitArgsAnime = OmitImmerable<Anime>;

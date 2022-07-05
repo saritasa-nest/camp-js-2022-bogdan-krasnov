@@ -29,18 +29,3 @@ interface AiredDto {
   readonly end: string | null;
 }
 
-// /** Interface for the anime response. */
-// export interface AnimeResponseDto {
-
-//   /** Number of anime. */
-//   readonly count: number;
-
-//   /** Link to the next anime page. */
-//   readonly next: string;
-
-//   /** Link to the next anime page. */
-//   readonly previous: string;
-
-//   /** List of anime. */
-//   readonly results: readonly AnimeDto[];
-// }
