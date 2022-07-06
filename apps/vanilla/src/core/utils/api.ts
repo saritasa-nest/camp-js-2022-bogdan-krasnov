@@ -20,17 +20,18 @@ const apiAnime: AxiosInstance =
 
 /**
  * Reception function with a configured URL.
- * @param sizePage Size page.
+ * @param limit Size page.
  * @param currentPage Current page.
  * @param ordering Ordering page.
  */
-export async function animeResponseData(
+export async function getAnimeData(
   currentPage = 1,
-  sizePage = SIZE_PAGE_DEFAULT,
+  limit = SIZE_PAGE_DEFAULT,
   ordering = ORDERING_DEFAULT,
+  offset = ((currentPage - 1) * limit)
 ): Promise<Pagination<Anime>> {
   const response = await apiAnime.get(
-    `/anime/anime/?limit=${sizePage}&offset=${(currentPage - 1) * sizePage}&ordering=${ordering},id`,
+    `/anime/anime/?limit=${limit}&offset=${offset}&ordering=${ordering},id`,
   );
   const { data } = response;
   return PaginationMapper.fromDto(data);
