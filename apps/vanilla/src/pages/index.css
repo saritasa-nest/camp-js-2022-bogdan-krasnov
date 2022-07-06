@@ -2,7 +2,7 @@
 
 header {
   height: 100px;
-  background-color: rgb(134, 190, 240);
+  background-color: #966BD6;
 }
 
 table {
@@ -14,6 +14,7 @@ table {
 .image img{
   width: 100%;
 }
+
 td {
   text-align: center;
   border: 1px solid black;
@@ -22,7 +23,7 @@ td {
 
 footer {
   height: 100px;
-  background-color: rgb(26, 59, 88);
+  background-color: #300571;
   margin: 50px 0 0 0;
 }
 
@@ -36,6 +37,13 @@ footer {
 .pagination button {
   margin: 20px 0;
   padding: 10px;
+}
+
+.pagination .active {
+  margin: 20px 0;
+  padding: 10px;
+  background-color: #4F10AD;
+  color: #FFFFFF;
 }
 
 select {
