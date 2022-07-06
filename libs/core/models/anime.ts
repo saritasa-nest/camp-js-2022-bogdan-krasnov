@@ -25,10 +25,10 @@ export class Anime extends Immerable {
   public readonly aired: {
 
     /** Start. */
-    start: string | null;
+    start: Date
 
     /** End. */
-    end: string | null;
+    end: Date;
   };
 
   public constructor(data: InitArgsAnime) {

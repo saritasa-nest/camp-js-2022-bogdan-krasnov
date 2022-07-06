@@ -5,7 +5,7 @@ import { Anime } from '@js-camp/core/models/anime';
  * @param anime Anime object.
  */
 export function renderAnime(anime: Anime): void {
-  const { titleEng, titleJpn, status, image, type } = anime;
+  const { titleEng, titleJpn, status, image, type, aired } = anime;
   const table = document.querySelector<HTMLTableElement>('table');
   if (table === null) {
     throw new Error('no table');
@@ -13,21 +13,21 @@ export function renderAnime(anime: Anime): void {
   table.innerHTML += `
   <tr>
     <td class="image"><img src="${image}" alt=""></td>
-    <td>${titleEng}</td>
-    <td>${titleJpn}</td>
+    <td>${titleEng === '' ? 'NO NAME' : titleEng}</td>
+    <td>${titleJpn === '' ? 'NO NAME' : titleJpn}</td>
     <td>${status}</td>
     <td>${type}</td>
+    <td>${formatDate(aired.start)}</td>
   </tr>
   `;
 }
 
-/**
- * Function check for null and undefined.
- * @param element Any element (div, button and so on).
- */
-export function checkingNullUndefined(element: HTMLDivElement | null | undefined): HTMLDivElement {
-  if (element === null || element === undefined) {
-    throw new Error('error');
-  }
-  return element;
+function formatDate(dateReceived: Date): string {
+  const date = new Date(dateReceived);
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  };
+  return date.toLocaleString('ru', options);
 }

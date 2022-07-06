@@ -11,22 +11,32 @@ import { createButtonPagination, paginationDynamic } from '../scripts/pagination
  * Table anime class.
  * @param currentPage Current Page.
  * @param quantityPage Page Quantity.
+ * @param isLoaded Checks if the data is loaded.
+ * @todo Make a check for data load.
  */
 export default class Table {
   public constructor() {
     this.currentPage = 1;
     this.quantityPage = Math.ceil(QUANTITY_ANIME / SIZE_PAGE_DEFAULT);
+    this.sorting = ''
+    this.isLoaded = false;
     this.setAnimeAsync(getAnimeData());
     this.setPagination();
+    this.sortAnimeList()
   }
 
   private currentPage: number;
 
   private quantityPage: number;
 
+  isLoaded: boolean;
+
+  sorting: string;
+
   /**
    * Anime get function.
    * @param response Anime response object.
+   * @todo Fix table.innerHTML.
    */
   private async setAnimeAsync(response: Promise<PaginationDto<Anime>>): Promise<void> {
     const table = document.querySelector<HTMLTableElement>('table');
@@ -40,6 +50,7 @@ export default class Table {
     <td>Title japanese</td>
     <td>Status</td>
     <td>Type</td>
+    <td>Aired Start</td>
     </tr>
     `;
     (await response).results.forEach((anime: Anime) => renderAnime(anime));
@@ -48,12 +59,13 @@ export default class Table {
   /**
    * Pagination function.
    * @todo Creating function checking undefined and null for any element.
+   * @todo I need to think about how to fix the duplication of addEventListener. Tell me pls.
    */
   private setPagination(): void {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pagination');
     const pageNumber = document.querySelector<HTMLDivElement>('.page-number');
 
-    if (paginationButtons === null) {
+    if (paginationButtons === null || pageNumber === null) {
       throw new Error('no table');
     }
     pageNumber.innerHTML = `Page ${this.currentPage}`;
@@ -63,9 +75,11 @@ export default class Table {
     prevButton.addEventListener('click', () => {
       this.updateCurrentPage(prevButton)
     });
-
     const nextButton = createButtonPagination('>>');
-    paginationButtons.appendChild(prevButton)
+    nextButton.addEventListener('click', () => {
+      this.updateCurrentPage(nextButton)
+    });
+
     if (this.currentPage === 1) {
       prevButton.disabled = true;
     }
@@ -73,6 +87,7 @@ export default class Table {
       nextButton.disabled = true;
     }
 
+    paginationButtons.append(prevButton)
     paginationDynamic(this.currentPage, this.quantityPage).forEach(page => {
       if (page !== '...') {
         const buttonDynamic = createButtonPagination(String(page))
@@ -82,27 +97,27 @@ export default class Table {
         if (page === this.currentPage) {
           buttonDynamic.classList.add('active');
         }
-        paginationButtons.appendChild(buttonDynamic);
+        paginationButtons.append(buttonDynamic);
       } else {
-        const href = createButtonPagination(page, true)
-        paginationButtons.appendChild(href);
+        const buttonPoints = createButtonPagination(page, true)
+        paginationButtons.append(buttonPoints);
       }
     });
-    paginationButtons.appendChild(nextButton);
+    paginationButtons.append(nextButton);
   }
 
   /**
    * Refresh current page function.
    * @param pageButton Button in page.
-   * @param indexButton Button by index.
-   * @todo Fix checking for null and undefined.
+   * @todo Add checking for null and undefined for currentPage.
+   * @todo Make a separate pagination check.
    */
   private updateCurrentPage(pageButton: HTMLButtonElement): void {
     const pageValue = pageButton.getAttribute('data-text');
     if (this.currentPage === undefined) {
-      throw new Error('no table');
+      throw new Error('no currentPage');
     }
-    if (pageValue === '>>') {
+    if (pageValue === '>>' && this.currentPage < this.quantityPage) {
       this.currentPage++;
     }
     if (pageValue === '<<' && this.currentPage > 1) {
@@ -111,8 +126,25 @@ export default class Table {
     if (!isNaN(Number(pageValue))) {
       this.currentPage = Number(pageValue);
     }
-    const animeData = getAnimeData(this.currentPage)
+    const animeData = getAnimeData(this.currentPage, this.sorting)
     this.setAnimeAsync(animeData);
     this.setPagination();
+  }
+
+  /**
+   * Sort function anime.
+   * @todo Fix a bug with sorting and pagination.
+   */
+  private sortAnimeList(){
+    const sort = document.querySelector<HTMLSelectElement>('.sort-anime-table');
+    if (sort === null) {
+      throw new Error('no table');
+    }
+    sort.addEventListener('change', (event: Event) => {
+      const target = event.target as HTMLSelectElement;
+      const order = target.value;
+      const animeData = getAnimeData(this.currentPage, this.sorting = order)
+      this.setAnimeAsync(animeData);
+    });
   }
 }
