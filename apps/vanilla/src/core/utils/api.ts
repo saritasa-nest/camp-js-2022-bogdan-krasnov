@@ -31,7 +31,7 @@ export async function getAnimeData(
   offset = ((currentPage - 1) * limit),
 ): Promise<Pagination<Anime>> {
   const response = await apiAnime.get(
-    `/anime/anime/?limit=${limit}&offset=${offset}&ordering=${`${ordering},`}id`,
+    `/anime/anime/?limit=${limit}&offset=${offset}&ordering=${ordering.concat(',')}id`,
   );
   const { data } = response;
   return PaginationMapper.fromDto(data);
