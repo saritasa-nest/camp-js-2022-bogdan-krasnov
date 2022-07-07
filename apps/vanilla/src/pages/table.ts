@@ -10,7 +10,6 @@ import { updateAnimeList } from '../scripts/table';
  * @param isLoaded Checks if the data is loaded.
  * @param isLoaded Variable that tracks data loading.
  * @param currentSorting Current sorting.
- * @todo Make a check for data load.
  */
 export default class Table {
   public constructor() {
@@ -109,7 +108,8 @@ export default class Table {
     sort.addEventListener('change', (event: Event) => {
       const target = event.target as HTMLSelectElement;
       const order = target.value;
-      updateAnimeList(this.currentPage, this.currentSorting = order);
+      this.currentSorting = order;
+      updateAnimeList(this.currentPage, this.currentSorting);
     });
   }
 }

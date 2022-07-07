@@ -17,7 +17,6 @@ export function updateAnimeList(currentPage: number, currentSorting: string): vo
 /**
  * Anime set function.
  * @param response Anime response object.
- * @todo Fix table.innerHTML.
  */
 const setAnimeAsync = async(response: Promise<PaginationDto<Anime>>): Promise<void> => {
     const tbody = document.querySelector<HTMLTableElement>('tbody');
