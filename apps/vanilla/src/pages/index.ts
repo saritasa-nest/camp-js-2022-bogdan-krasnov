@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Anime return function.
+ * New table return function.
  * @returns Table.
  */
 function tableAnime(): Table {

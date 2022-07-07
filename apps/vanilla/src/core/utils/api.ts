@@ -3,11 +3,10 @@ import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
 import axios, { AxiosInstance } from 'axios';
 
-import { SIZE_PAGE_DEFAULT } from '../constants/anime';
+import { CURRENT_PAGE_DEFAULT, ORDERING_DEFAULT, SIZE_PAGE_DEFAULT } from '../constants/anime';
 
 /**
  * Prepared data for axios.
- * @todo watch AxiosInstance from others.
  */
 const apiAnime: AxiosInstance =
   axios.create({
@@ -20,18 +19,19 @@ const apiAnime: AxiosInstance =
 
 /**
  * Reception function with a configured URL.
- * @param limit Size page.
  * @param currentPage Current page.
  * @param ordering Ordering page.
+ * @param limit Size page.
+ * @param offset Offset page.
  */
 export async function getAnimeData(
-  currentPage = 1,
-  ordering: string = '',
+  currentPage = CURRENT_PAGE_DEFAULT,
+  ordering = ORDERING_DEFAULT,
   limit = SIZE_PAGE_DEFAULT,
-  offset = ((currentPage - 1) * limit)
+  offset = ((currentPage - 1) * limit),
 ): Promise<Pagination<Anime>> {
   const response = await apiAnime.get(
-    `/anime/anime/?limit=${limit}&offset=${offset}&ordering=${ordering + ','}id`,
+    `/anime/anime/?limit=${limit}&offset=${offset}&ordering=${`${ordering},`}id`,
   );
   const { data } = response;
   return PaginationMapper.fromDto(data);

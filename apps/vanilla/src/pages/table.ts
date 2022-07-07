@@ -1,11 +1,7 @@
-import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
-import { Anime } from '@js-camp/core/models/anime';
-
 import { QUANTITY_ANIME, SIZE_PAGE_DEFAULT } from '../core/constants/anime';
 
-import { renderAnime } from '../core/utils/anime';
-import { getAnimeData } from '../core/utils/api';
-import { createButtonPagination, paginationDynamic } from '../scripts/pagination';
+import { creatingButtonPagination, creatingDynamicButtonsPagination } from '../scripts/pagination';
+import { updateAnimeList } from '../scripts/table';
 
 /**
  * Table anime class.
@@ -21,8 +17,7 @@ export default class Table {
     this.currentPage = 1;
     this.quantityPage = Math.ceil(QUANTITY_ANIME / SIZE_PAGE_DEFAULT);
     this.currentSorting = '';
-    this.isLoaded = false;
-    this.setAnimeAsync(getAnimeData());
+    updateAnimeList(this.currentPage, this.currentSorting);
     this.setPagination();
     this.sortAnimeList();
   }
@@ -31,28 +26,10 @@ export default class Table {
 
   private quantityPage: number;
 
-  isLoaded: boolean;
-
-  currentSorting: string;
+  private currentSorting: string;
 
   /**
-   * Anime get function.
-   * @param response Anime response object.
-   * @todo Fix table.innerHTML.
-   */
-  private async setAnimeAsync(response: Promise<PaginationDto<Anime>>): Promise<void> {
-    const tbody = document.querySelector<HTMLTableElement>('tbody');
-    if (tbody === null) {
-      throw new Error('No table');
-    }
-    tbody.innerHTML = '';
-    (await response).results.forEach((anime: Anime) => renderAnime(anime));
-  }
-
-  /**
-   * Pagination function.
-   * @todo Creating function checking undefined and null for any element.
-   * @todo I need to think about how to fix the duplication of addEventListener. Tell me pls.
+   * SetPagination function.
    */
   private setPagination(): void {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pagination');
@@ -64,13 +41,13 @@ export default class Table {
     pageNumber.innerHTML = `Page ${this.currentPage}`;
     paginationButtons.innerHTML = ``;
 
-    const prevButton = createButtonPagination('<<');
+    const prevButton = creatingButtonPagination('<<');
     prevButton.addEventListener('click', () => {
-      this.updateCurrentPage(prevButton);
+      this.updatePagination(prevButton);
     });
-    const nextButton = createButtonPagination('>>');
+    const nextButton = creatingButtonPagination('>>');
     nextButton.addEventListener('click', () => {
-      this.updateCurrentPage(nextButton);
+      this.updatePagination(nextButton);
     });
 
     if (this.currentPage === 1) {
@@ -81,18 +58,18 @@ export default class Table {
     }
 
     paginationButtons.append(prevButton);
-    paginationDynamic(this.currentPage, this.quantityPage).forEach(page => {
+    creatingDynamicButtonsPagination(this.currentPage, this.quantityPage).forEach(page => {
       if (page !== '...') {
-        const buttonDynamic = createButtonPagination(String(page));
+        const buttonDynamic = creatingButtonPagination(String(page));
         buttonDynamic.addEventListener('click', () => {
-          this.updateCurrentPage(buttonDynamic);
+          this.updatePagination(buttonDynamic);
         });
         if (page === this.currentPage) {
           buttonDynamic.classList.add('active');
         }
         paginationButtons.append(buttonDynamic);
       } else {
-        const buttonPoints = createButtonPagination(page, true);
+        const buttonPoints = creatingButtonPagination(page, true);
         paginationButtons.append(buttonPoints);
       }
     });
@@ -100,12 +77,10 @@ export default class Table {
   }
 
   /**
-   * Refresh current page function.
-   * @param pageButton Button in page.
-   * @todo Add checking for null and undefined for currentPage.
-   * @todo Make a separate pagination check.
+   * Checks what the current page is equal to.
+   * @param pageButton Button in pagination.
    */
-  private updateCurrentPage(pageButton: HTMLButtonElement): void {
+  private updatePagination(pageButton: HTMLButtonElement): void {
     const pageValue = pageButton.getAttribute('data-text');
     if (this.currentPage === undefined) {
       throw new Error('no currentPage');
@@ -119,8 +94,7 @@ export default class Table {
     if (!isNaN(Number(pageValue))) {
       this.currentPage = Number(pageValue);
     }
-    const animeData = getAnimeData(this.currentPage, this.currentSorting)
-    this.setAnimeAsync(animeData);
+    updateAnimeList(this.currentPage, this.currentSorting);
     this.setPagination();
   }
 
@@ -135,8 +109,7 @@ export default class Table {
     sort.addEventListener('change', (event: Event) => {
       const target = event.target as HTMLSelectElement;
       const order = target.value;
-      const animeData = getAnimeData(this.currentPage, this.currentSorting = order);
-      this.setAnimeAsync(animeData);
+      updateAnimeList(this.currentPage, this.currentSorting = order);
     });
   }
 }
