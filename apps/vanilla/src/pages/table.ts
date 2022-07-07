@@ -12,17 +12,19 @@ import { createButtonPagination, paginationDynamic } from '../scripts/pagination
  * @param currentPage Current Page.
  * @param quantityPage Page Quantity.
  * @param isLoaded Checks if the data is loaded.
+ * @param isLoaded Variable that tracks data loading.
+ * @param currentSorting Current sorting.
  * @todo Make a check for data load.
  */
 export default class Table {
   public constructor() {
     this.currentPage = 1;
     this.quantityPage = Math.ceil(QUANTITY_ANIME / SIZE_PAGE_DEFAULT);
-    this.sorting = ''
+    this.currentSorting = '';
     this.isLoaded = false;
     this.setAnimeAsync(getAnimeData());
     this.setPagination();
-    this.sortAnimeList()
+    this.sortAnimeList();
   }
 
   private currentPage: number;
@@ -31,7 +33,7 @@ export default class Table {
 
   isLoaded: boolean;
 
-  sorting: string;
+  currentSorting: string;
 
   /**
    * Anime get function.
@@ -39,20 +41,11 @@ export default class Table {
    * @todo Fix table.innerHTML.
    */
   private async setAnimeAsync(response: Promise<PaginationDto<Anime>>): Promise<void> {
-    const table = document.querySelector<HTMLTableElement>('table');
-    if (table === null) {
-      throw new Error('no table');
+    const tbody = document.querySelector<HTMLTableElement>('tbody');
+    if (tbody === null) {
+      throw new Error('No table');
     }
-    table.innerHTML = `
-    <tr>
-    <td>Image</td>
-    <td>Title english</td>
-    <td>Title japanese</td>
-    <td>Status</td>
-    <td>Type</td>
-    <td>Aired Start</td>
-    </tr>
-    `;
+    tbody.innerHTML = '';
     (await response).results.forEach((anime: Anime) => renderAnime(anime));
   }
 
@@ -66,18 +59,18 @@ export default class Table {
     const pageNumber = document.querySelector<HTMLDivElement>('.page-number');
 
     if (paginationButtons === null || pageNumber === null) {
-      throw new Error('no table');
+      throw new Error('error');
     }
     pageNumber.innerHTML = `Page ${this.currentPage}`;
     paginationButtons.innerHTML = ``;
 
     const prevButton = createButtonPagination('<<');
     prevButton.addEventListener('click', () => {
-      this.updateCurrentPage(prevButton)
+      this.updateCurrentPage(prevButton);
     });
     const nextButton = createButtonPagination('>>');
     nextButton.addEventListener('click', () => {
-      this.updateCurrentPage(nextButton)
+      this.updateCurrentPage(nextButton);
     });
 
     if (this.currentPage === 1) {
@@ -87,19 +80,19 @@ export default class Table {
       nextButton.disabled = true;
     }
 
-    paginationButtons.append(prevButton)
+    paginationButtons.append(prevButton);
     paginationDynamic(this.currentPage, this.quantityPage).forEach(page => {
       if (page !== '...') {
-        const buttonDynamic = createButtonPagination(String(page))
+        const buttonDynamic = createButtonPagination(String(page));
         buttonDynamic.addEventListener('click', () => {
-          this.updateCurrentPage(buttonDynamic)
+          this.updateCurrentPage(buttonDynamic);
         });
         if (page === this.currentPage) {
           buttonDynamic.classList.add('active');
         }
         paginationButtons.append(buttonDynamic);
       } else {
-        const buttonPoints = createButtonPagination(page, true)
+        const buttonPoints = createButtonPagination(page, true);
         paginationButtons.append(buttonPoints);
       }
     });
@@ -126,16 +119,15 @@ export default class Table {
     if (!isNaN(Number(pageValue))) {
       this.currentPage = Number(pageValue);
     }
-    const animeData = getAnimeData(this.currentPage, this.sorting)
+    const animeData = getAnimeData(this.currentPage, this.currentSorting)
     this.setAnimeAsync(animeData);
     this.setPagination();
   }
 
   /**
    * Sort function anime.
-   * @todo Fix a bug with sorting and pagination.
    */
-  private sortAnimeList(){
+  private sortAnimeList(): void {
     const sort = document.querySelector<HTMLSelectElement>('.sort-anime-table');
     if (sort === null) {
       throw new Error('no table');
@@ -143,7 +135,7 @@ export default class Table {
     sort.addEventListener('change', (event: Event) => {
       const target = event.target as HTMLSelectElement;
       const order = target.value;
-      const animeData = getAnimeData(this.currentPage, this.sorting = order)
+      const animeData = getAnimeData(this.currentPage, this.currentSorting = order);
       this.setAnimeAsync(animeData);
     });
   }

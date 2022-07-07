@@ -6,7 +6,7 @@ import { Anime } from '@js-camp/core/models/anime';
  */
 export function renderAnime(anime: Anime): void {
   const { titleEng, titleJpn, status, image, type, aired } = anime;
-  const table = document.querySelector<HTMLTableElement>('table');
+  const table = document.querySelector<HTMLTableElement>('tbody');
   if (table === null) {
     throw new Error('no table');
   }
@@ -22,6 +22,10 @@ export function renderAnime(anime: Anime): void {
   `;
 }
 
+/**
+ * Anime rendering function.
+ * @param anime Anime object.
+ */
 function formatDate(dateReceived: Date): string {
   const date = new Date(dateReceived);
   const options: Intl.DateTimeFormatOptions = {
