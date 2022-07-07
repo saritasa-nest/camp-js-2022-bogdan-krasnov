@@ -1,31 +1,35 @@
-import { QUANTITY_ANIME, SIZE_PAGE_DEFAULT } from '../core/constants/anime';
+import { QUANTITY_ANIME, PAGE_SIZE_DEFAULT } from '../core/constants/anime';
 
 import { creatingButtonPagination, creatingDynamicButtonsPagination } from '../scripts/pagination';
 import { updateAnimeList } from '../scripts/table';
 
 /**
  * Table anime class.
- * @param currentPage Current Page.
- * @param quantityPage Page Quantity.
- * @param isLoaded Checks if the data is loaded.
- * @param isLoaded Variable that tracks data loading.
- * @param currentSorting Current sorting.
  */
 export default class Table {
+
+    /** Current Page. */
+    private currentPage: number;
+
+    /** Page Quantity. */
+    private quantityPage: number;
+
+    /** Current sorting. */
+    private currentSorting: string;
+
+    /** Variable that tracks data loading. */
+    private isLoaded: boolean;
+
+
   public constructor() {
     this.currentPage = 1;
-    this.quantityPage = Math.ceil(QUANTITY_ANIME / SIZE_PAGE_DEFAULT);
+    this.quantityPage = Math.ceil(QUANTITY_ANIME / PAGE_SIZE_DEFAULT);
     this.currentSorting = '';
+    this.isLoaded = false;
     updateAnimeList(this.currentPage, this.currentSorting);
     this.setPagination();
     this.sortAnimeList();
   }
-
-  private currentPage: number;
-
-  private quantityPage: number;
-
-  private currentSorting: string;
 
   /**
    * SetPagination function.

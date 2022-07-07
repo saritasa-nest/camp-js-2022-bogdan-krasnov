@@ -1,13 +1,13 @@
 import Table from './table';
 
 window.addEventListener('DOMContentLoaded', () => {
-  tableAnime();
+  renderTableAnime();
 });
 
 /**
  * New table return function.
  * @returns Table.
  */
-function tableAnime(): Table {
+function renderTableAnime(): Table {
   return new Table();
 }

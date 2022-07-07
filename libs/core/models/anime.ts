@@ -1,34 +1,52 @@
 import { Immerable, OmitImmerable } from './immerable';
 
+
+/** Possible options anime type. */
+export enum Type {
+  Tv = 'TV',
+  Ova = 'OVA',
+  Movie = 'MOVIE',
+  Special = 'SPECIAL',
+  Ona = 'ONA',
+  Music = 'MUSIC',
+}
+
+/** Possible options anime status. */
+export enum Status {
+  Airing = 'AIRING',
+  Finished = 'FINISHED',
+  NotYetAired = 'NOT_YET_AIRED',
+}
+
 /** Anime. */
 export class Anime extends Immerable {
 
-  /** Id. */
+  /** Id anime. */
   public readonly id: number | undefined;
 
-  /** Image. */
+  /** Anime picture. */
   public readonly image: string;
 
-  /** TitleEng. */
+  /** Anime title in english. */
   public readonly titleEng: string;
 
-  /** TitleJpn. */
+  /** The name of the anime in Japanese. */
   public readonly titleJpn: string;
 
-  /** Type. */
-  public readonly type: string;
+  /** Anime type. */
+  public readonly type: Type;
 
-  /** Status. */
-  public readonly status: string;
+  /** Anime status. */
+  public readonly status: Status;
 
-  /** Aired. */
+  /** Anime aired. */
   public readonly aired: {
 
-    /** Start. */
-    start: Date
+  /** Aired start. */
+    readonly start: Date
 
-    /** End. */
-    end: Date;
+  /** Aired end. */
+    readonly end: Date;
   };
 
   public constructor(data: InitArgsAnime) {
