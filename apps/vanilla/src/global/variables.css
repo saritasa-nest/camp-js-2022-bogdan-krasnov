@@ -2,7 +2,10 @@
   /* Using html color names here only for showcase,
    * you shouldn't be using color names in real projects. */
   --heading-color-1: #966BD6;
+  --heading-color-white: #FFFFFF;
   --heading-color-3: #4F10AD;
 
   --footer-color-1: #300571;
+
+  --font-size-1: 1em;
 }

@@ -24,8 +24,8 @@ export function creatingDynamicButtonsPagination(currentPage: number,
   const lastPage = quantityPage;
   const leftButton = currentPage - 1;
   const rightButton = currentPage + 1;
-  const countedDynamicButtons = [];
-  const countedDynamicButtonsWithPoints = [];
+  const countedDynamicButtons: number[] = [];
+  const countedDynamicButtonsWithPoints: Array<number | string> = [];
   for (let i = 1; i <= lastPage; i++) {
     if (i === 1 || i === lastPage || (i >= leftButton && i <= rightButton)) {
       countedDynamicButtons.push(i);
