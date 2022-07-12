@@ -4,7 +4,7 @@
  * @param disabled Disabled button.
  * @returns Button.
  */
-export function creatingButtonPagination(dataText: string,
+export function creatingPaginationButton(dataText: string,
   disabled = false): HTMLButtonElement {
   const buttonPaginator = document.createElement('button');
   buttonPaginator.setAttribute('data-text', dataText);
@@ -19,7 +19,7 @@ export function creatingButtonPagination(dataText: string,
  * @param quantityPage Number of pages.
  * @returns Array with strings or numbers.
  */
-export function creatingDynamicButtonsPagination(currentPage: number,
+export function creatingDynamicPaginationButtons(currentPage: number,
   quantityPage: number): Array<string | number> {
   const lastPage = quantityPage;
   const leftButton = currentPage - 1;

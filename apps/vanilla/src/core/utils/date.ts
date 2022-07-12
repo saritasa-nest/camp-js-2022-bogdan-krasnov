@@ -1,5 +1,5 @@
 /**
- * The function of converting data to date format.
+ * Converting data to date format.
  * @param dateReceived Data coming from the server .
  */
 export function formatDate(dateReceived: Date): string {

@@ -1,9 +1,9 @@
-import { QUANTITY_ANIME, PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT } from '../core/constants/anime';
+import { QUANTITY_ANIME, PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
 
-import { creatingButtonPagination, creatingDynamicButtonsPagination } from '../scripts/pagination';
+import { creatingPaginationButton, creatingDynamicPaginationButtons } from '../scripts/pagination';
 import { updateAnimeList } from '../scripts/table';
 
-import { Ordering } from './../core/constants/anime';
+import { Ordering } from './../core/enums/table';
 
 /**
  * Table anime class.
@@ -19,14 +19,10 @@ export default class Table {
   /** Current sorting. */
   private currentSorting: Ordering;
 
-  /** Variable that tracks data loading. */
-  private isLoading: boolean;
-
   public constructor() {
     this.currentPage = CURRENT_PAGE_DEFAULT;
     this.quantityPage = Math.ceil(QUANTITY_ANIME / PAGE_SIZE_DEFAULT);
-    this.currentSorting = Ordering.None;
-    this.isLoading = false;
+    this.currentSorting = ORDERING_DEFAULT;
     updateAnimeList(this.currentPage, this.currentSorting);
     this.setPagination();
     this.sortAnimeList();
@@ -45,16 +41,16 @@ export default class Table {
     pageNumber.innerHTML = `Page ${this.currentPage}`;
     paginationButtons.innerHTML = ``;
 
-    const prevButton = creatingButtonPagination('<<');
+    const prevButton = creatingPaginationButton('<<');
     prevButton.addEventListener('click', () => {
       this.updatePagination(prevButton);
     });
-    const nextButton = creatingButtonPagination('>>');
+    const nextButton = creatingPaginationButton('>>');
     nextButton.addEventListener('click', () => {
       this.updatePagination(nextButton);
     });
 
-    if (this.currentPage === CURRENT_PAGE_DEFAULT) {
+    if (this.currentPage === FIRST_PAGE) {
       prevButton.disabled = true;
     }
     if (this.currentPage === this.quantityPage) {
@@ -62,9 +58,9 @@ export default class Table {
     }
 
     paginationButtons.append(prevButton);
-    creatingDynamicButtonsPagination(this.currentPage, this.quantityPage).forEach(page => {
+    creatingDynamicPaginationButtons(this.currentPage, this.quantityPage).forEach(page => {
       if (page !== '...') {
-        const buttonDynamic = creatingButtonPagination(String(page));
+        const buttonDynamic = creatingPaginationButton(String(page));
         buttonDynamic.addEventListener('click', () => {
           this.updatePagination(buttonDynamic);
         });
@@ -73,7 +69,7 @@ export default class Table {
         }
         paginationButtons.append(buttonDynamic);
       } else {
-        const buttonPoints = creatingButtonPagination(page, true);
+        const buttonPoints = creatingPaginationButton(page, true);
         paginationButtons.append(buttonPoints);
       }
     });
