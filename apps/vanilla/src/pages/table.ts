@@ -1,8 +1,9 @@
-import { Ordering } from './../core/constants/anime';
 import { QUANTITY_ANIME, PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT } from '../core/constants/anime';
 
 import { creatingButtonPagination, creatingDynamicButtonsPagination } from '../scripts/pagination';
 import { updateAnimeList } from '../scripts/table';
+
+import { Ordering } from './../core/constants/anime';
 
 /**
  * Table anime class.

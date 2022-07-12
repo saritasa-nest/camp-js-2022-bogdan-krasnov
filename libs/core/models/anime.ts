@@ -1,8 +1,7 @@
 import { Immerable, OmitImmerable } from './immerable';
 
-
 /** Possible options anime type. */
-export enum Type {
+enum AnimeType {
   Tv = 'TV',
   Ova = 'OVA',
   Movie = 'MOVIE',
@@ -12,7 +11,7 @@ export enum Type {
 }
 
 /** Possible options anime status. */
-export enum Status {
+enum AnimeStatus {
   Airing = 'AIRING',
   Finished = 'FINISHED',
   NotYetAired = 'NOT_YET_AIRED',
@@ -22,7 +21,7 @@ export enum Status {
 export class Anime extends Immerable {
 
   /** Id anime. */
-  public readonly id: number | undefined;
+  public readonly id?: number;
 
   /** Anime picture. */
   public readonly image: string;
@@ -34,18 +33,18 @@ export class Anime extends Immerable {
   public readonly titleJpn: string;
 
   /** Anime type. */
-  public readonly type: Type;
+  public readonly type: AnimeType;
 
   /** Anime status. */
-  public readonly status: Status;
+  public readonly status: AnimeStatus;
 
   /** Anime aired. */
   public readonly aired: {
 
-  /** Aired start. */
-    readonly start: Date
+    /** Aired start. */
+    readonly start: Date;
 
-  /** Aired end. */
+    /** Aired end. */
     readonly end: Date;
   };
 

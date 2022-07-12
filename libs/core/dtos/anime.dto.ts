@@ -1,5 +1,3 @@
-import { Status, Type } from '@js-camp/core/models/anime';
-
 /** Interface for the anime. */
 export interface AnimeDto {
 
@@ -16,10 +14,10 @@ export interface AnimeDto {
   readonly title_jpn: string;
 
   /** Anime type. */
-  readonly type: Type;
+  readonly type: string;
 
   /** Anime status. */
-  readonly status: Status;
+  readonly status: string;
 
   /** Anime aired. */
   readonly aired: AiredDto;
@@ -29,9 +27,8 @@ export interface AnimeDto {
 interface AiredDto {
 
   /** Aired start. */
-  readonly start: Date;
+  readonly start: string;
 
   /** Aired end. */
-  readonly end: Date;
+  readonly end: string;
 }
-
