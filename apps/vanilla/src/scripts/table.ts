@@ -5,14 +5,14 @@ import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { getAnimeData, PaginationConfig } from '../core/utils/api';
 import { formatDate } from '../core/utils/date';
 
-import { Ordering } from './../core/constants/anime';
+import { Ordering } from './../core/enums/table';
 
 /**
  * Refresh current page function.
  * @param currentPage Current Page.
  * @param currentSorting Current sorting.
  */
-export function updateAnimeList(currentPage: number, currentSorting: Ordering): void {
+export async function updateAnimeList(currentPage: number, currentSorting: Ordering): Promise<void> {
   const ordering = currentSorting;
   const paginationConfig: PaginationConfig = { currentPage, ordering };
   const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
@@ -21,7 +21,7 @@ export function updateAnimeList(currentPage: number, currentSorting: Ordering): 
   }
   tbody.innerHTML = '';
 
-  const animeData = getAnimeData(paginationConfig);
+  const animeData = await getAnimeData(paginationConfig);
   setAnime(animeData);
 }
 
@@ -29,8 +29,8 @@ export function updateAnimeList(currentPage: number, currentSorting: Ordering): 
  * A function that transmits data for rendering anime.
  * @param response Anime response object.
  */
-const setAnime = async(response: Promise<PaginationDto<Anime>>): Promise<void> => {
-    (await response).results.forEach(anime => renderAnime(anime));
+const setAnime = (response: PaginationDto<Anime>): void => {
+    response.results.forEach(anime => renderAnime(anime));
   };
 
 /**
