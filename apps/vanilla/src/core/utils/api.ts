@@ -1,4 +1,3 @@
-import { PaginationDto } from './../../../../../libs/core/dtos/pagination.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
@@ -6,6 +5,8 @@ import { Pagination } from '@js-camp/core/models/pagination';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 
 import { AnimeDto } from '@js-camp/core/dtos/anime.dto';
+
+import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 
 import { CURRENT_PAGE_DEFAULT, Ordering, PAGE_SIZE_DEFAULT } from '../constants/anime';
 
