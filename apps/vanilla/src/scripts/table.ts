@@ -15,7 +15,7 @@ import { Ordering } from './../core/constants/anime';
 export function updateAnimeList(currentPage: number, currentSorting: Ordering): void {
   const ordering = currentSorting;
   const paginationConfig: PaginationConfig = { currentPage, ordering };
-  const tbody = document.querySelector<HTMLTableElement>('tbody');
+  const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
   if (tbody === null) {
     throw new Error('No table');
   }
@@ -39,7 +39,7 @@ const setAnime = async(response: Promise<PaginationDto<Anime>>): Promise<void> =
  */
 function renderAnime(anime: Anime): void {
   const { titleEng, titleJpn, status, image, type, aired } = anime;
-  const table = document.querySelector<HTMLTableElement>('tbody');
+  const table = document.querySelector<HTMLTableElement>('.table-anime__body');
   if (table === null) {
     throw new Error('no table');
   }
