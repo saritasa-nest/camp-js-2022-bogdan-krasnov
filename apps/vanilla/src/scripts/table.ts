@@ -45,7 +45,7 @@ function renderAnime(anime: Anime): void {
   }
   table.innerHTML += `
   <tr>
-    <td class="image"><img src="${image}" alt="Anime image"></td>
+    <td class="imageAnime"><img src="${image}" alt="Anime image"></td>
     <td>${titleEng === '' ? 'NO NAME' : titleEng}</td>
     <td>${titleJpn === '' ? 'NO NAME' : titleJpn}</td>
     <td>${status}</td>
