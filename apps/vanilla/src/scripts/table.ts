@@ -2,33 +2,39 @@ import { Anime } from '@js-camp/core/models/anime';
 
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 
-import { getAnimeData } from '../core/utils/api';
+import { getAnimeData, PaginationConfig } from '../core/utils/api';
+import { formatDate } from '../core/utils/date';
+
+import { Ordering } from './../core/constants/anime';
 
 /**
  * Refresh current page function.
  * @param currentPage Current Page.
  * @param currentSorting Current sorting.
  */
-export function updateAnimeList(currentPage: number, currentSorting: string): void {
-  const animeData = getAnimeData(currentPage, currentSorting);
-  setAnimeAsync(animeData);
+export function updateAnimeList(currentPage: number, currentSorting: Ordering): void {
+  const ordering = currentSorting;
+  const paginationConfig: PaginationConfig = { currentPage, ordering };
+  const tbody = document.querySelector<HTMLTableElement>('tbody');
+  if (tbody === null) {
+    throw new Error('No table');
+  }
+  tbody.innerHTML = '';
+
+  const animeData = getAnimeData(paginationConfig);
+  setAnime(animeData);
 }
 
 /**
- * Anime set function.
+ * A function that transmits data for rendering anime.
  * @param response Anime response object.
  */
-const setAnimeAsync = async(response: Promise<PaginationDto<Anime>>): Promise<void> => {
-    const tbody = document.querySelector<HTMLTableElement>('tbody');
-    if (tbody === null) {
-      throw new Error('No table');
-    }
-    tbody.innerHTML = '';
-    (await response).results.forEach((anime: Anime) => renderAnime(anime));
+const setAnime = async(response: Promise<PaginationDto<Anime>>): Promise<void> => {
+    (await response).results.forEach(anime => renderAnime(anime));
   };
 
 /**
- * Anime rendering function.
+ * Single anime rendering function.
  * @param anime Anime object.
  */
 function renderAnime(anime: Anime): void {
@@ -39,7 +45,7 @@ function renderAnime(anime: Anime): void {
   }
   table.innerHTML += `
   <tr>
-    <td class="image"><img src="${image}" alt=""></td>
+    <td class="image"><img src="${image}" alt="Anime image"></td>
     <td>${titleEng === '' ? 'NO NAME' : titleEng}</td>
     <td>${titleJpn === '' ? 'NO NAME' : titleJpn}</td>
     <td>${status}</td>
@@ -47,18 +53,4 @@ function renderAnime(anime: Anime): void {
     <td>${formatDate(aired.start)}</td>
   </tr>
   `;
-}
-
-/**
- * The function of converting data to date format.
- * @param dateReceived Data coming from the server .
- */
-function formatDate(dateReceived: Date): string {
-  const date = new Date(dateReceived);
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  };
-  return date.toLocaleString('ru', options);
 }

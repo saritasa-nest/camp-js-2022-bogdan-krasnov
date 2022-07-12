@@ -1,4 +1,5 @@
-import { QUANTITY_ANIME, PAGE_SIZE_DEFAULT } from '../core/constants/anime';
+import { Ordering } from './../core/constants/anime';
+import { QUANTITY_ANIME, PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT } from '../core/constants/anime';
 
 import { creatingButtonPagination, creatingDynamicButtonsPagination } from '../scripts/pagination';
 import { updateAnimeList } from '../scripts/table';
@@ -8,31 +9,30 @@ import { updateAnimeList } from '../scripts/table';
  */
 export default class Table {
 
-    /** Current Page. */
-    private currentPage: number;
+  /** Current Page. */
+  private currentPage: number;
 
-    /** Page Quantity. */
-    private quantityPage: number;
+  /** Page Quantity. */
+  private quantityPage: number;
 
-    /** Current sorting. */
-    private currentSorting: string;
+  /** Current sorting. */
+  private currentSorting: Ordering;
 
-    /** Variable that tracks data loading. */
-    private isLoaded: boolean;
-
+  /** Variable that tracks data loading. */
+  private isLoading: boolean;
 
   public constructor() {
-    this.currentPage = 1;
+    this.currentPage = CURRENT_PAGE_DEFAULT;
     this.quantityPage = Math.ceil(QUANTITY_ANIME / PAGE_SIZE_DEFAULT);
-    this.currentSorting = '';
-    this.isLoaded = false;
+    this.currentSorting = Ordering.None;
+    this.isLoading = false;
     updateAnimeList(this.currentPage, this.currentSorting);
     this.setPagination();
     this.sortAnimeList();
   }
 
   /**
-   * SetPagination function.
+   * The setPagination function, which creates a pagination of anime pages.
    */
   private setPagination(): void {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pagination');
@@ -53,7 +53,7 @@ export default class Table {
       this.updatePagination(nextButton);
     });
 
-    if (this.currentPage === 1) {
+    if (this.currentPage === CURRENT_PAGE_DEFAULT) {
       prevButton.disabled = true;
     }
     if (this.currentPage === this.quantityPage) {
@@ -112,7 +112,20 @@ export default class Table {
     sort.addEventListener('change', (event: Event) => {
       const target = event.target as HTMLSelectElement;
       const order = target.value;
-      this.currentSorting = order;
+      switch (order) {
+        case Ordering.TitleEng:
+          this.currentSorting = Ordering.TitleEng;
+          break;
+        case Ordering.Status:
+          this.currentSorting = Ordering.Status;
+          break;
+        case Ordering.Aired:
+          this.currentSorting = Ordering.Aired;
+          break;
+        default:
+          this.currentSorting = Ordering.None;
+          break;
+      }
       updateAnimeList(this.currentPage, this.currentSorting);
     });
   }

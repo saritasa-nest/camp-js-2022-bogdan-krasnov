@@ -11,16 +11,16 @@ import { apiAnime } from './axiosInstance';
  * @param ordering Ordering page.
  * @param limit Size page.
  */
-interface PaginationConfig {
+export interface PaginationConfig {
 
   /** The number of results returned per page. */
-  readonly currentPage: number;
+  currentPage: number;
 
   /** Current page. */
-  readonly ordering: Ordering;
+  ordering: Ordering;
 
   /** Sorting mode. */
-  readonly limit: number;
+  readonly limit?: number;
 }
 
 /**
@@ -29,7 +29,7 @@ interface PaginationConfig {
  */
 export async function getAnimeData(paginationConfig: PaginationConfig): Promise<Pagination<Anime>> {
   const { currentPage = CURRENT_PAGE_DEFAULT, ordering = Ordering.None, limit = PAGE_SIZE_DEFAULT } = paginationConfig;
-  const offset = (currentPage - 1) * paginationConfig.limit;
+  const offset = (currentPage - 1) * limit;
   const urlAnime = new URLSearchParams(`limit=${limit}&offset=${offset}&ordering=${ordering.concat(',')}id`);
   const response = await apiAnime.get(
     `/anime/anime/?${urlAnime}`,
