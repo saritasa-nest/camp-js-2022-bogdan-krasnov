@@ -14,13 +14,8 @@ html, body {
   display: table-cell;
   vertical-align: middle;
 }
-.inner {
-  text-align: center;
-  width: auto;
-  padding: 0 15px;
-}
 
-.range2 .login-wr {
+.range2 .login-window {
   position: relative;
   margin: 0 auto;
   background: #fff;
@@ -51,32 +46,19 @@ html, body {
 }
 
 .range2 input[type="text"],
-.range2 input[type="password"],
-.range2 button {
+.range2 input[type="password"] {
   margin-bottom: 25px;
   height: 40px;
   outline: 0;
-  -moz-outline-style: none;
-}
-
-.range2 input[type="text"] {
-  background: url("img/user.png") no-repeat left 10px center;
-}
-.range2 input[type="password"] {
-  background: url("img/pencil.png") no-repeat left 10px center;
-}
-
-.range2 input[type="text"],
-.range2 input[type="password"] {
   width: calc(80% - 45px);
   border: 1px solid #bbb;
   padding: 0 0 0 45px;
   font-size: 14px;
 }
 
-.range2 input[type="text"]:focus,
-.range2 input[type="password"]:focus {
-  border: 1px solid #2196f3;
+.range2 .registration {
+  width: 200px;
+  height: 30px;
 }
 
 .range2 a {
@@ -85,18 +67,6 @@ html, body {
   color: #3498db;
 }
 
-.range2 button {
-  width: 80%;
-  background: #2196f3;
-  border: none;
-  border-bottom: 5px solid #2184d7;
-  color: white;
-  font-size: 18px;
-  font-weight: 200;
-  cursor: pointer;
-  transition: box-shadow .4s ease;
-}
-
 .range2 p {
-padding-bottom: 10px;
+  padding-bottom: 10px;
 }
