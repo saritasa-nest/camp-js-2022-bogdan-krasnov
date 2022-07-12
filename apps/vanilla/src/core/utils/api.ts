@@ -1,3 +1,4 @@
+import { AnimeDto } from './../../../../../libs/core/dtos/anime.dto';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
@@ -5,6 +6,7 @@ import { Pagination } from '@js-camp/core/models/pagination';
 import { CURRENT_PAGE_DEFAULT, Ordering, PAGE_SIZE_DEFAULT } from '../constants/anime';
 
 import { apiAnime } from './axiosInstance';
+import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 
 /** Parameters for getting anime from the database.
  * @param currentPage Current page.
@@ -34,6 +36,8 @@ export async function getAnimeData(paginationConfig: PaginationConfig): Promise<
   const response = await apiAnime.get(
     `/anime/anime/?${urlAnime}`,
   );
-  const { data } = response;
-  return PaginationMapper.fromDto(data);
+  return PaginationMapper.fromDto<AnimeDto, Anime>(
+    response.data,
+    animeDto => AnimeMapper.fromDto(animeDto),
+  );
 }
