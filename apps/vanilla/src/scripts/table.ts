@@ -20,7 +20,7 @@ export async function updateAnimeList(currentPage: number, currentSorting: Order
   tbody.innerHTML = '';
 
   const animeData = await getAnimeData(paginationConfig);
-  animeData.results.forEach(anime => renderAnime(anime))
+  animeData.results.forEach(anime => renderAnime(anime));
 }
 
 /**
