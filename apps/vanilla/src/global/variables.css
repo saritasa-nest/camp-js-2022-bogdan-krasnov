@@ -1,9 +1,10 @@
 :root {
-  /* Using html color names here only for showcase,
-   * you shouldn't be using color names in real projects. */
-  --heading-color-1: #966bd6;
-  --heading-color-white: #fff;
-  --heading-color-3: #4f10ad;
-  --footer-color-1: #300571;
+  /* General */
+  --primary-color-1: #966bd6;
+  --primary-color-2: #300571;
+  --accent-light-color: #fff;
   --font-size-400: 1rem;
+
+   /* Pagination */
+   --pagination-button-active-color: #4f10ad;
 }

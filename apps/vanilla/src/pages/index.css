@@ -3,7 +3,7 @@
 
 .header {
   min-height: 100px;
-  background-color: var(--heading-color-1);
+  background-color: var(--primary-color-1);
 }
 
 .table-anime {
@@ -25,7 +25,7 @@ th {
 
 .footer {
   min-height: 100px;
-  background-color: var(--footer-color-1);
+  background-color: var(--primary-color-2);
   margin-top: 50px;
 }
 
@@ -42,8 +42,8 @@ th {
 .pagination .active {
   margin: 20px 0;
   padding: 10px;
-  background-color: var(--heading-color-3);
-  color: var(--heading-color-white);
+  background-color: var(--pagination-button-active-color);
+  color: var(--accent-light-color);
 }
 
 select {

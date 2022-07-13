@@ -1,6 +1,6 @@
 /**
- * Converting data to date format.
- * @param dateReceived Data coming from the server .
+ * Converting data to string format.
+ * @param dateReceived Data in date format.
  */
 export function formatDate(dateReceived: Date): string {
   const date = new Date(dateReceived);
