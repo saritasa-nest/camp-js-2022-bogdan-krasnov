@@ -10,32 +10,44 @@
     <header class="header">
       <nav></nav>
     </header>
-    <select class="sort-anime-table">
-      <option value="none">None sorting</option>
-      <option value="-title_eng">Title english</option>
-      <option value="status">Status</option>
-      <option value="aired">Aired start</option>
-    </select>
-    <select class="filter-anime-table">
-      <option value="">None filtering</option>
-      <option value="TV">TV filtering</option>
-      <option value="OVA">OVA filtering</option>
-    </select>
     <div class="page-number"></div>
     <div class="pagination"></div>
-    <table class="table-anime" aria-label="table-anime">
-      <thead>
-        <tr>
-          <th>Image</th>
-          <th>Title english</th>
-          <th>Title japanese</th>
-          <th>Status</th>
-          <th>Type</th>
-          <th>Aired Start</th>
-        </tr>
-      </thead>
-      <tbody class="table-anime__body"></tbody>
-    </table>
+    <main class="main">
+      <div class="sidebar">
+        <div class="sort">
+          <h3>Select sorting</h3>
+          <select class="sort__anime-table">
+            <option value="none">None sorting</option>
+            <option value="-title_eng">Title english</option>
+            <option value="status">Status</option>
+            <option value="aired">Aired start</option>
+          </select>
+        </div>
+        <div class="filter">
+          <h3>Select filter</h3>
+          <select class="filter__anime-table">
+            <option value="">None filtering</option>
+            <option value="TV">TV filtering</option>
+            <option value="OVA">OVA filtering</option>
+          </select>
+        </div>
+      </div>
+      <div class="content">
+        <table class="table-anime" aria-label="table-anime">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Title english</th>
+              <th>Title japanese</th>
+              <th>Status</th>
+              <th>Type</th>
+              <th>Aired Start</th>
+            </tr>
+          </thead>
+          <tbody class="table-anime__body"></tbody>
+        </table>
+      </div>
+    </main>
     <footer class="footer"></footer>
     <script type="module" src="./index.ts"></script>
   </body>

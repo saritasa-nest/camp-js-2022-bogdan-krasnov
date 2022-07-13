@@ -112,7 +112,7 @@ export default class Table {
    * Sort function anime.
    */
   private sortAnimeList(): void {
-    const sort = document.querySelector<HTMLSelectElement>('.sort-anime-table');
+    const sort = document.querySelector<HTMLSelectElement>('.sort__anime-table');
     if (sort === null) {
       throw new Error('no table');
     }
@@ -140,7 +140,7 @@ export default class Table {
 
   /** filter anime list. */
   private filterAnimeList(): void {
-    const filter = document.querySelector<HTMLSelectElement>('.filter-anime-table');
+    const filter = document.querySelector<HTMLSelectElement>('.filter__anime-table');
     if (filter === null) {
       throw new Error('no table');
     }
