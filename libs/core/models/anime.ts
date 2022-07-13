@@ -1,21 +1,5 @@
+import { AnimeStatus, AnimeType } from '../utils/enums/table';
 import { Immerable, OmitImmerable } from './immerable';
-
-/** Possible options anime type. */
-enum AnimeType {
-  Tv = 'TV',
-  Ova = 'OVA',
-  Movie = 'MOVIE',
-  Special = 'SPECIAL',
-  Ona = 'ONA',
-  Music = 'MUSIC',
-}
-
-/** Possible options anime status. */
-enum AnimeStatus {
-  Airing = 'AIRING',
-  Finished = 'FINISHED',
-  NotYetAired = 'NOT_YET_AIRED',
-}
 
 /** Anime. */
 export class Anime extends Immerable {
