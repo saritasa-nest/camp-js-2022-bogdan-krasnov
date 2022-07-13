@@ -148,9 +148,6 @@ export default class Table {
       const target = event.target as HTMLSelectElement;
       const filter = target.value;
       switch (filter) {
-        case AnimeType.None:
-          this.currentFiltering = AnimeType.None;
-          break;
         case AnimeType.Tv:
           this.currentFiltering = AnimeType.Tv;
           break;
@@ -161,6 +158,7 @@ export default class Table {
           this.currentFiltering = AnimeType.None;
           break;
       }
+      this.quantityAnime =
       updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);
     });
   }

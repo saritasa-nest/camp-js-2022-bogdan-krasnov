@@ -10,6 +10,7 @@ import { Ordering } from './../core/enums/table';
  * Refresh current page.
  * @param currentPage Current Page.
  * @param currentSorting Current sorting.
+ * @param currentFilter Current filter.
  */
 export async function updateAnimeList(currentPage: number, currentSorting: Ordering, currentFilter?: AnimeType): Promise<void> {
   const filtering = currentFilter;
