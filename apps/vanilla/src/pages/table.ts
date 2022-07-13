@@ -21,13 +21,13 @@ export default class Table {
   private currentSorting: Ordering;
 
   /** Quantity anime. */
-  private quantityAnime: number;
+   private quantityAnime: number;
 
   /** Current anime. */
   private currentFiltering: AnimeType;
 
-  public constructor() {
-    this.quantityAnime = 24200;
+  public constructor(quantityAnime: number) {
+    this.quantityAnime = quantityAnime;
     this.currentFiltering = AnimeType.None;
     this.currentPage = CURRENT_PAGE_DEFAULT;
     this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
