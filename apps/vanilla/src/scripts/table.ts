@@ -1,7 +1,5 @@
 import { Anime } from '@js-camp/core/models/anime';
 
-import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
-
 import { getAnimeData, PaginationConfig } from '../core/utils/api';
 import { formatDate } from '../core/utils/date';
 
@@ -22,16 +20,8 @@ export async function updateAnimeList(currentPage: number, currentSorting: Order
   tbody.innerHTML = '';
 
   const animeData = await getAnimeData(paginationConfig);
-  setAnime(animeData);
+  animeData.results.forEach(anime => renderAnime(anime))
 }
-
-/**
- * Data transfer for anime rendering.
- * @param response Anime response object.
- */
-function setAnime(response: PaginationDto<Anime>): void {
-    response.results.forEach(anime => renderAnime(anime));
-  };
 
 /**
  * Rendering of one anime.

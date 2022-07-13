@@ -1,4 +1,4 @@
-import { QUANTITY_ANIME, PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
+import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
 
 import { creatingPaginationButton, creatingDynamicPaginationButtons } from '../scripts/pagination';
 import { updateAnimeList } from '../scripts/table';
@@ -19,9 +19,13 @@ export default class Table {
   /** Current sorting. */
   private currentSorting: Ordering;
 
+  /** Quantity anime. */
+  private quantityAnime: number;
+
   public constructor() {
+    this.quantityAnime = 24200;
     this.currentPage = CURRENT_PAGE_DEFAULT;
-    this.quantityPage = Math.ceil(QUANTITY_ANIME / PAGE_SIZE_DEFAULT);
+    this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
     this.currentSorting = ORDERING_DEFAULT;
     updateAnimeList(this.currentPage, this.currentSorting);
     this.setPagination();
@@ -88,7 +92,7 @@ export default class Table {
     if (pageValue === '>>' && this.currentPage < this.quantityPage) {
       this.currentPage++;
     }
-    if (pageValue === '<<' && this.currentPage > 1) {
+    if (pageValue === '<<' && this.currentPage > FIRST_PAGE) {
       this.currentPage--;
     }
     if (!isNaN(Number(pageValue))) {
