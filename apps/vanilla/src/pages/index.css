@@ -49,5 +49,5 @@ th {
 select {
   padding: 20px;
   margin: 50px;
-  font-size: var(--font-size-1);
+  font-size: var(--font-size-400);
 }
