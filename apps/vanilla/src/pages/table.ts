@@ -1,3 +1,4 @@
+import { AnimeType } from '@js-camp/core//utils/enums/table';
 import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
 
 import { creatingPaginationButton, creatingDynamicPaginationButtons } from '../scripts/pagination';
@@ -22,14 +23,19 @@ export default class Table {
   /** Quantity anime. */
   private quantityAnime: number;
 
+  /** Current anime. */
+  private currentFiltering: AnimeType;
+
   public constructor() {
     this.quantityAnime = 24200;
+    this.currentFiltering = AnimeType.None;
     this.currentPage = CURRENT_PAGE_DEFAULT;
     this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
     this.currentSorting = ORDERING_DEFAULT;
-    updateAnimeList(this.currentPage, this.currentSorting);
+    updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);
     this.setPagination();
     this.sortAnimeList();
+    this.filterAnimeList();
   }
 
   /**
@@ -98,7 +104,7 @@ export default class Table {
     if (!isNaN(Number(pageValue))) {
       this.currentPage = Number(pageValue);
     }
-    updateAnimeList(this.currentPage, this.currentSorting);
+    updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);
     this.setPagination();
   }
 
@@ -127,7 +133,35 @@ export default class Table {
           this.currentSorting = Ordering.None;
           break;
       }
-      updateAnimeList(this.currentPage, this.currentSorting);
+      updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);
+    });
+  }
+
+
+  /** filter anime list. */
+  private filterAnimeList(): void {
+    const filter = document.querySelector<HTMLSelectElement>('.filter-anime-table');
+    if (filter === null) {
+      throw new Error('no table');
+    }
+    filter.addEventListener('change', (event: Event) => {
+      const target = event.target as HTMLSelectElement;
+      const filter = target.value;
+      switch (filter) {
+        case AnimeType.None:
+          this.currentFiltering = AnimeType.None;
+          break;
+        case AnimeType.Tv:
+          this.currentFiltering = AnimeType.Tv;
+          break;
+        case AnimeType.Ova:
+          this.currentFiltering = AnimeType.Ova;
+          break;
+        default:
+          this.currentFiltering = AnimeType.None;
+          break;
+      }
+      updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);
     });
   }
 }

@@ -1,3 +1,4 @@
+import { AnimeType } from '@js-camp/core/utils/enums/table';
 import { Anime } from '@js-camp/core/models/anime';
 
 import { getAnimeData, PaginationConfig } from '../core/utils/api';
@@ -10,9 +11,10 @@ import { Ordering } from './../core/enums/table';
  * @param currentPage Current Page.
  * @param currentSorting Current sorting.
  */
-export async function updateAnimeList(currentPage: number, currentSorting: Ordering): Promise<void> {
+export async function updateAnimeList(currentPage: number, currentSorting: Ordering, currentFilter?: AnimeType): Promise<void> {
+  const filtering = currentFilter;
   const ordering = currentSorting;
-  const paginationConfig: PaginationConfig = { currentPage, ordering };
+  const paginationConfig: PaginationConfig = { currentPage, ordering, filtering };
   const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
   if (tbody === null) {
     throw new Error('No table');
