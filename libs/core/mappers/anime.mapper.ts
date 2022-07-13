@@ -11,8 +11,8 @@ export namespace AnimeMapper {
     return new Anime({
       id: dto.id,
       image: dto.image,
-      titleEng: dto.title_eng,
-      titleJpn: dto.title_jpn,
+      titleEnglish: dto.title_eng,
+      titleJapanese: dto.title_jpn,
 
       // I don't know yet how to solve it so that there is an assignment between different types.
       type: dto.type,

@@ -8,7 +8,7 @@ import { formatDate } from '../core/utils/date';
 import { Ordering } from './../core/enums/table';
 
 /**
- * Refresh current page function.
+ * Refresh current page.
  * @param currentPage Current Page.
  * @param currentSorting Current sorting.
  */
@@ -26,19 +26,19 @@ export async function updateAnimeList(currentPage: number, currentSorting: Order
 }
 
 /**
- * A function that transmits data for rendering anime.
+ * Data transfer for anime rendering.
  * @param response Anime response object.
  */
-const setAnime = (response: PaginationDto<Anime>): void => {
+function setAnime(response: PaginationDto<Anime>): void {
     response.results.forEach(anime => renderAnime(anime));
   };
 
 /**
- * Single anime rendering function.
+ * Rendering of one anime.
  * @param anime Anime object.
  */
 function renderAnime(anime: Anime): void {
-  const { titleEng, titleJpn, status, image, type, aired } = anime;
+  const { titleEnglish: titleEng, titleJapanese: titleJpn, status, image, type, aired } = anime;
   const table = document.querySelector<HTMLTableElement>('.table-anime__body');
   if (table === null) {
     throw new Error('no table');
