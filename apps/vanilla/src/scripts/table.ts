@@ -28,7 +28,7 @@ export async function updateAnimeList(currentPage: number, currentSorting: Order
  * @param anime Anime object.
  */
 function renderAnime(anime: Anime): void {
-  const { titleEnglish: titleEng, titleJapanese: titleJpn, status, image, type, aired } = anime;
+  const { titleEnglish: titleEnglish, titleJapanese: titleJapanese, status, image, type, airedStart } = anime;
   const table = document.querySelector<HTMLTableElement>('.table-anime__body');
   if (table === null) {
     throw new Error('no table');
@@ -36,11 +36,11 @@ function renderAnime(anime: Anime): void {
   table.innerHTML += `
   <tr>
     <td class="imageAnime"><img src="${image}" alt="Anime image"></td>
-    <td>${titleEng === '' ? 'NO NAME' : titleEng}</td>
-    <td>${titleJpn === '' ? 'NO NAME' : titleJpn}</td>
+    <td>${titleEnglish === '' ? 'NO NAME' : titleEnglish}</td>
+    <td>${titleJapanese === '' ? 'NO NAME' : titleJapanese}</td>
     <td>${status}</td>
     <td>${type}</td>
-    <td>${formatDate(aired.start)}</td>
+    <td>${formatDate(airedStart)}</td>
   </tr>
   `;
 }

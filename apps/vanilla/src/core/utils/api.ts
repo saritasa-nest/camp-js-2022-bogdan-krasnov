@@ -48,7 +48,7 @@ export async function getAnimeData(paginationConfig: PaginationConfig): Promise<
   const response = await apiAnime.get<PaginationDto<AnimeDto>>(
     `/anime/anime/?${urlAnime}`,
   );
-  return PaginationMapper.fromDto<AnimeDto, Anime>(
+  return PaginationMapper.fromDto(
     response.data,
     animeDto => AnimeMapper.fromDto(animeDto),
   );

@@ -17,7 +17,8 @@ export namespace AnimeMapper {
       // I don't know yet how to solve it so that there is an assignment between different types.
       type: dto.type,
       status: dto.status,
-      aired: dto.aired,
+      airedStart: new Date(dto.aired.start),
+      airedEnd: new Date(dto.aired.end),
     });
   }
 }

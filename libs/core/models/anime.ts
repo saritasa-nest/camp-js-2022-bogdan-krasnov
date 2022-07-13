@@ -38,15 +38,11 @@ export class Anime extends Immerable {
   /** Anime status. */
   public readonly status: AnimeStatus;
 
-  /** Anime aired. */
-  public readonly aired: {
+  /** Aired start. */
+  public readonly airedStart: Date;
 
-    /** Aired start. */
-    readonly start: Date;
-
-    /** Aired end. */
-    readonly end: Date;
-  };
+  /** Aired start. */
+  public readonly airedEnd: Date;
 
   public constructor(data: InitArgsAnime) {
     super();
@@ -56,7 +52,8 @@ export class Anime extends Immerable {
     this.titleJapanese = data.titleJapanese;
     this.type = data.type;
     this.status = data.status;
-    this.aired = data.aired;
+    this.airedStart = data.airedStart;
+    this.airedEnd = data.airedEnd;
   }
 }
 
