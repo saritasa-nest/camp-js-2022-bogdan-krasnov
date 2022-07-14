@@ -1,21 +1,6 @@
+import { AnimeStatus, AnimeType } from '../utils/enums/table';
+
 import { Immerable, OmitImmerable } from './immerable';
-
-/** Possible options anime type. */
-enum AnimeType {
-  Tv = 'TV',
-  Ova = 'OVA',
-  Movie = 'MOVIE',
-  Special = 'SPECIAL',
-  Ona = 'ONA',
-  Music = 'MUSIC',
-}
-
-/** Possible options anime status. */
-enum AnimeStatus {
-  Airing = 'AIRING',
-  Finished = 'FINISHED',
-  NotYetAired = 'NOT_YET_AIRED',
-}
 
 /** Anime. */
 export class Anime extends Immerable {
@@ -39,10 +24,10 @@ export class Anime extends Immerable {
   public readonly status: AnimeStatus;
 
   /** Aired start. */
-  public readonly airedStart: Date;
+  public readonly airedStart: Date | null;
 
   /** Aired start. */
-  public readonly airedEnd: Date;
+  public readonly airedEnd: Date | null;
 
   public constructor(data: InitArgsAnime) {
     super();
