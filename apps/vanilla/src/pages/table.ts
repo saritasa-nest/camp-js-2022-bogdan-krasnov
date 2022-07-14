@@ -45,6 +45,7 @@ export default class Table {
     if (paginationButtons === null || pageNumber === null) {
       throw new Error('error');
     }
+    
     pageNumber.innerHTML = `Page ${this.currentPage}`;
     paginationButtons.innerHTML = ``;
 
@@ -52,6 +53,7 @@ export default class Table {
     prevButton.addEventListener('click', () => {
       this.updatePagination(prevButton);
     });
+
     const nextButton = createPaginationButton('>>');
     nextButton.addEventListener('click', () => {
       this.updatePagination(nextButton);
@@ -65,21 +67,25 @@ export default class Table {
     }
 
     paginationButtons.append(prevButton);
+
     createDynamicPaginationButtons(this.currentPage, this.quantityPage).forEach(page => {
       if (page !== '...') {
         const buttonDynamic = createPaginationButton(String(page));
         buttonDynamic.addEventListener('click', () => {
           this.updatePagination(buttonDynamic);
         });
+
         if (page === this.currentPage) {
           buttonDynamic.classList.add('active');
         }
+
         paginationButtons.append(buttonDynamic);
       } else {
         const buttonPoints = createPaginationButton(page, true);
         paginationButtons.append(buttonPoints);
       }
     });
+
     paginationButtons.append(nextButton);
   }
 
@@ -89,6 +95,7 @@ export default class Table {
    */
   private updatePagination(pageButton: HTMLButtonElement): void {
     const pageValue = pageButton.getAttribute('data-text');
+
     if (this.currentPage === undefined) {
       throw new Error('no currentPage');
     }
@@ -101,7 +108,9 @@ export default class Table {
     if (!isNaN(Number(pageValue))) {
       this.currentPage = Number(pageValue);
     }
+
     updateAnimeList(this.currentPage, this.currentSorting, this.search);
+
     this.setPagination();
   }
 
@@ -132,6 +141,20 @@ export default class Table {
     });
   }
 
+  /**
+   * Changes search string.
+   * @param event some event.
+   */
+  private handleChangeSearch(event: Event): void {
+    event.preventDefault();
+
+    if (event.currentTarget !== null && isInputElement(event.currentTarget)) {
+      this.search = event.currentTarget.value
+    }
+
+    updateAnimeList(this.currentPage, this.currentSorting, this.search);
+  }
+
   /** Search string initialization. */
   private initAnimeSearch(): void {
     const inputElement = document.querySelector<HTMLInputElement>(`.${INPUT_CLASS}`);
@@ -140,14 +163,6 @@ export default class Table {
       return;
     }
 
-    inputElement.addEventListener('change', (event) => {
-      event.preventDefault();
-      
-      if (event.currentTarget !== null && isInputElement(event.currentTarget)) {
-        this.search = event.currentTarget.value
-      }
-
-      updateAnimeList(this.currentPage, this.currentSorting, this.search);
-    })
+    inputElement.addEventListener('change', this.handleChangeSearch)
   }
 }

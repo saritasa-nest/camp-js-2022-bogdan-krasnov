@@ -38,7 +38,7 @@ const configDefault = {
   currentPage: FIRST_PAGE,
   ordering: Ordering.None,
   limit: PAGE_SIZE_DEFAULT,
-  search: 'Naruto'
+  search: ''
 };
 
 /**
@@ -52,6 +52,7 @@ export async function getAnimeData(paginationConfig: PaginationConfig): Promise<
     limit = configDefault.limit,
     search = configDefault.search,
   } = paginationConfig;
+
   const offset = (currentPage - 1) * limit;
 
   const queryParams = new URLSearchParams([]);
@@ -59,10 +60,13 @@ export async function getAnimeData(paginationConfig: PaginationConfig): Promise<
   queryParams.append('offset', String(offset));
   queryParams.append('ordering', ordering.concat(',') + ",id");
   queryParams.append('search', search);
+
   const urlAnime = queryParams.toString()
+
   const response = await apiAnime.get<PaginationDto<AnimeDto>>(
     `/anime/anime/?${urlAnime}`,
   );
+
   return PaginationMapper.fromDto(
     response.data,
     animeDto => AnimeMapper.fromDto(animeDto),
