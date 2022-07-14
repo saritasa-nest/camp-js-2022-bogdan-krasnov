@@ -12,13 +12,13 @@ const INPUT_CLASS = 'input-search';
 export default class Table {
 
   /** Current Page. */
-  private currentPage: number = CURRENT_PAGE_DEFAULT;
+  private currentPage = CURRENT_PAGE_DEFAULT;
 
   /** Page Quantity. */
   private quantityPage: number;
 
   /** Current sorting. */
-  private currentSorting: Ordering = ORDERING_DEFAULT;
+  private currentSorting = ORDERING_DEFAULT;
 
   /** Quantity anime. */
   private quantityAnime: number;
