@@ -9,10 +9,11 @@ import { Ordering } from './../core/enums/table';
  * Refresh current page.
  * @param currentPage Current Page.
  * @param currentSorting Current sorting.
+ * @param search Search line.
  */
 export async function updateAnimeList(currentPage: number, currentSorting: Ordering, search: string): Promise<void> {
   const ordering = currentSorting;
-  const paginationConfig: PaginationConfig = { currentPage, ordering, search};
+  const paginationConfig: PaginationConfig = { currentPage, ordering, search };
   const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
   if (tbody === null) {
     throw new Error('No table');

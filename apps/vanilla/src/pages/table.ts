@@ -1,6 +1,6 @@
 import { isInputElement } from '@js-camp/core/utils/guards/element.guard';
-import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
 
+import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
 import { createPaginationButton, createDynamicPaginationButtons } from '../scripts/pagination';
 import { updateAnimeList } from '../scripts/table';
 
@@ -24,7 +24,7 @@ export default class Table {
   private quantityAnime: number;
 
   /** Search line. */
-  private search: string = '';
+  private search = '';
 
   public constructor(quantityAnime: number) {
     this.quantityAnime = quantityAnime;
@@ -45,7 +45,7 @@ export default class Table {
     if (paginationButtons === null || pageNumber === null) {
       throw new Error('error');
     }
-    
+
     pageNumber.innerHTML = `Page ${this.currentPage}`;
     paginationButtons.innerHTML = ``;
 
@@ -137,19 +137,20 @@ export default class Table {
           this.currentSorting = Ordering.None;
           break;
       }
+
       updateAnimeList(this.currentPage, this.currentSorting, this.search);
     });
   }
 
   /**
    * Changes search string.
-   * @param event some event.
+   * @param event Some event.
    */
   private handleChangeSearch(event: Event): void {
     event.preventDefault();
 
     if (event.currentTarget !== null && isInputElement(event.currentTarget)) {
-      this.search = event.currentTarget.value
+      this.search = event.currentTarget.value;
     }
 
     updateAnimeList(this.currentPage, this.currentSorting, this.search);
@@ -163,6 +164,10 @@ export default class Table {
       return;
     }
 
-    inputElement.addEventListener('change', this.handleChangeSearch)
+    inputElement.addEventListener('change', event => {
+      this.handleChangeSearch(event);
+
+      this.setPagination();
+    });
   }
 }
