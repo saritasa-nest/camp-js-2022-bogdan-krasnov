@@ -4,7 +4,7 @@
  * @param disabled Disabled button.
  * @returns Button.
  */
-export function creatingPaginationButton(dataText: string,
+export function createPaginationButton(dataText: string,
   disabled = false): HTMLButtonElement {
   const buttonPaginator = document.createElement('button');
   buttonPaginator.setAttribute('data-text', dataText);
@@ -19,7 +19,7 @@ export function creatingPaginationButton(dataText: string,
  * @param quantityPage Number of pages.
  * @returns Array with strings or numbers.
  */
-export function creatingDynamicPaginationButtons(currentPage: number,
+export function createDynamicPaginationButtons(currentPage: number,
   quantityPage: number): Array<string | number> {
   const lastPage = quantityPage;
   const leftButton = currentPage - 1;
@@ -33,13 +33,13 @@ export function creatingDynamicPaginationButtons(currentPage: number,
   }
 
   // An auxiliary number that helps you understand when to add points (...) to an array countedDynamicButtonsWithPoints.
-  let j = 0;
+  let rangeBetweenPointsAndNumbers = 0;
   for (const i of countedDynamicButtons) {
-    if (i - j !== 1) {
+    if (i - rangeBetweenPointsAndNumbers !== 1) {
       countedDynamicButtonsWithPoints.push('...');
     }
     countedDynamicButtonsWithPoints.push(i);
-    j = i;
+    rangeBetweenPointsAndNumbers = i;
   }
   return countedDynamicButtonsWithPoints;
 }

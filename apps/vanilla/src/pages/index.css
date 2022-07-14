@@ -46,7 +46,7 @@ th {
   color: var(--accent-light-color);
 }
 
-select {
+.sort-anime-table {
   padding: 20px;
   margin: 50px;
   font-size: var(--font-size-400);
