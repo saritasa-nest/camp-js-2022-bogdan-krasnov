@@ -46,7 +46,8 @@ th {
   color: var(--accent-light-color);
 }
 
-.sort-anime-table {
+.sort-anime-table,
+.input-search {
   padding: 20px;
   margin: 50px;
   font-size: var(--font-size-400);

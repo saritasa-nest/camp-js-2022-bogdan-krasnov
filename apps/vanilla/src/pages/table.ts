@@ -1,3 +1,4 @@
+import { isInputElement } from '@js-camp/core/utils/guards/element.guard';
 import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
 
 import { createPaginationButton, createDynamicPaginationButtons } from '../scripts/pagination';
@@ -5,6 +6,7 @@ import { updateAnimeList } from '../scripts/table';
 
 import { Ordering } from './../core/enums/table';
 
+const INPUT_CLASS = 'input-search'
 /**
  * Table anime class.
  */
@@ -22,14 +24,18 @@ export default class Table {
   /** Quantity anime. */
   private quantityAnime: number;
 
+  /** Quantity anime. */
+  private search: string = '';
+
   public constructor(quantityAnime: number) {
     this.quantityAnime = quantityAnime;
     this.currentPage = CURRENT_PAGE_DEFAULT;
     this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
     this.currentSorting = ORDERING_DEFAULT;
-    updateAnimeList(this.currentPage, this.currentSorting);
+    updateAnimeList(this.currentPage, this.currentSorting, this.search);
     this.setPagination();
     this.sortAnimeList();
+    this.changeSearch();
   }
 
   /**
@@ -98,7 +104,7 @@ export default class Table {
     if (!isNaN(Number(pageValue))) {
       this.currentPage = Number(pageValue);
     }
-    updateAnimeList(this.currentPage, this.currentSorting);
+    updateAnimeList(this.currentPage, this.currentSorting, this.search);
     this.setPagination();
   }
 
@@ -127,7 +133,23 @@ export default class Table {
           this.currentSorting = Ordering.None;
           break;
       }
-      updateAnimeList(this.currentPage, this.currentSorting);
+      updateAnimeList(this.currentPage, this.currentSorting, this.search);
     });
+  }
+
+  private changeSearch(): void {
+    const inputElement = document.querySelector<HTMLInputElement>(`.${INPUT_CLASS}`);
+
+    if (inputElement === null) {
+      return;
+    }
+
+    inputElement.addEventListener('change', (event) => {
+      event.preventDefault();
+      if (event.currentTarget !== null && isInputElement(event.currentTarget)) {
+        this.search = event.currentTarget.value
+      }
+      updateAnimeList(this.currentPage, this.currentSorting, this.search);
+    })
   }
 }
