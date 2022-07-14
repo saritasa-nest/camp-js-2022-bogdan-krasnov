@@ -28,7 +28,7 @@ export async function updateAnimeList(currentPage: number, currentSorting: Order
  * @param anime Anime object.
  */
 function renderAnime(anime: Anime): void {
-  const { titleEnglish: titleEnglish, titleJapanese: titleJapanese, status, image, type, airedStart } = anime;
+  const { titleEnglish, titleJapanese, status, image, type, airedStart } = anime;
   const table = document.querySelector<HTMLTableElement>('.table-anime__body');
   if (table === null) {
     throw new Error('no table');
