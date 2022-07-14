@@ -48,7 +48,13 @@ export async function getAnimeData(paginationConfig: PaginationConfig): Promise<
     limit = configDefault.limit,
   } = paginationConfig;
   const offset = (currentPage - 1) * limit;
-  const urlAnime = `limit=${limit}&offset=${offset}&ordering=${ordering.concat(',')}id`;
+
+  const queryParams = new URLSearchParams([]);
+  queryParams.append('limit', String(limit));
+  queryParams.append('offset', String(offset));
+  queryParams.append('ordering', `${ordering},id`);
+
+  const urlAnime = queryParams.toString();
   const response = await apiAnime.get<PaginationDto<AnimeDto>>(
     `/anime/anime/?${urlAnime}`,
   );
