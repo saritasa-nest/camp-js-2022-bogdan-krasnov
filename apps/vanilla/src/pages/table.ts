@@ -3,7 +3,7 @@ import { AnimeType } from '@js-camp/core//utils/enums/table';
 import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
 
 import { creatingPaginationButton, creatingDynamicPaginationButtons } from '../scripts/pagination';
-import { updateAnimeList } from '../scripts/table';
+import { updateAnimeList, updateCountAnime } from '../scripts/table';
 
 import { Ordering } from './../core/enums/table';
 
@@ -29,14 +29,14 @@ export default class Table {
 
   public constructor(quantityAnime: number) {
     this.quantityAnime = quantityAnime;
+    this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
     this.currentFiltering = AnimeType.None;
     this.currentPage = CURRENT_PAGE_DEFAULT;
-    this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
     this.currentSorting = ORDERING_DEFAULT;
     updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);
+    this.filterAnimeList();
     this.setPagination();
     this.sortAnimeList();
-    this.filterAnimeList();
   }
 
   /**
@@ -60,7 +60,6 @@ export default class Table {
     nextButton.addEventListener('click', () => {
       this.updatePagination(nextButton);
     });
-
     if (this.currentPage === FIRST_PAGE) {
       prevButton.disabled = true;
     }
@@ -138,29 +137,33 @@ export default class Table {
     });
   }
 
-
-  /** filter anime list. */
+  /**
+   * Filter anime list.
+   */
   private filterAnimeList(): void {
     const filter = document.querySelector<HTMLSelectElement>('.filter__anime-table');
     if (filter === null) {
       throw new Error('no table');
     }
-    filter.addEventListener('change', (event: Event) => {
+    for (const type in AnimeType) {
+      const option = document.createElement('option');
+      option.innerText = type;
+      option.value = type;
+      filter.appendChild(option);
+    }
+    filter.addEventListener('change', async(event: Event) => {
       const target = event.target as HTMLSelectElement;
-      const filter = target.value;
-      switch (filter) {
-        case AnimeType.Tv:
-          this.currentFiltering = AnimeType.Tv;
-          break;
-        case AnimeType.Ova:
-          this.currentFiltering = AnimeType.Ova;
-          break;
-        default:
-          this.currentFiltering = AnimeType.None;
-          break;
+      const animeType = target.value;
+      for (const type in AnimeType) {
+        if (animeType === type) {
+          this.currentFiltering = AnimeType[type];
+        }
       }
-      this.quantityAnime =
+      this.quantityAnime = await updateCountAnime(this.currentPage, this.currentSorting, this.currentFiltering);
+      this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
+      this.currentPage = FIRST_PAGE;
       updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);
+      this.setPagination();
     });
   }
 }
