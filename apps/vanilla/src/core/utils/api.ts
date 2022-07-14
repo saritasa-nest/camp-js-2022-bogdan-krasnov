@@ -31,6 +31,7 @@ export interface PaginationConfig {
   /** Limit page. */
   readonly limit?: number;
 
+  /** Filtering page. */
   readonly filtering?: AnimeType;
 }
 

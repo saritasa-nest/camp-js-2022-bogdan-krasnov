@@ -1,4 +1,5 @@
 import { AnimeType } from '@js-camp/core//utils/enums/table';
+
 import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
 
 import { creatingPaginationButton, creatingDynamicPaginationButtons } from '../scripts/pagination';
@@ -21,7 +22,7 @@ export default class Table {
   private currentSorting: Ordering;
 
   /** Quantity anime. */
-   private quantityAnime: number;
+  private quantityAnime: number;
 
   /** Current anime. */
   private currentFiltering: AnimeType;
