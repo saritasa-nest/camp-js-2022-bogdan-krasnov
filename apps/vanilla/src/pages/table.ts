@@ -33,7 +33,7 @@ export default class Table {
   }
 
   /**
-   * The setPagination function, which creates a pagination of anime pages.
+   * SetPagination, which creates a pagination of anime pages.
    */
   private setPagination(): void {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pagination');

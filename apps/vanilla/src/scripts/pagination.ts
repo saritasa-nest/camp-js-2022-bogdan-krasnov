@@ -1,5 +1,5 @@
 /**
- * Create button function in pagination.
+ * Create button in pagination.
  * @param dataText Text for innerText and data-attribute.
  * @param disabled Disabled button.
  * @returns Button.
@@ -14,7 +14,7 @@ export function createPaginationButton(dataText: string,
 }
 
 /**
- * Create button function.
+ * Creating dynamic buttons in pagination.
  * @param currentPage Current page.
  * @param quantityPage Number of pages.
  * @returns Array with strings or numbers.
@@ -32,7 +32,6 @@ export function createDynamicPaginationButtons(currentPage: number,
     }
   }
 
-  // An auxiliary number that helps you understand when to add points (...) to an array countedDynamicButtonsWithPoints.
   let rangeBetweenPointsAndNumbers = 0;
   for (const i of countedDynamicButtons) {
     if (i - rangeBetweenPointsAndNumbers !== 1) {

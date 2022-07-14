@@ -38,7 +38,7 @@ const configDefault = {
 };
 
 /**
- * Reception function with a configured URL.
+ * Reception with a configured URL.
  * @param paginationConfig Parameters for getting anime from the database.
  */
 export async function getAnimeData(paginationConfig: PaginationConfig): Promise<Pagination<Anime>> {

@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * New table return function.
+ * New table return.
  * @returns Table.
  */
 async function renderTableAnime(): Promise<Table> {

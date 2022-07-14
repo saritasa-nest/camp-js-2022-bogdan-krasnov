@@ -24,7 +24,7 @@ export async function updateAnimeList(currentPage: number, currentSorting: Order
 }
 
 /**
- * Rendering of one anime.
+ * Render single anime.
  * @param anime Anime object.
  */
 function renderAnime(anime: Anime): void {
