@@ -1,12 +1,11 @@
 :root {
   /* General */
-  --primary-color: #9966cc;
-  --primary-contrast-color: #666699;
-  --primary-dark-color: #663399;
+  --primary-color: #96c;
+  --primary-contrast-color: #669;
+  --primary-dark-color: #639;
   --primary-light-contrast-color: white;
   --primary-dark-contrast-color: black;
-  --accent-light-color: #CC99ff;
-
+  --accent-light-color: #c9f;
   --font-size-300: 0.75rem;
   --font-size-400: 1rem;
   --font-size-500: 1.25rem;
