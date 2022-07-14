@@ -1,9 +1,16 @@
 :root {
   /* General */
-  --primary-color-1: #966bd6;
-  --primary-color-2: #300571;
-  --accent-light-color: #fff;
-  --font-size-1: 1rem;
+  --primary-color: #9966cc;
+  --primary-contrast-color: #666699;
+  --primary-dark-color: #663399;
+  --primary-light-contrast-color: white;
+  --primary-dark-contrast-color: black;
+  --accent-light-color: #CC99ff;
+
+  --font-size-300: 0.75rem;
+  --font-size-400: 1rem;
+  --font-size-500: 1.25rem;
+  --font-size-600: 1.5rem;
 
   /* Pagination */
   --pagination-button-active-color: #4f10ad;
