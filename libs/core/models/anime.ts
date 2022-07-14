@@ -1,4 +1,5 @@
 import { AnimeStatus, AnimeType } from '../utils/enums/table';
+
 import { Immerable, OmitImmerable } from './immerable';
 
 /** Anime. */
