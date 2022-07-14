@@ -6,41 +6,38 @@ import { updateAnimeList } from '../scripts/table';
 
 import { Ordering } from './../core/enums/table';
 
-const INPUT_CLASS = 'input-search'
-/**
- * Table anime class.
- */
+const INPUT_CLASS = 'input-search';
+
+/** Table anime class. */
 export default class Table {
 
   /** Current Page. */
-  private currentPage: number;
+  private currentPage: number = CURRENT_PAGE_DEFAULT;
 
   /** Page Quantity. */
   private quantityPage: number;
 
   /** Current sorting. */
-  private currentSorting: Ordering;
+  private currentSorting: Ordering = ORDERING_DEFAULT;
 
   /** Quantity anime. */
   private quantityAnime: number;
 
-  /** Quantity anime. */
+  /** Search line. */
   private search: string = '';
 
   public constructor(quantityAnime: number) {
     this.quantityAnime = quantityAnime;
-    this.currentPage = CURRENT_PAGE_DEFAULT;
     this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
-    this.currentSorting = ORDERING_DEFAULT;
+
     updateAnimeList(this.currentPage, this.currentSorting, this.search);
+
     this.setPagination();
     this.sortAnimeList();
-    this.changeSearch();
+    this.initAnimeSearch();
   }
 
-  /**
-   * The setPagination function, which creates a pagination of anime pages.
-   */
+  /** The setPagination function, which creates a pagination of anime pages. */
   private setPagination(): void {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pagination');
     const pageNumber = document.querySelector<HTMLDivElement>('.page-number');
@@ -108,9 +105,7 @@ export default class Table {
     this.setPagination();
   }
 
-  /**
-   * Sort function anime.
-   */
+  /** Sort function anime. */
   private sortAnimeList(): void {
     const sort = document.querySelector<HTMLSelectElement>('.sort-anime-table');
     if (sort === null) {
@@ -137,7 +132,8 @@ export default class Table {
     });
   }
 
-  private changeSearch(): void {
+  /** Search string initialization. */
+  private initAnimeSearch(): void {
     const inputElement = document.querySelector<HTMLInputElement>(`.${INPUT_CLASS}`);
 
     if (inputElement === null) {
@@ -146,9 +142,11 @@ export default class Table {
 
     inputElement.addEventListener('change', (event) => {
       event.preventDefault();
+      
       if (event.currentTarget !== null && isInputElement(event.currentTarget)) {
         this.search = event.currentTarget.value
       }
+
       updateAnimeList(this.currentPage, this.currentSorting, this.search);
     })
   }
