@@ -1,6 +1,6 @@
 import { isInputElement } from '@js-camp/core/utils/guards/element.guard';
 
-import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
+import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT, DEFAULT_SEARCH_QUERY } from '../core/constants/anime';
 import { createPaginationButton, createDynamicPaginationButtons } from '../scripts/pagination';
 import { updateAnimeList } from '../scripts/table';
 
@@ -23,8 +23,8 @@ export default class Table {
   /** Quantity anime. */
   private quantityAnime: number;
 
-  /** Search line. */
-  private search = '';
+  /** Search query. */
+  private search = DEFAULT_SEARCH_QUERY;
 
   public constructor(quantityAnime: number) {
     this.quantityAnime = quantityAnime;

@@ -8,7 +8,7 @@ import { AnimeDto } from '@js-camp/core/dtos/anime.dto';
 
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 
-import { FIRST_PAGE, PAGE_SIZE_DEFAULT } from '../constants/anime';
+import { DEFAULT_SEARCH_QUERY, FIRST_PAGE, ORDERING_DEFAULT, PAGE_SIZE_DEFAULT } from '../constants/anime';
 
 import { Ordering } from '../enums/table';
 
@@ -36,9 +36,9 @@ export interface PaginationConfig {
 
 const configDefault = {
   currentPage: FIRST_PAGE,
-  ordering: Ordering.None,
+  ordering: ORDERING_DEFAULT,
   limit: PAGE_SIZE_DEFAULT,
-  search: '',
+  search: DEFAULT_SEARCH_QUERY,
 };
 
 /**
