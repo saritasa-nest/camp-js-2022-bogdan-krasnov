@@ -1,4 +1,5 @@
 import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
+import { checkNullUndefined } from '../core/utils/checkNullUndefined';
 
 import { createPaginationButton, createDynamicPaginationButtons } from '../scripts/pagination';
 import { updateAnimeList } from '../scripts/table';
@@ -38,9 +39,8 @@ export default class Table {
   private setPagination(): void {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pagination');
     const pageNumber = document.querySelector<HTMLDivElement>('.page-number');
-    if (paginationButtons === null || pageNumber === null) {
-      throw new Error('error');
-    }
+    checkNullUndefined(paginationButtons);
+    checkNullUndefined(pageNumber);
     pageNumber.innerHTML = `Page ${this.currentPage}`;
     paginationButtons.innerHTML = ``;
 
@@ -85,9 +85,6 @@ export default class Table {
    */
   private updatePagination(pageButton: HTMLButtonElement): void {
     const pageValue = pageButton.getAttribute('data-text');
-    if (this.currentPage === undefined) {
-      throw new Error('no currentPage');
-    }
     if (pageValue === '>>' && this.currentPage < this.quantityPage) {
       this.currentPage++;
     }
@@ -106,9 +103,7 @@ export default class Table {
    */
   private sortAnimeList(): void {
     const sort = document.querySelector<HTMLSelectElement>('.sort-anime-table');
-    if (sort === null) {
-      throw new Error('no table');
-    }
+    checkNullUndefined(sort);
     sort.addEventListener('change', (event: Event) => {
       const target = event.target as HTMLSelectElement;
       const order = target.value;

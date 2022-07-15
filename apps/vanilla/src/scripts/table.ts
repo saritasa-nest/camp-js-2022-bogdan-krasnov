@@ -1,6 +1,7 @@
 import { Anime } from '@js-camp/core/models/anime';
 
 import { getAnimeData, PaginationConfig } from '../core/utils/api';
+import { checkNullUndefined } from '../core/utils/checkNullUndefined';
 import { formatDate } from '../core/utils/date';
 
 import { Ordering } from './../core/enums/table';
@@ -14,9 +15,7 @@ export async function updateAnimeList(currentPage: number, currentSorting: Order
   const ordering = currentSorting;
   const paginationConfig: PaginationConfig = { currentPage, ordering };
   const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
-  if (tbody === null) {
-    throw new Error('No table');
-  }
+  checkNullUndefined(tbody);
   tbody.innerHTML = '';
 
   const animeData = await getAnimeData(paginationConfig);
@@ -30,9 +29,7 @@ export async function updateAnimeList(currentPage: number, currentSorting: Order
 function renderAnime(anime: Anime): void {
   const { titleEnglish, titleJapanese, status, image, type, airedStart } = anime;
   const tableBody = document.querySelector<HTMLTableElement>('.table-anime__body');
-  if (tableBody === null) {
-    throw new Error('no table');
-  }
+  checkNullUndefined(tableBody);
   tableBody.innerHTML += `
   <tr>
     <td class="imageAnime"><img src="${image}" alt="Anime image"></td>
