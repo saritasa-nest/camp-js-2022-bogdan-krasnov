@@ -29,11 +29,11 @@ export async function updateAnimeList(currentPage: number, currentSorting: Order
  */
 function renderAnime(anime: Anime): void {
   const { titleEnglish, titleJapanese, status, image, type, airedStart } = anime;
-  const table = document.querySelector<HTMLTableElement>('.table-anime__body');
-  if (table === null) {
+  const tableBody = document.querySelector<HTMLTableElement>('.table-anime__body');
+  if (tableBody === null) {
     throw new Error('no table');
   }
-  table.innerHTML += `
+  tableBody.innerHTML += `
   <tr>
     <td class="imageAnime"><img src="${image}" alt="Anime image"></td>
     <td>${titleEnglish === '' ? 'NO NAME' : titleEnglish}</td>

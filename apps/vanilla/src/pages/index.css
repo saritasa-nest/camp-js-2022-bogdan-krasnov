@@ -34,7 +34,7 @@ th {
   text-align: center;
 }
 
-.pagination button {
+.pagination__button {
   margin: 20px 0;
   padding: 10px;
 }

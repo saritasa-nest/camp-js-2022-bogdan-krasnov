@@ -2,11 +2,11 @@
  * Create button in pagination.
  * @param dataText Text for innerText and data-attribute.
  * @param disabled Disabled button.
- * @returns Button.
  */
 export function createPaginationButton(dataText: string,
   disabled = false): HTMLButtonElement {
   const buttonPaginator = document.createElement('button');
+  buttonPaginator.className = 'pagination__button';
   buttonPaginator.setAttribute('data-text', dataText);
   buttonPaginator.innerText = dataText;
   buttonPaginator.disabled = disabled;

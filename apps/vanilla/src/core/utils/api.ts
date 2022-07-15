@@ -14,7 +14,8 @@ import { Ordering } from '../enums/table';
 
 import { apiAnime } from './axiosInstance';
 
-/** Parameters for getting anime from the database.
+/**
+ * Parameters for getting anime from the database.
  * @param currentPage Current page.
  * @param ordering Ordering page.
  * @param limit Size page.

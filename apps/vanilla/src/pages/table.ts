@@ -38,7 +38,6 @@ export default class Table {
   private setPagination(): void {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pagination');
     const pageNumber = document.querySelector<HTMLDivElement>('.page-number');
-
     if (paginationButtons === null || pageNumber === null) {
       throw new Error('error');
     }
