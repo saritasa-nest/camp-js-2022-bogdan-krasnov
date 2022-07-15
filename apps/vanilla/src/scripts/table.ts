@@ -17,9 +17,12 @@ export async function updateAnimeList(currentPage: number, currentSorting: Order
   const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
   checkNullUndefined(tbody);
   tbody.innerHTML = '';
-
   const animeData = await getAnimeData(paginationConfig);
-  animeData.results.forEach(anime => renderAnime(anime));
+  animeData.results.forEach(anime => {
+    if (tbody.childElementCount < 5) {
+      renderAnime(anime);
+    }
+  });
 }
 
 /**
