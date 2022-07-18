@@ -3,8 +3,7 @@
  * @param dataText Text for innerText and data-attribute.
  * @param disabled Disabled button.
  */
-export function createPaginationButton(dataText: string,
-  disabled = false): HTMLButtonElement {
+export function createPaginationButton(dataText: string, disabled = false): HTMLButtonElement {
   const buttonPaginator = document.createElement('button');
   buttonPaginator.className = 'pagination__button';
   buttonPaginator.setAttribute('data-text', dataText);
@@ -24,7 +23,7 @@ export function createDynamicPaginationButtons(currentPage: number,
   const lastPage = quantityPage;
   const leftButton = currentPage - 1;
   const rightButton = currentPage + 1;
-  const countedDynamicButtons: number[] = [];
+  const countedDynamicButtons: Array<number> = [];
   const countedDynamicButtonsWithPoints: Array<number | string> = [];
   for (let i = 1; i <= lastPage; i++) {
     if (i === 1 || i === lastPage || (i >= leftButton && i <= rightButton)) {

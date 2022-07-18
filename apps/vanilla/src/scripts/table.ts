@@ -9,10 +9,10 @@ import { Ordering } from './../core/enums/table';
 /**
  * Refresh current page.
  * @param currentPage Current Page.
- * @param currentSorting Current sorting.
+ * @param currentOrdering Current ordering.
  */
-export async function updateAnimeList(currentPage: number, currentSorting: Ordering): Promise<void> {
-  const ordering = currentSorting;
+export async function updateAnimeList(currentPage: number, currentOrdering: Ordering): Promise<void> {
+  const ordering = currentOrdering;
   const paginationConfig: PaginationConfig = { currentPage, ordering };
   const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
   checkNullUndefined(tbody);
@@ -35,12 +35,12 @@ function renderAnime(anime: Anime): void {
   checkNullUndefined(tableBody);
   tableBody.innerHTML += `
   <tr>
-    <td class="imageAnime"><img src="${image}" alt="Anime image"></td>
-    <td>${titleEnglish === '' ? 'NO NAME' : titleEnglish}</td>
-    <td>${titleJapanese === '' ? 'NO NAME' : titleJapanese}</td>
-    <td>${status}</td>
-    <td>${type}</td>
-    <td>${formatDate(airedStart)}</td>
+    <td><img src="${image}" class="image-anime" alt="Anime image"></td>
+    <td class="table-anime__td-anime">${titleEnglish === '' ? 'NO NAME' : titleEnglish}</td>
+    <td class="table-anime__td-anime">${titleJapanese === '' ? 'NO NAME' : titleJapanese}</td>
+    <td class="table-anime__td-anime">${status}</td>
+    <td class="table-anime__td-anime">${type}</td>
+    <td class="table-anime__td-anime">${formatDate(airedStart)}</td>
   </tr>
   `;
 }

@@ -7,3 +7,7 @@ export const ORDERING_DEFAULT = Ordering.None;
 export const CURRENT_PAGE_DEFAULT = 1;
 
 export const FIRST_PAGE = 1;
+
+export const PREV_PAGE = '<<';
+
+export const NEXT_PAGE = '>>';

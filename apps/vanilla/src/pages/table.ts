@@ -1,4 +1,5 @@
-import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
+import { NEXT_PAGE } from './../core/constants/anime';
+import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT, PREV_PAGE } from '../core/constants/anime';
 import { checkNullUndefined } from '../core/utils/checkNullUndefined';
 
 import { createPaginationButton, createDynamicPaginationButtons } from '../scripts/pagination';
@@ -9,19 +10,19 @@ import { Ordering } from './../core/enums/table';
 /**
  * Table anime class.
  */
-export default class Table {
+export class Table {
 
   /** Current Page. */
   private currentPage: number;
 
   /** Page Quantity. */
-  private quantityPage: number;
+  readonly quantityPage: number;
 
   /** Current sorting. */
   private currentSorting: Ordering;
 
   /** Quantity anime. */
-  private quantityAnime: number;
+  readonly quantityAnime: number;
 
   public constructor(quantityAnime: number) {
     this.quantityAnime = quantityAnime;
@@ -33,9 +34,7 @@ export default class Table {
     this.sortAnimeList();
   }
 
-  /**
-   * SetPagination, which creates a pagination of anime pages.
-   */
+/** Creates pagination buttons for anime table. */
   private setPagination(): void {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pagination');
     const pageNumber = document.querySelector<HTMLDivElement>('.page-number');
@@ -44,11 +43,11 @@ export default class Table {
     pageNumber.innerHTML = `Page ${this.currentPage}`;
     paginationButtons.innerHTML = ``;
 
-    const prevButton = createPaginationButton('<<');
+    const prevButton = createPaginationButton(PREV_PAGE);
     prevButton.addEventListener('click', () => {
       this.updatePagination(prevButton);
     });
-    const nextButton = createPaginationButton('>>');
+    const nextButton = createPaginationButton(NEXT_PAGE);
     nextButton.addEventListener('click', () => {
       this.updatePagination(nextButton);
     });
@@ -85,10 +84,10 @@ export default class Table {
    */
   private updatePagination(pageButton: HTMLButtonElement): void {
     const pageValue = pageButton.getAttribute('data-text');
-    if (pageValue === '>>' && this.currentPage < this.quantityPage) {
+    if (pageValue === NEXT_PAGE && this.currentPage < this.quantityPage) {
       this.currentPage++;
     }
-    if (pageValue === '<<' && this.currentPage > FIRST_PAGE) {
+    if (pageValue === PREV_PAGE && this.currentPage > FIRST_PAGE) {
       this.currentPage--;
     }
     if (!isNaN(Number(pageValue))) {

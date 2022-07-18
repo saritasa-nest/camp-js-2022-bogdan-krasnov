@@ -1,17 +1,11 @@
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
-
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
-
 import { AnimeDto } from '@js-camp/core/dtos/anime.dto';
-
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
-
 import { FIRST_PAGE, PAGE_SIZE_DEFAULT } from '../constants/anime';
-
 import { Ordering } from '../enums/table';
-
 import { apiAnime } from './axiosInstance';
 
 /**
@@ -25,7 +19,7 @@ export interface PaginationConfig {
   /** The number of results returned per page. */
   readonly currentPage: number;
 
-  /** Current page. */
+  /** Ordering page. */
   readonly ordering?: Ordering;
 
   /** Limit page. */

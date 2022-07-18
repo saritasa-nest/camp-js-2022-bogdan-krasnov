@@ -12,12 +12,12 @@
   margin: 0 auto;
 }
 
-.imageAnime img {
+.image-anime {
   width: 100%;
 }
 
-.table-anime td,
-th {
+.table-anime__thead-anime,
+.table-anime__td-anime {
   text-align: center;
   border: 1px solid var(--primary-dark-contrast-color);
   width: 200px;
