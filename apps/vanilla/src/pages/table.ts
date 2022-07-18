@@ -3,7 +3,7 @@ import { AnimeType } from '@js-camp/core//utils/enums/table';
 import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
 
 import { creatingPaginationButton, creatingDynamicPaginationButtons } from '../scripts/pagination';
-import { updateAnimeList, updateCountAnime } from '../scripts/table';
+import { updateAnimeList, countAnime } from '../scripts/table';
 
 import { Ordering } from './../core/enums/table';
 
@@ -137,9 +137,7 @@ export default class Table {
     });
   }
 
-  /**
-   * Filter anime list.
-   */
+// Filter anime list.
   private filterAnimeList(): void {
     const filter = document.querySelector<HTMLSelectElement>('.filter__anime-table');
     if (filter === null) {
@@ -159,7 +157,7 @@ export default class Table {
           this.currentFiltering = AnimeType[type];
         }
       }
-      this.quantityAnime = await updateCountAnime(this.currentPage, this.currentSorting, this.currentFiltering);
+      this.quantityAnime = await countAnime(this.currentPage, this.currentSorting, this.currentFiltering);
       this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
       this.currentPage = FIRST_PAGE;
       updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);

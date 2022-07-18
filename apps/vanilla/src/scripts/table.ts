@@ -49,15 +49,12 @@ function renderAnime(anime: Anime): void {
 }
 
 /**
- * Update count anime.
+ * Returns the current number of anime.
  * @param currentPage Current Page.
- * @param currentSorting Current sorting.
- * @param currentFilter Current filter.
+ * @param ordering Current ordering.
+ * @param filtering Current filter.
  */
-export async function updateCountAnime(currentPage: number, currentSorting: Ordering, currentFilter?: AnimeType): Promise<number> {
-  const filtering = currentFilter;
-  const ordering = currentSorting;
-  const paginationConfig: PaginationConfig = { currentPage, ordering, filtering };
-  const animeData = await getAnimeData(paginationConfig);
-  return animeData.count;
+ export async function countAnime(currentPage: number, ordering: Ordering, filtering?: AnimeType): Promise<number> {
+  const { count } = await getAnimeData({ currentPage, ordering, filtering });
+  return count;
 }
