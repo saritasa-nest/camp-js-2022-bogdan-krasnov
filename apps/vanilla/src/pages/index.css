@@ -22,8 +22,8 @@
   width: 300px;
 }
 
-.sort,
-.filter {
+.sidebar__sort,
+.sidebar__filter {
   margin: 0 0 20px;
 }
 
