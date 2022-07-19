@@ -11,3 +11,5 @@ export const FIRST_PAGE = 1;
 export const PREV_PAGE = '<<';
 
 export const NEXT_PAGE = '>>';
+
+export const DATA_ATTRIBUTE_BUTTON_NAME = 'data-button-name';

@@ -1,3 +1,5 @@
+import { DATA_ATTRIBUTE_BUTTON_NAME } from "../core/constants/anime";
+
 /**
  * Create button in pagination.
  * @param dataText Text for innerText and data-attribute.
@@ -6,17 +8,17 @@
 export function createPaginationButton(dataText: string, disabled = false): HTMLButtonElement {
   const buttonPaginator = document.createElement('button');
   buttonPaginator.className = 'pagination__button';
-  buttonPaginator.setAttribute('data-text', dataText);
+  buttonPaginator.setAttribute(DATA_ATTRIBUTE_BUTTON_NAME, dataText);
   buttonPaginator.innerText = dataText;
   buttonPaginator.disabled = disabled;
   return buttonPaginator;
 }
 
 /**
- * Creating dynamic buttons in pagination.
+ * Create dynamic buttons in pagination.
  * @param currentPage Current page.
  * @param quantityPage Number of pages.
- * @returns Array with strings or numbers.
+ * @returns An array with strings or numbers that denote pagination buttons.
  */
 export function createDynamicPaginationButtons(currentPage: number,
   quantityPage: number): Array<string | number> {
