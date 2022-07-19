@@ -1,9 +1,10 @@
-import { PAGE_SIZE_DEFAULT } from './../core/constants/anime';
 import { Anime } from '@js-camp/core/models/anime';
 
 import { getAnimeData, PaginationConfig } from '../core/utils/api';
 import { checkNull } from '../core/utils/checkNull';
 import { formatDate } from '../core/utils/date';
+
+import { PAGE_SIZE_DEFAULT } from './../core/constants/anime';
 
 import { Ordering } from './../core/enums/table';
 

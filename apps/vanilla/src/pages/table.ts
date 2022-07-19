@@ -1,9 +1,11 @@
-import { DATA_ATTRIBUTE_BUTTON_NAME, NEXT_PAGE } from './../core/constants/anime';
+import { updateAnimeList } from '../scripts/table';
+
 import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT, PREV_PAGE } from '../core/constants/anime';
 import { checkNull } from '../core/utils/checkNull';
 
 import { createPaginationButton, createDynamicPaginationButtons } from '../scripts/pagination';
-import { updateAnimeList } from '../scripts/table';
+
+import { DATA_ATTRIBUTE_BUTTON_NAME, NEXT_PAGE } from './../core/constants/anime';
 
 import { Ordering } from './../core/enums/table';
 
@@ -16,13 +18,13 @@ export class Table {
   private currentPage: number;
 
   /** Page Quantity. */
-  readonly quantityPage: number;
+  private readonly quantityPage: number;
 
   /** Current sorting. */
   private currentSorting: Ordering;
 
   /** Quantity anime. */
-  readonly quantityAnime: number;
+  private readonly quantityAnime: number;
 
   public constructor(quantityAnime: number) {
     this.quantityAnime = quantityAnime;
@@ -34,7 +36,7 @@ export class Table {
     this.sortAnimeList();
   }
 
-/** Creates pagination buttons for anime table. */
+  /** Creates pagination buttons for anime table. */
   private setPagination(): void {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pagination');
     const pageNumber = document.querySelector<HTMLDivElement>('.page-number');

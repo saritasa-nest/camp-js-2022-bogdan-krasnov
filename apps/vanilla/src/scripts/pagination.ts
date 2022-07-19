@@ -1,4 +1,4 @@
-import { DATA_ATTRIBUTE_BUTTON_NAME } from "../core/constants/anime";
+import { DATA_ATTRIBUTE_BUTTON_NAME } from '../core/constants/anime';
 
 /**
  * Create button in pagination.
