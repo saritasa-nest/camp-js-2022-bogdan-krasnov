@@ -1,5 +1,5 @@
 /**
- * Converting data to string format DD-MM-YYYY.
+ * Converting date to string format DD-MM-YYYY.
  * @param date Date.
  */
 export function formatDate(date: Date | null): null | string {
