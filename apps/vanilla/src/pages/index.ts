@@ -7,7 +7,7 @@ window.addEventListener('DOMContentLoaded', () => {
   renderTableAnime();
 });
 
-// New table return.
+// Create a new table.
 async function renderTableAnime(): Promise<void> {
   const animeData = await getAnimeData({ currentPage: FIRST_PAGE });
   new Table(animeData.count);
