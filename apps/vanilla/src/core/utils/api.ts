@@ -9,7 +9,7 @@ import { Ordering } from '../enums/table';
 import { apiAnime } from './axiosInstance';
 
 /**
- * Parameters for getting anime from the database.
+ * Parameters for getting data from the database.
  * @param currentPage Current page.
  * @param ordering Ordering page.
  * @param limit Size page.
@@ -24,12 +24,14 @@ export interface PaginationConfig {
 
   /** Limit page. */
   readonly limit?: number;
+
+
 }
 
 const configDefault = {
-  currentPage: FIRST_PAGE,
-  ordering: Ordering.None,
-  limit: PAGE_SIZE_DEFAULT,
+  currentPageDefault: FIRST_PAGE,
+  orderingDefault: Ordering.None,
+  limitDefault: PAGE_SIZE_DEFAULT,
 };
 
 /**
@@ -37,11 +39,8 @@ const configDefault = {
  * @param paginationConfig Parameters for getting anime from the database.
  */
 export async function getAnimeData(paginationConfig: PaginationConfig): Promise<Pagination<Anime>> {
-  const {
-    currentPage = configDefault.currentPage,
-    ordering = configDefault.ordering,
-    limit = configDefault.limit,
-  } = paginationConfig;
+  const { currentPageDefault, orderingDefault, limitDefault } = configDefault;
+  const { currentPage = currentPageDefault, ordering = orderingDefault, limit = limitDefault } = paginationConfig;
   const offset = (currentPage - 1) * limit;
 
   const queryParams = new URLSearchParams([]);
