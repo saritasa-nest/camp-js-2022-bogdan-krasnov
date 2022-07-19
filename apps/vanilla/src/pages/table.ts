@@ -9,9 +9,7 @@ import { DATA_ATTRIBUTE_BUTTON_NAME, NEXT_PAGE } from './../core/constants/anime
 
 import { Ordering } from './../core/enums/table';
 
-/**
- * Table anime class.
- */
+/** Table anime class. */
 export class Table {
 
   /** Current Page. */
@@ -99,9 +97,7 @@ export class Table {
     this.setPagination();
   }
 
-  /**
-   * Sort function anime.
-   */
+  /** Sort function anime. */
   private sortAnimeList(): void {
     const sort = document.querySelector<HTMLSelectElement>('.sort-anime-table');
     checkNull(sort);
