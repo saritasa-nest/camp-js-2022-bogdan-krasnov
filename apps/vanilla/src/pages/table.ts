@@ -1,6 +1,6 @@
-import { NEXT_PAGE } from './../core/constants/anime';
+import { DATA_ATTRIBUTE_BUTTON_NAME, NEXT_PAGE } from './../core/constants/anime';
 import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT, PREV_PAGE } from '../core/constants/anime';
-import { checkNullUndefined } from '../core/utils/checkNullUndefined';
+import { checkNull } from '../core/utils/checkNull';
 
 import { createPaginationButton, createDynamicPaginationButtons } from '../scripts/pagination';
 import { updateAnimeList } from '../scripts/table';
@@ -38,8 +38,8 @@ export class Table {
   private setPagination(): void {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pagination');
     const pageNumber = document.querySelector<HTMLDivElement>('.page-number');
-    checkNullUndefined(paginationButtons);
-    checkNullUndefined(pageNumber);
+    checkNull(paginationButtons);
+    checkNull(pageNumber);
     pageNumber.innerHTML = `Page ${this.currentPage}`;
     paginationButtons.innerHTML = ``;
 
@@ -79,11 +79,11 @@ export class Table {
   }
 
   /**
-   * Checks what the current page is equal to.
+   * Updates pagination and anime list with new values.
    * @param pageButton Button in pagination.
    */
   private updatePagination(pageButton: HTMLButtonElement): void {
-    const pageValue = pageButton.getAttribute('data-text');
+    const pageValue = pageButton.getAttribute(DATA_ATTRIBUTE_BUTTON_NAME);
     if (pageValue === NEXT_PAGE && this.currentPage < this.quantityPage) {
       this.currentPage++;
     }
@@ -102,7 +102,7 @@ export class Table {
    */
   private sortAnimeList(): void {
     const sort = document.querySelector<HTMLSelectElement>('.sort-anime-table');
-    checkNullUndefined(sort);
+    checkNull(sort);
     sort.addEventListener('change', (event: Event) => {
       const target = event.target as HTMLSelectElement;
       const order = target.value;

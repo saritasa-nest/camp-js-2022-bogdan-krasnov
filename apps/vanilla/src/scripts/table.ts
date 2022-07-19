@@ -1,7 +1,8 @@
+import { PAGE_SIZE_DEFAULT } from './../core/constants/anime';
 import { Anime } from '@js-camp/core/models/anime';
 
 import { getAnimeData, PaginationConfig } from '../core/utils/api';
-import { checkNullUndefined } from '../core/utils/checkNullUndefined';
+import { checkNull } from '../core/utils/checkNull';
 import { formatDate } from '../core/utils/date';
 
 import { Ordering } from './../core/enums/table';
@@ -15,11 +16,11 @@ export async function updateAnimeList(currentPage: number, currentOrdering: Orde
   const ordering = currentOrdering;
   const paginationConfig: PaginationConfig = { currentPage, ordering };
   const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
-  checkNullUndefined(tbody);
+  checkNull(tbody);
   tbody.innerHTML = '';
   const animeData = await getAnimeData(paginationConfig);
   animeData.results.forEach(anime => {
-    if (tbody.childElementCount < 5) {
+    if (tbody.childElementCount < PAGE_SIZE_DEFAULT) {
       renderAnime(anime);
     }
   });
@@ -30,12 +31,12 @@ export async function updateAnimeList(currentPage: number, currentOrdering: Orde
  * @param anime Anime object.
  */
 function renderAnime(anime: Anime): void {
-  const { titleEnglish, titleJapanese, status, image, type, airedStart } = anime;
+  const { titleEnglish, titleJapanese, status, imageSrc, type, airedStart } = anime;
   const tableBody = document.querySelector<HTMLTableElement>('.table-anime__body');
-  checkNullUndefined(tableBody);
+  checkNull(tableBody);
   tableBody.innerHTML += `
   <tr>
-    <td><img src="${image}" class="image-anime" alt="Anime image"></td>
+    <td><img src="${imageSrc}" class="image-anime" alt="Anime image"></td>
     <td class="table-anime__td-anime">${titleEnglish === '' ? 'NO NAME' : titleEnglish}</td>
     <td class="table-anime__td-anime">${titleJapanese === '' ? 'NO NAME' : titleJapanese}</td>
     <td class="table-anime__td-anime">${status}</td>
