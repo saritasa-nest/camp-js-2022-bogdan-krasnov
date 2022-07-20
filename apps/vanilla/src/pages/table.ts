@@ -1,4 +1,6 @@
-import { updateAnimeList } from '../scripts/table';
+import { AnimeType } from '@js-camp/core/utils/enums/table';
+
+import { countAnime, updateAnimeList } from '../scripts/table';
 
 import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT, PREV_PAGE } from '../core/constants/anime';
 import { checkNull } from '../core/utils/checkNull';
@@ -16,22 +18,28 @@ export class Table {
   private currentPage: number;
 
   /** Page Quantity. */
-  private readonly quantityPage: number;
+  private quantityPage: number;
 
   /** Current sorting. */
   private currentSorting: Ordering;
 
   /** Quantity anime. */
-  private readonly quantityAnime: number;
+  private quantityAnime: number;
+
+  /** Current anime. */
+  private currentFiltering: AnimeType;
 
   public constructor(quantityAnime: number) {
     this.quantityAnime = quantityAnime;
     this.currentPage = CURRENT_PAGE_DEFAULT;
     this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
+    this.currentFiltering = AnimeType.None;
+    this.currentPage = CURRENT_PAGE_DEFAULT;
     this.currentSorting = ORDERING_DEFAULT;
-    updateAnimeList(this.currentPage, this.currentSorting);
-    this.setPagination();
+    updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);
+    this.filterAnimeList();
     this.sortAnimeList();
+    this.setPagination();
   }
 
   /** Creates pagination buttons for anime table. */
@@ -51,7 +59,6 @@ export class Table {
     nextButton.addEventListener('click', () => {
       this.updatePagination(nextButton);
     });
-
     if (this.currentPage === FIRST_PAGE) {
       prevButton.disabled = true;
     }
@@ -93,13 +100,13 @@ export class Table {
     if (!isNaN(Number(pageValue))) {
       this.currentPage = Number(pageValue);
     }
-    updateAnimeList(this.currentPage, this.currentSorting);
+    updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);
     this.setPagination();
   }
 
   /** Sort function anime. */
   private sortAnimeList(): void {
-    const sort = document.querySelector<HTMLSelectElement>('.sort-anime-table');
+    const sort = document.querySelector<HTMLSelectElement>('.sort__anime-table');
     checkNull(sort);
     for (const type in Ordering) {
       const option = document.createElement('option');
@@ -115,7 +122,35 @@ export class Table {
           this.currentSorting = Ordering[order];
         }
     }
-    updateAnimeList(this.currentPage, this.currentSorting);
+    updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);
   });
+  }
+
+  /** Filter anime list. */
+  private filterAnimeList(): void {
+    const filter = document.querySelector<HTMLSelectElement>('.filter__anime-table');
+    if (filter === null) {
+      throw new Error('no filter');
+    }
+    for (const type in AnimeType) {
+      const option = document.createElement('option');
+      option.innerText = type;
+      option.value = type;
+      filter.appendChild(option);
+    }
+    filter.addEventListener('change', async(event: Event) => {
+      const target = event.target as HTMLSelectElement;
+      const animeType = target.value;
+      for (const type in AnimeType) {
+        if (animeType === type) {
+          this.currentFiltering = AnimeType[type];
+        }
+      }
+      this.quantityAnime = await countAnime(this.currentPage, this.currentSorting, this.currentFiltering);
+      this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
+      this.currentPage = FIRST_PAGE;
+      updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);
+      this.setPagination();
+    });
   }
 }

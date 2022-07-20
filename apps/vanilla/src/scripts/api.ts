@@ -1,3 +1,4 @@
+import { AnimeType } from '@js-camp/core/utils/enums/table';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { Anime } from '@js-camp/core/models/anime';
 import { Pagination } from '@js-camp/core/models/pagination';
@@ -23,6 +24,9 @@ interface PaginationConfig {
 
   /** Limit page. */
   readonly limit?: number;
+
+  /** Filtering page. */
+  readonly filtering?: AnimeType;
 }
 
 /**
@@ -43,6 +47,7 @@ const configDefault = {
   currentPageDefault: CURRENT_PAGE_DEFAULT,
   orderingDefault: Ordering.None,
   limitDefault: PAGE_SIZE_DEFAULT,
+  filteringDefault: AnimeType.None,
 };
 
 /**
@@ -50,8 +55,8 @@ const configDefault = {
  * @param animeSearchParams Parameters for getting anime from the database.
  */
 export async function getAnimeData(animeSearchParams: AnimeSearchParams): Promise<Pagination<Anime>> {
-  const { currentPageDefault, orderingDefault, limitDefault } = configDefault;
-  const { currentPage = currentPageDefault, limit = limitDefault } = animeSearchParams.pagination;
+  const { currentPageDefault, orderingDefault, limitDefault, filteringDefault } = configDefault;
+  const { currentPage = currentPageDefault, limit = limitDefault, filtering = filteringDefault } = animeSearchParams.pagination;
   const { ordering = orderingDefault } = animeSearchParams;
 
   const offset = (currentPage - 1) * limit;
@@ -60,6 +65,7 @@ export async function getAnimeData(animeSearchParams: AnimeSearchParams): Promis
   queryParams.append('limit', String(limit));
   queryParams.append('offset', String(offset));
   queryParams.append('ordering', `${ordering},id`);
+  queryParams.append('type', `${filtering}`);
 
   const urlAnime = queryParams.toString();
   const response = await apiAnime.get<PaginationDto<AnimeDto>>(

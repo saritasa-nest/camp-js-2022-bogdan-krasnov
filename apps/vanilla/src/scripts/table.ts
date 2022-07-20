@@ -1,3 +1,4 @@
+import { AnimeType } from '@js-camp/core/utils/enums/table';
 import { Anime } from '@js-camp/core/models/anime';
 
 import { getAnimeData, AnimeSearchParams } from '../scripts/api';
@@ -11,11 +12,11 @@ import { Ordering } from './../core/enums/table';
 /**
  * Refresh current page.
  * @param currentPage Current Page.
- * @param currentOrdering Current ordering.
+ * @param ordering Current ordering.
+ * @param filtering Current filter.
  */
-export async function updateAnimeList(currentPage: number, currentOrdering: Ordering): Promise<void> {
-  const ordering = currentOrdering;
-  const paginationConfig: AnimeSearchParams = { ordering, pagination: { currentPage } };
+export async function updateAnimeList(currentPage: number, ordering: Ordering, filtering?: AnimeType): Promise<void> {
+  const paginationConfig: AnimeSearchParams = { ordering, pagination: { currentPage, filtering } };
   const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
   checkNull(tbody);
   tbody.innerHTML = '';
@@ -45,4 +46,15 @@ function renderAnime(anime: Anime): void {
     <td class="table-anime__cell">${airedStart == null ? 'NO AIRED START' : formatDate(airedStart)}</td>
   </tr>
   `;
+}
+
+/**
+ * Returns the current number of anime.
+ * @param currentPage Current Page.
+ * @param ordering Current ordering.
+ * @param filtering Current filter.
+ */
+export async function countAnime(currentPage: number, ordering: Ordering, filtering?: AnimeType): Promise<number> {
+  const { count } = await getAnimeData({ ordering, pagination: { currentPage, filtering } });
+  return count;
 }
