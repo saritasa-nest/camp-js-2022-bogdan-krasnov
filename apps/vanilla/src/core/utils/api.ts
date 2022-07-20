@@ -12,9 +12,8 @@ import { Ordering } from '../enums/table';
 import { apiAnime } from './axiosInstance';
 
 /**
- * Parameters for getting data from the database.
+ * Pagination parameters.
  * @param currentPage Current page.
- * @param ordering Ordering page.
  * @param limit Size page.
  */
 interface PaginationConfig {
@@ -23,10 +22,15 @@ interface PaginationConfig {
   readonly currentPage: number;
 
   /** Limit page. */
-  readonly limit: number;
+  readonly limit?: number;
 }
 
-interface AnimeSearchParams {
+/**
+ * Parameters for getting data from the database.
+ * @param ordering Current ordering for the page.
+ * @param pagination Pagination parameters.
+ */
+export interface AnimeSearchParams {
 
   /** Ordering page. */
   readonly ordering?: Ordering;
@@ -47,11 +51,13 @@ const configDefault = {
  */
 export async function getAnimeData(animeSearchParams: AnimeSearchParams): Promise<Pagination<Anime>> {
   const { currentPageDefault, orderingDefault, limitDefault } = configDefault;
-  const { ordering = orderingDefault, pagination = { currentPage: currentPageDefault, limit: limitDefault } } = animeSearchParams;
-  const offset = (pagination.currentPage - 1) * pagination.limit;
+  const { currentPage = currentPageDefault, limit = limitDefault } = animeSearchParams.pagination;
+  const { ordering = orderingDefault } = animeSearchParams;
+
+  const offset = (currentPage - 1) * limit;
 
   const queryParams = new URLSearchParams([]);
-  queryParams.append('limit', String(pagination.limit));
+  queryParams.append('limit', String(limit));
   queryParams.append('offset', String(offset));
   queryParams.append('ordering', `${ordering},id`);
 

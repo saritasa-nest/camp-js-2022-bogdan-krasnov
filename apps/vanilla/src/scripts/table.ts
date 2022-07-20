@@ -1,6 +1,6 @@
 import { Anime } from '@js-camp/core/models/anime';
 
-import { getAnimeData, PaginationConfig } from '../core/utils/api';
+import { getAnimeData, AnimeSearchParams } from '../core/utils/api';
 import { checkNull } from '../core/utils/checkNull';
 import { formatDate } from '../core/utils/date';
 
@@ -15,7 +15,7 @@ import { Ordering } from './../core/enums/table';
  */
 export async function updateAnimeList(currentPage: number, currentOrdering: Ordering): Promise<void> {
   const ordering = currentOrdering;
-  const paginationConfig: PaginationConfig = { currentPage, ordering };
+  const paginationConfig: AnimeSearchParams = { ordering, pagination: { currentPage } };
   const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
   checkNull(tbody);
   tbody.innerHTML = '';

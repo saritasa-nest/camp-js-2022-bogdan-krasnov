@@ -9,6 +9,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 /** New table return. */
 async function renderTableAnime(): Promise<Table> {
-  const animeData = await getAnimeData({ currentPage: FIRST_PAGE });
+  const animeData = await getAnimeData({ pagination: { currentPage: FIRST_PAGE } });
   return new Table(animeData.count);
 }
