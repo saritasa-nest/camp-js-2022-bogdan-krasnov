@@ -5,11 +5,11 @@ import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { AnimeDto } from '@js-camp/core/dtos/anime.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 
-import { CURRENT_PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../constants/anime';
+import { CURRENT_PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../core/constants/anime';
 
-import { Ordering } from '../enums/table';
+import { Ordering } from '../core/enums/table';
 
-import { apiAnime } from './axiosInstance';
+import { apiAnime } from '../core/utils/axiosInstance';
 
 /**
  * Pagination parameters.

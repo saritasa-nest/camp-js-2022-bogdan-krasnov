@@ -1,6 +1,6 @@
 import { Anime } from '@js-camp/core/models/anime';
 
-import { getAnimeData, AnimeSearchParams } from '../core/utils/api';
+import { getAnimeData, AnimeSearchParams } from '../scripts/api';
 import { checkNull } from '../core/utils/checkNull';
 import { formatDate } from '../core/utils/date';
 

@@ -1,5 +1,5 @@
 import { FIRST_PAGE } from '../core/constants/anime';
-import { getAnimeData } from '../core/utils/api';
+import { getAnimeData } from '../scripts/api';
 
 import { Table } from './table';
 
