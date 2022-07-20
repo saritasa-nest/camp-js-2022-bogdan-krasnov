@@ -38,11 +38,11 @@ function renderAnime(anime: Anime): void {
   tableBody.innerHTML += `
   <tr>
     <td><img src="${imageSrc}" class="image-anime"></td>
-    <td class="table-anime__td-anime">${titleEnglish === '' ? 'NO NAME' : titleEnglish}</td>
-    <td class="table-anime__td-anime">${titleJapanese === '' ? 'NO NAME' : titleJapanese}</td>
-    <td class="table-anime__td-anime">${status}</td>
-    <td class="table-anime__td-anime">${type}</td>
-    <td class="table-anime__td-anime">${formatDate(airedStart)}</td>
+    <td class="table-anime__cell">${titleEnglish == null ? 'NO NAME' : titleEnglish}</td>
+    <td class="table-anime__cell">${titleJapanese == null ? 'NO NAME' : titleJapanese}</td>
+    <td class="table-anime__cell">${status}</td>
+    <td class="table-anime__cell">${type}</td>
+    <td class="table-anime__cell">${airedStart == null ? 'NO AIRED START' : formatDate(airedStart)}</td>
   </tr>
   `;
 }
