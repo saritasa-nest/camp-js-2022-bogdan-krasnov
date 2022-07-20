@@ -1,3 +1,5 @@
+import { AnimeStatus, AnimeType } from '../utils/enums/table';
+
 import { AnimeDto } from '../dtos/anime.dto';
 import { Anime } from '../models/anime';
 
@@ -10,15 +12,13 @@ export namespace AnimeMapper {
   export function fromDto(dto: AnimeDto): Anime {
     return new Anime({
       id: dto.id,
-      image: dto.image,
+      imageSrc: dto.image,
       titleEnglish: dto.title_eng,
       titleJapanese: dto.title_jpn,
-
-      // I don't know yet how to solve it so that there is an assignment between different types.
-      type: dto.type,
-      status: dto.status,
-      airedStart: new Date(dto.aired.start),
-      airedEnd: new Date(dto.aired.end),
+      type: Object.values(AnimeType).includes(dto.type as AnimeType) ? dto.type as AnimeType : AnimeType.None,
+      status: Object.values(AnimeStatus).includes(dto.type as AnimeStatus) ? dto.type as AnimeStatus : AnimeStatus.NotYetAired,
+      airedStart: dto.aired.start === null ? null : new Date(dto.aired.start),
+      airedEnd: dto.aired.end === null ? null : new Date(dto.aired.end),
     });
   }
 }

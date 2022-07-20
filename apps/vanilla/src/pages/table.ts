@@ -1,16 +1,18 @@
-import { AnimeType } from '@js-camp/core//utils/enums/table';
+import { AnimeType } from '@js-camp/core/utils/enums/table';
 
-import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT } from '../core/constants/anime';
+import { countAnime, updateAnimeList } from '../scripts/table';
 
-import { creatingPaginationButton, creatingDynamicPaginationButtons } from '../scripts/pagination';
-import { updateAnimeList, countAnime } from '../scripts/table';
+import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT, PREV_PAGE } from '../core/constants/anime';
+import { checkNull } from '../core/utils/checkNull';
+
+import { createPaginationButton, createDynamicPaginationButtons } from '../scripts/pagination';
+
+import { DATA_ATTRIBUTE_BUTTON_NAME, NEXT_PAGE } from './../core/constants/anime';
 
 import { Ordering } from './../core/enums/table';
 
-/**
- * Table anime class.
- */
-export default class Table {
+/** Table anime class. */
+export class Table {
 
   /** Current Page. */
   private currentPage: number;
@@ -29,34 +31,31 @@ export default class Table {
 
   public constructor(quantityAnime: number) {
     this.quantityAnime = quantityAnime;
+    this.currentPage = CURRENT_PAGE_DEFAULT;
     this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
     this.currentFiltering = AnimeType.None;
     this.currentPage = CURRENT_PAGE_DEFAULT;
     this.currentSorting = ORDERING_DEFAULT;
     updateAnimeList(this.currentPage, this.currentSorting, this.currentFiltering);
     this.filterAnimeList();
-    this.setPagination();
     this.sortAnimeList();
+    this.setPagination();
   }
 
-  /**
-   * The setPagination function, which creates a pagination of anime pages.
-   */
+  /** Creates pagination buttons for anime table. */
   private setPagination(): void {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pagination');
     const pageNumber = document.querySelector<HTMLDivElement>('.page-number');
-
-    if (paginationButtons === null || pageNumber === null) {
-      throw new Error('error');
-    }
+    checkNull(paginationButtons);
+    checkNull(pageNumber);
     pageNumber.innerHTML = `Page ${this.currentPage}`;
     paginationButtons.innerHTML = ``;
 
-    const prevButton = creatingPaginationButton('<<');
+    const prevButton = createPaginationButton(PREV_PAGE);
     prevButton.addEventListener('click', () => {
       this.updatePagination(prevButton);
     });
-    const nextButton = creatingPaginationButton('>>');
+    const nextButton = createPaginationButton(NEXT_PAGE);
     nextButton.addEventListener('click', () => {
       this.updatePagination(nextButton);
     });
@@ -68,9 +67,9 @@ export default class Table {
     }
 
     paginationButtons.append(prevButton);
-    creatingDynamicPaginationButtons(this.currentPage, this.quantityPage).forEach(page => {
+    createDynamicPaginationButtons(this.currentPage, this.quantityPage).forEach(page => {
       if (page !== '...') {
-        const buttonDynamic = creatingPaginationButton(String(page));
+        const buttonDynamic = createPaginationButton(String(page));
         buttonDynamic.addEventListener('click', () => {
           this.updatePagination(buttonDynamic);
         });
@@ -79,7 +78,7 @@ export default class Table {
         }
         paginationButtons.append(buttonDynamic);
       } else {
-        const buttonPoints = creatingPaginationButton(page, true);
+        const buttonPoints = createPaginationButton(page, true);
         paginationButtons.append(buttonPoints);
       }
     });
@@ -87,18 +86,15 @@ export default class Table {
   }
 
   /**
-   * Checks what the current page is equal to.
+   * Updates pagination and anime list with new values.
    * @param pageButton Button in pagination.
    */
   private updatePagination(pageButton: HTMLButtonElement): void {
-    const pageValue = pageButton.getAttribute('data-text');
-    if (this.currentPage === undefined) {
-      throw new Error('no currentPage');
-    }
-    if (pageValue === '>>' && this.currentPage < this.quantityPage) {
+    const pageValue = pageButton.getAttribute(DATA_ATTRIBUTE_BUTTON_NAME);
+    if (pageValue === NEXT_PAGE && this.currentPage < this.quantityPage) {
       this.currentPage++;
     }
-    if (pageValue === '<<' && this.currentPage > FIRST_PAGE) {
+    if (pageValue === PREV_PAGE && this.currentPage > FIRST_PAGE) {
       this.currentPage--;
     }
     if (!isNaN(Number(pageValue))) {
@@ -108,9 +104,7 @@ export default class Table {
     this.setPagination();
   }
 
-  /**
-   * Sort function anime.
-   */
+  /** Sort function anime. */
   private sortAnimeList(): void {
     const sort = document.querySelector<HTMLSelectElement>('.sort__anime-table');
     if (sort === null) {
@@ -141,7 +135,7 @@ export default class Table {
   private filterAnimeList(): void {
     const filter = document.querySelector<HTMLSelectElement>('.filter__anime-table');
     if (filter === null) {
-      throw new Error('no table');
+      throw new Error('no filter');
     }
     for (const type in AnimeType) {
       const option = document.createElement('option');

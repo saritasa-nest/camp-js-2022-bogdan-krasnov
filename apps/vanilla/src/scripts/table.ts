@@ -2,48 +2,48 @@ import { AnimeType } from '@js-camp/core/utils/enums/table';
 import { Anime } from '@js-camp/core/models/anime';
 
 import { getAnimeData, PaginationConfig } from '../core/utils/api';
+import { checkNull } from '../core/utils/checkNull';
 import { formatDate } from '../core/utils/date';
+
+import { PAGE_SIZE_DEFAULT } from './../core/constants/anime';
 
 import { Ordering } from './../core/enums/table';
 
 /**
  * Refresh current page.
  * @param currentPage Current Page.
- * @param currentSorting Current sorting.
- * @param currentFilter Current filter.
+ * @param ordering Current ordering.
+ * @param filtering Current filter.
  */
-export async function updateAnimeList(currentPage: number, currentSorting: Ordering, currentFilter?: AnimeType): Promise<void> {
-  const filtering = currentFilter;
-  const ordering = currentSorting;
+export async function updateAnimeList(currentPage: number, ordering: Ordering, filtering?: AnimeType): Promise<void> {
   const paginationConfig: PaginationConfig = { currentPage, ordering, filtering };
   const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
-  if (tbody === null) {
-    throw new Error('No table');
-  }
+  checkNull(tbody);
   tbody.innerHTML = '';
-
   const animeData = await getAnimeData(paginationConfig);
-  animeData.results.forEach(anime => renderAnime(anime));
+  animeData.results.forEach(anime => {
+    if (tbody.childElementCount < PAGE_SIZE_DEFAULT) {
+      renderAnime(anime);
+    }
+  });
 }
 
 /**
- * Rendering of one anime.
+ * Render single anime.
  * @param anime Anime object.
  */
 function renderAnime(anime: Anime): void {
-  const { titleEnglish, titleJapanese, status, image, type, airedStart } = anime;
-  const table = document.querySelector<HTMLTableElement>('.table-anime__body');
-  if (table === null) {
-    throw new Error('no table');
-  }
-  table.innerHTML += `
+  const { titleEnglish, titleJapanese, status, imageSrc, type, airedStart } = anime;
+  const tableBody = document.querySelector<HTMLTableElement>('.table-anime__body');
+  checkNull(tableBody);
+  tableBody.innerHTML += `
   <tr>
-    <td class="imageAnime"><img src="${image}" alt="Anime image"></td>
-    <td>${titleEnglish === '' ? 'NO NAME' : titleEnglish}</td>
-    <td>${titleJapanese === '' ? 'NO NAME' : titleJapanese}</td>
-    <td>${status}</td>
-    <td>${type}</td>
-    <td>${formatDate(airedStart)}</td>
+    <td><img src="${imageSrc}" class="image-anime"></td>
+    <td class="table-anime__td-anime">${titleEnglish === '' ? 'NO NAME' : titleEnglish}</td>
+    <td class="table-anime__td-anime">${titleJapanese === '' ? 'NO NAME' : titleJapanese}</td>
+    <td class="table-anime__td-anime">${status}</td>
+    <td class="table-anime__td-anime">${type}</td>
+    <td class="table-anime__td-anime">${formatDate(airedStart)}</td>
   </tr>
   `;
 }
