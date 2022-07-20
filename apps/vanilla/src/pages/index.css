@@ -44,8 +44,8 @@
   width: 100%;
 }
 
-.table-anime__thead-anime,
-.table-anime__td-anime {
+.table-anime__top-row,
+.table-anime__cell {
   text-align: center;
   border: 1px solid var(--primary-dark-contrast-color);
   width: 200px;

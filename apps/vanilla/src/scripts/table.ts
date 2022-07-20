@@ -1,7 +1,7 @@
 import { AnimeType } from '@js-camp/core/utils/enums/table';
 import { Anime } from '@js-camp/core/models/anime';
 
-import { getAnimeData, PaginationConfig } from '../core/utils/api';
+import { getAnimeData, AnimeSearchParams } from '../scripts/api';
 import { checkNull } from '../core/utils/checkNull';
 import { formatDate } from '../core/utils/date';
 
@@ -16,7 +16,7 @@ import { Ordering } from './../core/enums/table';
  * @param filtering Current filter.
  */
 export async function updateAnimeList(currentPage: number, ordering: Ordering, filtering?: AnimeType): Promise<void> {
-  const paginationConfig: PaginationConfig = { currentPage, ordering, filtering };
+  const paginationConfig: AnimeSearchParams = { ordering, pagination: { currentPage, filtering } };
   const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
   checkNull(tbody);
   tbody.innerHTML = '';
@@ -39,11 +39,11 @@ function renderAnime(anime: Anime): void {
   tableBody.innerHTML += `
   <tr>
     <td><img src="${imageSrc}" class="image-anime"></td>
-    <td class="table-anime__td-anime">${titleEnglish === '' ? 'NO NAME' : titleEnglish}</td>
-    <td class="table-anime__td-anime">${titleJapanese === '' ? 'NO NAME' : titleJapanese}</td>
-    <td class="table-anime__td-anime">${status}</td>
-    <td class="table-anime__td-anime">${type}</td>
-    <td class="table-anime__td-anime">${formatDate(airedStart)}</td>
+    <td class="table-anime__cell">${titleEnglish == null ? 'NO NAME' : titleEnglish}</td>
+    <td class="table-anime__cell">${titleJapanese == null ? 'NO NAME' : titleJapanese}</td>
+    <td class="table-anime__cell">${status}</td>
+    <td class="table-anime__cell">${type}</td>
+    <td class="table-anime__cell">${airedStart == null ? 'NO AIRED START' : formatDate(airedStart)}</td>
   </tr>
   `;
 }
@@ -55,6 +55,6 @@ function renderAnime(anime: Anime): void {
  * @param filtering Current filter.
  */
 export async function countAnime(currentPage: number, ordering: Ordering, filtering?: AnimeType): Promise<number> {
-  const { count } = await getAnimeData({ currentPage, ordering, filtering });
+  const { count } = await getAnimeData({ ordering, pagination: { currentPage, filtering } });
   return count;
 }

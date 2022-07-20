@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-/** Prepared data for axios. */
+/** Pre-configured axios instance. */
 export const apiAnime =
  axios.create({
    baseURL: import.meta.env.VITE_API_BASE,

@@ -3,14 +3,14 @@ import { DATA_ATTRIBUTE_BUTTON_NAME } from '../core/constants/anime';
 /**
  * Create button in pagination.
  * @param dataText Text for innerText and data-attribute.
- * @param disabled Disabled button.
+ * @param isDisabled Disabled button.
  */
-export function createPaginationButton(dataText: string, disabled = false): HTMLButtonElement {
+export function createPaginationButton(dataText: string, isDisabled = false): HTMLButtonElement {
   const buttonPaginator = document.createElement('button');
   buttonPaginator.className = 'pagination__button';
   buttonPaginator.setAttribute(DATA_ATTRIBUTE_BUTTON_NAME, dataText);
   buttonPaginator.innerText = dataText;
-  buttonPaginator.disabled = disabled;
+  buttonPaginator.disabled = isDisabled;
   return buttonPaginator;
 }
 
