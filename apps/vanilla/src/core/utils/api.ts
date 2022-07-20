@@ -26,7 +26,7 @@ export interface PaginationConfig {
   readonly currentPage: number;
 
   /** Current page. */
-  readonly ordering?: Ordering;
+  readonly currentOrdering?: Ordering;
 
   /** Limit page. */
   readonly limit?: number;
@@ -49,12 +49,12 @@ const configDefault = {
 export async function getAnimeData(paginationConfig: PaginationConfig): Promise<Pagination<Anime>> {
   const {
     currentPage = configDefault.currentPage,
-    ordering = configDefault.ordering,
+    currentOrdering = configDefault.ordering,
     limit = configDefault.limit,
     filtering = '',
   } = paginationConfig;
   const offset = (currentPage - 1) * limit;
-  const urlAnime = `limit=${limit}&offset=${offset}&ordering=${ordering.concat(',')}id&type=${filtering}`;
+  const urlAnime = `limit=${limit}&offset=${offset}&ordering=${currentOrdering.concat(',')}id&type=${filtering}`;
   const response = await apiAnime.get<PaginationDto<AnimeDto>>(
     `/anime/anime/?${urlAnime}`,
   );
