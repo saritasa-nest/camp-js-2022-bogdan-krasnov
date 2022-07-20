@@ -12,7 +12,7 @@ export namespace AnimeMapper {
   export function fromDto(dto: AnimeDto): Anime {
     return new Anime({
       id: dto.id,
-      image: dto.image,
+      imageSrc: dto.image,
       titleEnglish: dto.title_eng,
       titleJapanese: dto.title_jpn,
       type: Object.values(AnimeType).includes(dto.type as AnimeType) ? dto.type as AnimeType : AnimeType.None,

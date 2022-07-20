@@ -1,27 +1,30 @@
 import { isInputElement } from '@js-camp/core/utils/guards/element.guard';
 
-import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT, DEFAULT_SEARCH_QUERY } from '../core/constants/anime';
-import { createPaginationButton, createDynamicPaginationButtons } from '../scripts/pagination';
 import { updateAnimeList } from '../scripts/table';
+import { checkNull } from '../core/utils/checkNull';
+import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT, DEFAULT_SEARCH_QUERY, PREV_PAGE } from '../core/constants/anime';
+import { createPaginationButton, createDynamicPaginationButtons } from '../scripts/pagination';
+
+import { DATA_ATTRIBUTE_BUTTON_NAME, NEXT_PAGE } from './../core/constants/anime';
 
 import { Ordering } from './../core/enums/table';
 
 const INPUT_CLASS = 'input-search';
 
 /** Table anime class. */
-export default class Table {
+export class Table {
 
   /** Current Page. */
   private currentPage = CURRENT_PAGE_DEFAULT;
 
   /** Page Quantity. */
-  private quantityPage: number;
+  private readonly quantityPage: number;
 
   /** Current sorting. */
   private currentSorting = ORDERING_DEFAULT;
 
   /** Quantity anime. */
-  private quantityAnime: number;
+  private readonly quantityAnime: number;
 
   /** Search query. */
   private search = DEFAULT_SEARCH_QUERY;
@@ -37,24 +40,20 @@ export default class Table {
     this.initAnimeSearch();
   }
 
-  /** The setPagination function, which creates a pagination of anime pages. */
+  /** Creates pagination buttons for anime table. */
   private setPagination(): void {
     const paginationButtons = document.querySelector<HTMLDivElement>('.pagination');
     const pageNumber = document.querySelector<HTMLDivElement>('.page-number');
-
-    if (paginationButtons === null || pageNumber === null) {
-      throw new Error('error');
-    }
-
+    checkNull(paginationButtons);
+    checkNull(pageNumber);
     pageNumber.innerHTML = `Page ${this.currentPage}`;
     paginationButtons.innerHTML = ``;
 
-    const prevButton = createPaginationButton('<<');
+    const prevButton = createPaginationButton(PREV_PAGE);
     prevButton.addEventListener('click', () => {
       this.updatePagination(prevButton);
     });
-
-    const nextButton = createPaginationButton('>>');
+    const nextButton = createPaginationButton(NEXT_PAGE);
     nextButton.addEventListener('click', () => {
       this.updatePagination(nextButton);
     });
@@ -90,19 +89,15 @@ export default class Table {
   }
 
   /**
-   * Checks what the current page is equal to.
+   * Updates pagination and anime list with new values.
    * @param pageButton Button in pagination.
    */
   private updatePagination(pageButton: HTMLButtonElement): void {
-    const pageValue = pageButton.getAttribute('data-text');
-
-    if (this.currentPage === undefined) {
-      throw new Error('no currentPage');
-    }
-    if (pageValue === '>>' && this.currentPage < this.quantityPage) {
+    const pageValue = pageButton.getAttribute(DATA_ATTRIBUTE_BUTTON_NAME);
+    if (pageValue === NEXT_PAGE && this.currentPage < this.quantityPage) {
       this.currentPage++;
     }
-    if (pageValue === '<<' && this.currentPage > FIRST_PAGE) {
+    if (pageValue === PREV_PAGE && this.currentPage > FIRST_PAGE) {
       this.currentPage--;
     }
     if (!isNaN(Number(pageValue))) {
@@ -117,27 +112,21 @@ export default class Table {
   /** Sort function anime. */
   private sortAnimeList(): void {
     const sort = document.querySelector<HTMLSelectElement>('.sort-anime-table');
-    if (sort === null) {
-      throw new Error('no table');
+    checkNull(sort);
+    for (const type in Ordering) {
+      const option = document.createElement('option');
+      option.innerText = type;
+      option.value = type;
+      sort.appendChild(option);
     }
     sort.addEventListener('change', (event: Event) => {
       const target = event.target as HTMLSelectElement;
-      const order = target.value;
-      switch (order) {
-        case Ordering.TitleEng:
-          this.currentSorting = Ordering.TitleEng;
-          break;
-        case Ordering.Status:
-          this.currentSorting = Ordering.Status;
-          break;
-        case Ordering.Aired:
-          this.currentSorting = Ordering.Aired;
-          break;
-        default:
-          this.currentSorting = Ordering.None;
-          break;
+      const animeOrder = target.value;
+      for (const order in Ordering) {
+        if (animeOrder === order) {
+          this.currentSorting = Ordering[order];
+        }
       }
-
       updateAnimeList(this.currentPage, this.currentSorting, this.search);
     });
   }

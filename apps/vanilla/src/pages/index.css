@@ -3,29 +3,29 @@
 
 .header {
   min-height: 100px;
-  background-color: var(--primary-color-1);
+  background-color: var(--primary-color);
 }
 
 .table-anime {
-  border: 1px solid black;
+  border: 1px solid var(--primary-dark-contrast-color);
   border-spacing: 0;
   margin: 0 auto;
 }
 
-.imageAnime img {
+.image-anime {
   width: 100%;
 }
 
-.table-anime td,
-th {
+.table-anime__thead-anime,
+.table-anime__td-anime {
   text-align: center;
-  border: 1px solid black;
+  border: 1px solid var(--primary-dark-contrast-color);
   width: 200px;
 }
 
 .footer {
   min-height: 100px;
-  background-color: var(--primary-color-2);
+  background-color: var(--primary-color-dark-color);
   margin-top: 50px;
 }
 
@@ -34,7 +34,7 @@ th {
   text-align: center;
 }
 
-.pagination button {
+.pagination__button {
   margin: 20px 0;
   padding: 10px;
 }
@@ -43,7 +43,7 @@ th {
   margin: 20px 0;
   padding: 10px;
   background-color: var(--pagination-button-active-color);
-  color: var(--accent-light-color);
+  color: var(--primary-light-contrast-color);
 }
 
 .sort-anime-table {
