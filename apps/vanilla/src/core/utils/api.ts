@@ -5,7 +5,7 @@ import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { AnimeDto } from '@js-camp/core/dtos/anime.dto';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 
-import { FIRST_PAGE, PAGE_SIZE_DEFAULT } from '../constants/anime';
+import { CURRENT_PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from '../constants/anime';
 
 import { Ordering } from '../enums/table';
 
@@ -17,35 +17,41 @@ import { apiAnime } from './axiosInstance';
  * @param ordering Ordering page.
  * @param limit Size page.
  */
-export interface PaginationConfig {
+interface PaginationConfig {
 
   /** The number of results returned per page. */
   readonly currentPage: number;
 
+  /** Limit page. */
+  readonly limit: number;
+}
+
+interface AnimeSearchParams {
+
   /** Ordering page. */
   readonly ordering?: Ordering;
 
-  /** Limit page. */
-  readonly limit?: number;
+  /** Pagination page. */
+  readonly pagination: PaginationConfig;
 }
 
 const configDefault = {
-  currentPageDefault: FIRST_PAGE,
+  currentPageDefault: CURRENT_PAGE_DEFAULT,
   orderingDefault: Ordering.None,
   limitDefault: PAGE_SIZE_DEFAULT,
 };
 
 /**
  * Reception with a configured URL.
- * @param paginationConfig Parameters for getting anime from the database.
+ * @param animeSearchParams Parameters for getting anime from the database.
  */
-export async function getAnimeData(paginationConfig: PaginationConfig): Promise<Pagination<Anime>> {
+export async function getAnimeData(animeSearchParams: AnimeSearchParams): Promise<Pagination<Anime>> {
   const { currentPageDefault, orderingDefault, limitDefault } = configDefault;
-  const { currentPage = currentPageDefault, ordering = orderingDefault, limit = limitDefault } = paginationConfig;
-  const offset = (currentPage - 1) * limit;
+  const { ordering = orderingDefault, pagination = { currentPage: currentPageDefault, limit: limitDefault } } = animeSearchParams;
+  const offset = (pagination.currentPage - 1) * pagination.limit;
 
   const queryParams = new URLSearchParams([]);
-  queryParams.append('limit', String(limit));
+  queryParams.append('limit', String(pagination.limit));
   queryParams.append('offset', String(offset));
   queryParams.append('ordering', `${ordering},id`);
 
