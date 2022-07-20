@@ -54,7 +54,7 @@ function renderAnime(anime: Anime): void {
  * @param ordering Current ordering.
  * @param filtering Current filter.
  */
- export async function countAnime(currentPage: number, ordering: Ordering, filtering?: AnimeType): Promise<number> {
+export async function countAnime(currentPage: number, ordering: Ordering, filtering?: AnimeType): Promise<number> {
   const { count } = await getAnimeData({ currentPage, ordering, filtering });
   return count;
 }

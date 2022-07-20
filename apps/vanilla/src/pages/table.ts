@@ -137,7 +137,7 @@ export default class Table {
     });
   }
 
-// Filter anime list.
+  /** Filter anime list. */
   private filterAnimeList(): void {
     const filter = document.querySelector<HTMLSelectElement>('.filter__anime-table');
     if (filter === null) {
