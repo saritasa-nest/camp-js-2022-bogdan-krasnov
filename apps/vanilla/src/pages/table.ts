@@ -101,24 +101,21 @@ export class Table {
   private sortAnimeList(): void {
     const sort = document.querySelector<HTMLSelectElement>('.sort-anime-table');
     checkNull(sort);
+    for (const type in Ordering) {
+      const option = document.createElement('option');
+      option.innerText = type;
+      option.value = type;
+      sort.appendChild(option);
+    }
     sort.addEventListener('change', (event: Event) => {
       const target = event.target as HTMLSelectElement;
-      const order = target.value;
-      switch (order) {
-        case Ordering.TitleEng:
-          this.currentSorting = Ordering.TitleEng;
-          break;
-        case Ordering.Status:
-          this.currentSorting = Ordering.Status;
-          break;
-        case Ordering.Aired:
-          this.currentSorting = Ordering.Aired;
-          break;
-        default:
-          this.currentSorting = Ordering.None;
-          break;
-      }
-      updateAnimeList(this.currentPage, this.currentSorting);
-    });
+      const animeOrder = target.value;
+      for (const order in Ordering) {
+        if (animeOrder === order) {
+          this.currentSorting = Ordering[order];
+        }
+    }
+    updateAnimeList(this.currentPage, this.currentSorting);
+  });
   }
 }
