@@ -8,6 +8,8 @@ export const CURRENT_PAGE_DEFAULT = 1;
 
 export const FIRST_PAGE = 1;
 
+export const DEFAULT_SEARCH_QUERY = '';
+
 export const PREV_PAGE = '<<';
 
 export const NEXT_PAGE = '>>';

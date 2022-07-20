@@ -1,37 +1,43 @@
+import { isInputElement } from '@js-camp/core/utils/guards/element.guard';
+
 import { updateAnimeList } from '../scripts/table';
-
-import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT, PREV_PAGE } from '../core/constants/anime';
 import { checkNull } from '../core/utils/checkNull';
-
+import { PAGE_SIZE_DEFAULT, CURRENT_PAGE_DEFAULT, FIRST_PAGE, ORDERING_DEFAULT, DEFAULT_SEARCH_QUERY, PREV_PAGE } from '../core/constants/anime';
 import { createPaginationButton, createDynamicPaginationButtons } from '../scripts/pagination';
 
 import { DATA_ATTRIBUTE_BUTTON_NAME, NEXT_PAGE } from './../core/constants/anime';
 
 import { Ordering } from './../core/enums/table';
 
+const INPUT_CLASS = 'input-search';
+
 /** Table anime class. */
 export class Table {
 
   /** Current Page. */
-  private currentPage: number;
+  private currentPage = CURRENT_PAGE_DEFAULT;
 
   /** Page Quantity. */
   private readonly quantityPage: number;
 
   /** Current sorting. */
-  private currentSorting: Ordering;
+  private currentSorting = ORDERING_DEFAULT;
 
   /** Quantity anime. */
   private readonly quantityAnime: number;
 
+  /** Search query. */
+  private search = DEFAULT_SEARCH_QUERY;
+
   public constructor(quantityAnime: number) {
     this.quantityAnime = quantityAnime;
-    this.currentPage = CURRENT_PAGE_DEFAULT;
     this.quantityPage = Math.ceil(this.quantityAnime / PAGE_SIZE_DEFAULT);
-    this.currentSorting = ORDERING_DEFAULT;
-    updateAnimeList(this.currentPage, this.currentSorting);
+
+    updateAnimeList(this.currentPage, this.currentSorting, this.search);
+
     this.setPagination();
     this.sortAnimeList();
+    this.initAnimeSearch();
   }
 
   /** Creates pagination buttons for anime table. */
@@ -60,21 +66,25 @@ export class Table {
     }
 
     paginationButtons.append(prevButton);
+
     createDynamicPaginationButtons(this.currentPage, this.quantityPage).forEach(page => {
       if (page !== '...') {
         const buttonDynamic = createPaginationButton(String(page));
         buttonDynamic.addEventListener('click', () => {
           this.updatePagination(buttonDynamic);
         });
+
         if (page === this.currentPage) {
           buttonDynamic.classList.add('active');
         }
+
         paginationButtons.append(buttonDynamic);
       } else {
         const buttonPoints = createPaginationButton(page, true);
         paginationButtons.append(buttonPoints);
       }
     });
+
     paginationButtons.append(nextButton);
   }
 
@@ -93,7 +103,9 @@ export class Table {
     if (!isNaN(Number(pageValue))) {
       this.currentPage = Number(pageValue);
     }
-    updateAnimeList(this.currentPage, this.currentSorting);
+
+    updateAnimeList(this.currentPage, this.currentSorting, this.search);
+
     this.setPagination();
   }
 
@@ -114,8 +126,37 @@ export class Table {
         if (animeOrder === order) {
           this.currentSorting = Ordering[order];
         }
+      }
+      updateAnimeList(this.currentPage, this.currentSorting, this.search);
+    });
+  }
+
+  /**
+   * Changes search string.
+   * @param event Some event.
+   */
+  private handleChangeSearch(event: Event): void {
+    event.preventDefault();
+
+    if (event.currentTarget !== null && isInputElement(event.currentTarget)) {
+      this.search = event.currentTarget.value;
     }
-    updateAnimeList(this.currentPage, this.currentSorting);
-  });
+
+    updateAnimeList(this.currentPage, this.currentSorting, this.search);
+  }
+
+  /** Search string initialization. */
+  private initAnimeSearch(): void {
+    const inputElement = document.querySelector<HTMLInputElement>(`.${INPUT_CLASS}`);
+
+    if (inputElement === null) {
+      return;
+    }
+
+    inputElement.addEventListener('change', event => {
+      this.handleChangeSearch(event);
+
+      this.setPagination();
+    });
   }
 }

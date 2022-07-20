@@ -49,4 +49,23 @@
 .sort-anime-table {
   padding: 20px;
   margin: 50px;
+  font-size: var(--font-size-1);
+}
+
+.form-label {
+  margin: 0 50px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label__text {
+  display: block;
+  font-size: var(--font-size-1);
+  margin-bottom: 10px;
+}
+
+.input-search {
+  padding: 20px;
+  font-size: var(--font-size-1);
 }
