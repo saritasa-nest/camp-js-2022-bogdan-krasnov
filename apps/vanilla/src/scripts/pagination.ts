@@ -2,7 +2,7 @@ import { DATA_ATTRIBUTE_BUTTON_NAME } from '../core/constants/anime';
 
 /**
  * Create button in pagination.
- * @param dataText Text for innerText and data-attribute.
+ * @param dataText Text for innerText.
  * @param isDisabled Disabled button.
  */
 export function createPaginationButton(dataText: string, isDisabled = false): HTMLButtonElement {
@@ -20,8 +20,7 @@ export function createPaginationButton(dataText: string, isDisabled = false): HT
  * @param quantityPage Number of pages.
  * @returns An array with strings or numbers that denote pagination buttons.
  */
-export function createDynamicPaginationButtons(currentPage: number,
-  quantityPage: number): Array<string | number> {
+export function createDynamicPaginationButtons(currentPage: number, quantityPage: number): Array<string | number> {
   const lastPage = quantityPage;
   const leftButton = currentPage - 1;
   const rightButton = currentPage + 1;

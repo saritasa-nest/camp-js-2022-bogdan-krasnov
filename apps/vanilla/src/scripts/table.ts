@@ -11,10 +11,9 @@ import { Ordering } from './../core/enums/table';
 /**
  * Refresh current page.
  * @param currentPage Current Page.
- * @param currentOrdering Current ordering.
+ * @param ordering Current ordering.
  */
-export async function updateAnimeList(currentPage: number, currentOrdering: Ordering): Promise<void> {
-  const ordering = currentOrdering;
+export async function updateAnimeList(currentPage: number, ordering: Ordering): Promise<void> {
   const paginationConfig: AnimeSearchParams = { ordering, pagination: { currentPage } };
   const tbody = document.querySelector<HTMLTableElement>('.table-anime__body');
   checkNull(tbody);

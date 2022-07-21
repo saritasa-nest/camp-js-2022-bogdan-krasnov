@@ -1,4 +1,3 @@
-// eslint-disable-next-line jsdoc/require-param
 /**
  * Converting date to string format DD-MM-YYYY.
  * @param date Date.

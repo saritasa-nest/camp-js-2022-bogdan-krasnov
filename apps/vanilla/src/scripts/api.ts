@@ -39,18 +39,18 @@ export interface AnimeSearchParams {
   readonly pagination: PaginationConfig;
 }
 
-const configDefault = {
-  currentPageDefault: CURRENT_PAGE_DEFAULT,
-  orderingDefault: Ordering.None,
-  limitDefault: PAGE_SIZE_DEFAULT,
-};
-
 /**
  * Reception with a configured URL.
  * @param animeSearchParams Parameters for getting anime from the database.
  */
 export async function getAnimeData(animeSearchParams: AnimeSearchParams): Promise<Pagination<Anime>> {
+  const configDefault = {
+    currentPageDefault: CURRENT_PAGE_DEFAULT,
+    orderingDefault: Ordering.None,
+    limitDefault: PAGE_SIZE_DEFAULT,
+  };
   const { currentPageDefault, orderingDefault, limitDefault } = configDefault;
+
   const { currentPage = currentPageDefault, limit = limitDefault } = animeSearchParams.pagination;
   const { ordering = orderingDefault } = animeSearchParams;
 

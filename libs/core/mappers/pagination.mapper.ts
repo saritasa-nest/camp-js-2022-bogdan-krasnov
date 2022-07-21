@@ -12,12 +12,11 @@ export namespace PaginationMapper {
     dto: PaginationDto<DtoModel>,
     mapperDto: (resultDto: DtoModel) => Model,
   ): Pagination<Model> {
-    const results = dto.results.map(anime => mapperDto(anime));
     return new Pagination<Model>({
       count: dto.count,
       next: dto.next,
       previous: dto.previous,
-      results,
+      results: dto.results.map(anime => mapperDto(anime)),
     });
   }
 }
