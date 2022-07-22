@@ -1,7 +1,8 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { MatTableModule } from '@angular/material/table';
+import { MaterialExampleModule } from '../material/material.module';
 
 import { SharedModule } from './../shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -11,7 +12,7 @@ import { AnimeTableComponent } from './features/anime-table/anime-table.componen
 /** App module. */
 @NgModule({
   declarations: [AppComponent, AnimeTableComponent],
-  imports: [BrowserModule, SharedModule, AppRoutingModule, MatTableModule],
+  imports: [BrowserModule, SharedModule, AppRoutingModule, MaterialExampleModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })
