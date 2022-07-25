@@ -89,6 +89,5 @@
   "defaultProject": "react",
   "cli": {
     "defaultCollection": "@nrwl/angular"
-}
-
+  }
 }
