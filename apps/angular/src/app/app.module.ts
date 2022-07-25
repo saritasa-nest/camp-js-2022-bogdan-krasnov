@@ -1,4 +1,3 @@
-import { AnimeComponent } from './features/anime/anime.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -12,7 +11,7 @@ import { AnimeTableComponent } from './features/anime-table/anime-table.componen
 
 /** App module. */
 @NgModule({
-  declarations: [AppComponent, AnimeTableComponent, AnimeComponent],
+  declarations: [AppComponent, AnimeTableComponent],
   imports: [BrowserModule, SharedModule, AppRoutingModule, MaterialExampleModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
