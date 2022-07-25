@@ -22,7 +22,7 @@ export class AnimeTableComponent implements OnInit {
   public readonly isAnimeLoading$ = new BehaviorSubject<boolean>(false);
 
   /** Displayed columns. */
-  public displayedColumns: string[] = ['id', 'titleEnglish', 'type', 'status'];
+  public displayedColumns: string[] = ['imageSrc', 'titleEnglish', 'type', 'status'];
 
   private readonly animeUpdated$ = new BehaviorSubject<void>(void 0);
 
