@@ -5,6 +5,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Anime } from '@js-camp/core/models/anime';
 import { Observable, map } from 'rxjs';
+import { AppConfigService } from './app-config.service';
+import { ORDERING_DEFAULT, PAGE_SIZE_DEFAULT } from '../constants/anime-table';
 
 /** Anime service. */
 @Injectable({
@@ -12,18 +14,25 @@ import { Observable, map } from 'rxjs';
 })
 export class AnimeService {
 
-  public constructor(private http: HttpClient) { }
+  private readonly animeListUrl: URL;
+
+  public constructor(
+    appConfig: AppConfigService,
+    private readonly http: HttpClient,
+  ) {
+    this.animeListUrl = new URL('anime/anime/', appConfig.apiUrl);
+  }
 
   /** Reception with a configured URL. */
   public getAnimeList(): Observable<Anime[]> {
-    const response$ = this.http.get<PaginationDto<AnimeDto>>('https://api.camp-js.saritasa.rocks/api/v1/anime/anime/?', {
+    const response$ = this.http.get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(), {
       params: new HttpParams()
-        .set('limit', '5')
-        .set('ordering', 'id'),
+        .set('limit', PAGE_SIZE_DEFAULT)
+        .set('ordering', ORDERING_DEFAULT),
     });
 
     return response$.pipe(
-      map(data => data.results.map(anime => AnimeMapper.fromDto(anime))),
+      map(animeDto => animeDto.results.map(anime => AnimeMapper.fromDto(anime))),
     );
   }
 }
