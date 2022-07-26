@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 /**
  * NotFound component.
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'camp-not-found',
   templateUrl: './not-found.component.html',
-  styleUrls: ['./not-found.component.css'],
+  styleUrls: [],
 })
 export class NotFoundComponent {
 }

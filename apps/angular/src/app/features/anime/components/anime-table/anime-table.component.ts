@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Anime } from '@js-camp/core/models/anime';
 import { BehaviorSubject, switchMap, Observable, tap } from 'rxjs';
 

@@ -1,5 +1,5 @@
 <ng-container *ngIf="(isAnimeLoading$ | async) === false; else loading">
-  <table mat-table [dataSource]="animeList$" class="table mat-elevation-z8" [summary]="">
+  <table mat-table [dataSource]="animeList$" class="table mat-elevation-z8" aria-label="Anime Table">
 
     <!-- Id Column -->
     <ng-container matColumnDef="imageSrc">
