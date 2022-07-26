@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  apiUrl: 'https://api.camp-js.saritasa.rocks/api/v1/', // process.env.NG_APP_API_URL,
+  apiKey: 'be606d33-4ab6-4a82-9567-83cac4106e09' // process.env.NG_APP_API_KEY,
 };
 
 /*
@@ -11,6 +13,6 @@ export const environment = {
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
  *
  * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
+ * on performance if an error is thrown.a
  */
 // import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
