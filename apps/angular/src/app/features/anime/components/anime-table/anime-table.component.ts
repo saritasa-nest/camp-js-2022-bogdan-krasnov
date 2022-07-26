@@ -13,7 +13,7 @@ import { AnimeService } from '../../../../../core/services/anime.service';
   styleUrls: ['./anime-table.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimeTableComponent implements OnInit {
+export class AnimeTableComponent {
 
   /** Anime. */
   public readonly animeList$: Observable<readonly Anime[]>;
@@ -32,10 +32,5 @@ export class AnimeTableComponent implements OnInit {
       switchMap(() => animeService.getAnimeList()),
       tap(() => this.isAnimeLoading$.next(false)),
     );
-  }
-
-  /** On init. */
-  public ngOnInit(): void {
-
   }
 }

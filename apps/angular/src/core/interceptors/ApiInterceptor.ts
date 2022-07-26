@@ -1,8 +1,8 @@
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AppConfigService } from '../services/app-config.service';
 
+import { AppConfigService } from '../services/app-config.service';
 
 /** Interceptor to add Api Key in HTTP header. */
 @Injectable()

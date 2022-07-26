@@ -5,8 +5,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Anime } from '@js-camp/core/models/anime';
 import { Observable, map } from 'rxjs';
-import { AppConfigService } from './app-config.service';
+
 import { ORDERING_DEFAULT, PAGE_SIZE_DEFAULT } from '../constants/anime-table';
+
+import { AppConfigService } from './app-config.service';
 
 /** Anime service. */
 @Injectable({
@@ -16,10 +18,7 @@ export class AnimeService {
 
   private readonly animeListUrl: URL;
 
-  public constructor(
-    appConfig: AppConfigService,
-    private readonly http: HttpClient,
-  ) {
+  public constructor(appConfig: AppConfigService, private readonly http: HttpClient) {
     this.animeListUrl = new URL('anime/anime/', appConfig.apiUrl);
   }
 

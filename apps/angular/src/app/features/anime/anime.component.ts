@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
+/**
+ * Anime component.
+ */
 @Component({
   selector: 'camp-anime',
   templateUrl: './anime.component.html',
   styleUrls: [],
 })
-export class AnimeComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
+export class AnimeComponent {
 }
