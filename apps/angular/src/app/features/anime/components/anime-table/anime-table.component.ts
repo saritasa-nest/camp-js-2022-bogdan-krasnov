@@ -22,7 +22,7 @@ export class AnimeTableComponent implements OnInit {
   public readonly isAnimeLoading$ = new BehaviorSubject<boolean>(false);
 
   /** Displayed columns. */
-  public displayedColumns: string[] = ['imageSrc', 'titleEnglish', 'type', 'status'];
+  public readonly displayedColumns: string[] = ['imageSrc', 'titleEnglish', 'titleJapanese', 'type', 'status', 'airedStart'];
 
   private readonly animeUpdated$ = new BehaviorSubject<void>(void 0);
 
@@ -36,8 +36,6 @@ export class AnimeTableComponent implements OnInit {
 
   /** On init. */
   public ngOnInit(): void {
-    this.animeList$.pipe(
-      tap(anime => console.log(anime)),
-    ).subscribe();
+
   }
 }
