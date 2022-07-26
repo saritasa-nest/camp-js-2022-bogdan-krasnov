@@ -24,14 +24,12 @@ export class AnimeService {
 
   /** Reception with a configured URL. */
   public getAnimeList(): Observable<Anime[]> {
-    const response$ = this.http.get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(), {
+    return this.http.get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(), {
       params: new HttpParams()
         .set('limit', PAGE_SIZE_DEFAULT)
         .set('ordering', ORDERING_DEFAULT),
-    });
-
-    return response$.pipe(
-      map(animeDto => animeDto.results.map(anime => AnimeMapper.fromDto(anime))),
+    }).pipe(
+      map(animeDto => animeDto.results.map(anime => AnimeMapper.fromDto(anime)))
     );
   }
 }

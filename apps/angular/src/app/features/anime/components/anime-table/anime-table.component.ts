@@ -24,13 +24,7 @@ export class AnimeTableComponent {
   /** Displayed columns. */
   public readonly displayedColumns: string[] = ['imageSrc', 'titleEnglish', 'titleJapanese', 'type', 'status', 'airedStart'];
 
-  private readonly animeUpdated$ = new BehaviorSubject<void>(void 0);
-
   public constructor(animeService: AnimeService) {
-    this.animeList$ = this.animeUpdated$.pipe(
-      tap(() => this.isAnimeLoading$.next(true)),
-      switchMap(() => animeService.getAnimeList()),
-      tap(() => this.isAnimeLoading$.next(false)),
-    );
+    this.animeList$ = animeService.getAnimeList();
   }
 }
