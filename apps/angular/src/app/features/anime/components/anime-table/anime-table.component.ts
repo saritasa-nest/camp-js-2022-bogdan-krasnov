@@ -24,4 +24,13 @@ export class AnimeTableComponent {
   public constructor(animeService: AnimeService) {
     this.animeList$ = animeService.getAnimeList();
   }
+
+   /**
+   * Track by method.
+   * @param index Index.
+   * @param anime Anime.
+   */
+  public trackByAnimeId(index: number, anime: Anime): Anime['id'] {
+    return anime.id;
+  }
 }

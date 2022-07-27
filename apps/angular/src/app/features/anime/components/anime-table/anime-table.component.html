@@ -3,12 +3,13 @@
     [dataSource]="animeList$"
     class="table mat-elevation-z8"
     aria-label="Anime Table"
+    [trackBy]="trackByAnimeId"
   >
     <!-- Id Column -->
     <ng-container matColumnDef="imageSrc">
       <th mat-header-cell *matHeaderCellDef>Image</th>
       <td mat-cell *matCellDef="let anime">
-        <img class="anime-image" [src]="anime.imageSrc" alt="" />
+        <img class="anime-image" [src]="anime.imageSrc" alt="anime poster" />
       </td>
     </ng-container>
 
