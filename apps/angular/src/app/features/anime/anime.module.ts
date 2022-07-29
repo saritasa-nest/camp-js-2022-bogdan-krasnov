@@ -8,7 +8,7 @@ import { AnimeRoutingModule } from './anime.routing';
 import { AnimeTableComponent } from './components/anime-table/anime-table.component';
 import { AnimeComponent } from './anime.component';
 
-/** Table view module. */
+/** Anime module. */
 @NgModule({
   declarations: [AnimeComponent, AnimeTableComponent],
   imports: [

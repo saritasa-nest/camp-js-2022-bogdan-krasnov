@@ -2,8 +2,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppConfigService } from '../core/services/app-config.service';
-
 import { SharedModule } from './../shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -29,7 +27,6 @@ const httpInterceptorProviders = [
     HttpClientModule,
   ],
   providers: [
-    AppConfigService,
     ...httpInterceptorProviders,
   ],
   bootstrap: [AppComponent],
