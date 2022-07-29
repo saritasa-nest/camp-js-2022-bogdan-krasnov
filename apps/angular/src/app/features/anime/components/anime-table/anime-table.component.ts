@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { Anime } from '@js-camp/core/models/anime';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { AnimeService } from '../../../../../core/services/anime.service';
 
@@ -21,8 +22,19 @@ export class AnimeTableComponent {
   /** Displayed columns. */
   public readonly displayedColumns = ['imageSrc', 'titleEnglish', 'titleJapanese', 'type', 'status', 'airedStart'] as const;
 
-  public constructor(animeService: AnimeService) {
-    this.animeList$ = animeService.getAnimeList();
+  /** Total number of records for the current query. */
+  public animeListCount = 100;
+
+  /** Current page number. */
+  public readonly currentPage$ = new BehaviorSubject<number>(0);
+
+  public constructor(private animeService: AnimeService) {
+    this.animeList$ = this.animeService.getAnimeList(this.currentPage$.value, 5);
+  }
+
+  public onPaginateChange(event: PageEvent): void {
+    const page = event.pageIndex + 1;
+    this.currentPage$.next(page)
   }
 
    /**

@@ -23,14 +23,13 @@ export class AnimeService {
   }
 
   /** Reception with a configured URL. */
-  public getAnimeList(): Observable<Anime[]> {
-    const currentPage = 1;
-    const offset = (currentPage - 1) * PAGE_SIZE_DEFAULT;
+  public getAnimeList(currentPage: number = 1, pageSize: number = PAGE_SIZE_DEFAULT, ): Observable<Anime[]> {;
+    const offset = (currentPage - 1) * pageSize;
     return this.http.get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(), {
       params: new HttpParams()
-        .set('limit', PAGE_SIZE_DEFAULT)
+        .set('limit', pageSize)
+        .set('offset', String(offset))
         .set('ordering', ORDERING_DEFAULT)
-        .set('offset', String(offset)),
     }).pipe(
       map(animeDto => animeDto.results.map(anime => AnimeMapper.fromDto(anime)))
     );
