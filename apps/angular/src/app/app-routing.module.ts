@@ -9,6 +9,10 @@ const routes: Routes = [
     loadChildren: () => import('./features/anime/anime.module').then(m => m.AnimeModule),
   },
   {
+    path: 'auth',
+    loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule),
+  },
+  {
     path: '**',
     component: NotFoundComponent,
   },
