@@ -50,10 +50,12 @@
   </table>
 
 <mat-paginator
-  [length]="animeCount"
-  [pageIndex]="currentPage"
+  [length]="24200"
+  [pageIndex]="pageIndex"
+  [pageSize]="pageSize"
   [pageSizeOptions]="[5, 10, 15, 20]"
   (page)="onPaginateChange($event)"
   aria-label="Anime table paginator"
+  showFirstLastButtons
 >
 </mat-paginator>
