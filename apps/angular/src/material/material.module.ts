@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 
-const material = [
-  MatTableModule,
-];
+const material = [MatTableModule];
 
-/** Material Angular Module. */
+/** Material Angular module. */
 @NgModule({
   imports: [material],
   exports: [material],
 })
-export class MaterialExampleModule {}
+export class MaterialModule {}

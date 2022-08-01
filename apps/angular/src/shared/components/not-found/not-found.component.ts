@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 /**
- * NotFound component.
+ * The page that was not found.
  */
 @Component({
   selector: 'camp-not-found',

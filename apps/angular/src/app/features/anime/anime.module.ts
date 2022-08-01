@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MaterialExampleModule } from 'apps/angular/src/material/material.module';
+import { MaterialModule } from 'apps/angular/src/material/material.module';
 
 import { AnimeRoutingModule } from './anime.routing';
 
@@ -14,7 +14,7 @@ import { AnimeComponent } from './anime.component';
   imports: [
     CommonModule,
     AnimeRoutingModule,
-    MaterialExampleModule,
+    MaterialModule,
   ],
 })
 export class AnimeModule { }
