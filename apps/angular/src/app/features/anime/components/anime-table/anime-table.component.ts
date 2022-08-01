@@ -15,7 +15,7 @@ import { AnimeService } from '../../../../../core/services/anime.service';
 })
 export class AnimeTableComponent {
 
-  /** Anime. */
+  /** Anime list. */
   public readonly animeList$: Observable<readonly Anime[]>;
 
   /** Displayed columns. */
@@ -25,8 +25,8 @@ export class AnimeTableComponent {
     this.animeList$ = animeService.getAnimeList();
   }
 
-   /**
-   * Track anime by ID
+  /**
+   * Track anime by ID.
    * @param _index Index.
    * @param anime Anime.
    */

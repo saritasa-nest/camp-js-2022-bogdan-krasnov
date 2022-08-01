@@ -6,7 +6,7 @@ import { NotFoundComponent } from './../shared/components/not-found/not-found.co
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./features/anime/anime.module').then((m) => m.AnimeModule),
+    loadChildren: () => import('./features/anime/anime.module').then(m => m.AnimeModule),
   },
   {
     path: '**',
