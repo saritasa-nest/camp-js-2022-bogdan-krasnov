@@ -23,7 +23,7 @@ export class AnimeService {
   }
 
   /** Reception with a configured URL. */
-  public getAnimeList(currentPage: number = 1, pageSize: number = PAGE_SIZE_DEFAULT, ): Observable<Anime[]> {;
+  public getAnimeList(currentPage = 1, pageSize = PAGE_SIZE_DEFAULT ): Observable<Anime[]> {;
     const offset = (currentPage - 1) * pageSize;
     return this.http.get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(), {
       params: new HttpParams()

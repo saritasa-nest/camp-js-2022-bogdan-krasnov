@@ -1,9 +1,27 @@
+import { Router, ActivatedRoute } from '@angular/router';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Anime } from '@js-camp/core/models/anime';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 import { AnimeService } from '../../../../../core/services/anime.service';
+import { Observable, switchMap } from 'rxjs';
+
+const DEFAULT_ANIME_PARAMS = {
+  paginationParams: {
+    page: 1,
+    limit: 10,
+  },
+} as const;
+
+/** Pagination params. */
+export interface PaginationParams {
+
+  /** Actual page. */
+  readonly page: number;
+
+  /** Limit elements to display on a page. */
+  readonly limit: number;
+}
 
 /**
  * Anime table component.
@@ -23,18 +41,41 @@ export class AnimeTableComponent {
   public readonly displayedColumns = ['imageSrc', 'titleEnglish', 'titleJapanese', 'type', 'status', 'airedStart'] as const;
 
   /** Total number of records for the current query. */
-  public animeListCount = 100;
+  public readonly animeCount = 0;
 
-  /** Current page number. */
-  public readonly currentPage$ = new BehaviorSubject<number>(0);
+  /** Current page.  */
+  public readonly currentPage = 25;
 
-  public constructor(private animeService: AnimeService) {
-    this.animeList$ = this.animeService.getAnimeList(this.currentPage$.value, 5);
+  public constructor(
+    private animeService: AnimeService,
+    private router: Router,
+    route: ActivatedRoute,
+  ) {
+    this.router.navigate([], {
+      queryParams: {...DEFAULT_ANIME_PARAMS, ...route.snapshot.queryParams},
+    })
+    this.animeList$ = route.queryParams.pipe(
+      switchMap(params => this.animeService.getAnimeList(params['currentPage'], params['pageSize'])),
+    )
   }
 
+    /**
+   * Apply pagination to anime table.
+   * @param event Paginator event.
+   */
   public onPaginateChange(event: PageEvent): void {
-    const page = event.pageIndex + 1;
-    this.currentPage$.next(page)
+    this.currentPage = event.pageIndex;
+    this.updateQueryParams({ page: event.pageIndex, limit: event.pageSize });
+  }
+
+  private updateQueryParams(paginationParams: PaginationParams): void {
+    this.router.navigate([], {
+      queryParams: {
+        'currentPage': paginationParams.page,
+        'pageSize': paginationParams.limit,
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 
    /**
