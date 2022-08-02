@@ -4,4 +4,4 @@ export const FIRST_PAGE = 0;
 
 export const CURRENT_PAGE_DEFAULT = 0;
 
-export const ORDERING_DEFAULT = 'id';
+export const ORDERING_DEFAULT = 'title_eng';

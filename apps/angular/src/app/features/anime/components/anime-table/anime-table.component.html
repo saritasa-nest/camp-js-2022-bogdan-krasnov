@@ -1,4 +1,5 @@
  <table
+    matSort (matSortChange)="sortAnimeList($event)"
     mat-table
     [dataSource]="animeList$"
     class="table mat-elevation-z8"
@@ -15,7 +16,7 @@
 
     <!-- Title English Column -->
     <ng-container matColumnDef="titleEnglish">
-      <th mat-header-cell *matHeaderCellDef>Title English</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="title_eng">Title English</th>
       <td mat-cell *matCellDef="let anime">{{ anime.titleEnglish }}</td>
     </ng-container>
 
@@ -27,7 +28,7 @@
 
     <!-- Status Column -->
     <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</th>
       <td mat-cell *matCellDef="let anime">{{ anime.status }}</td>
     </ng-container>
 
@@ -39,7 +40,7 @@
 
     <!-- AiredStart Column -->
     <ng-container matColumnDef="airedStart">
-      <th mat-header-cell *matHeaderCellDef>airedStart</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="aired">Aired Start</th>
       <td mat-cell *matCellDef="let anime">
         {{ anime.airedStart | date: "YYYY.MM.dd" }}
       </td>
@@ -50,8 +51,8 @@
   </table>
 
 <mat-paginator
-  [length]="24200"
-  [pageIndex]="pageIndex"
+  [length]="animeCount"
+  [pageIndex]="pageIndex$ | async"
   [pageSize]="pageSize"
   [pageSizeOptions]="[5, 10, 15, 20]"
   (page)="onPaginateChange($event)"

@@ -3,28 +3,15 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Anime } from '@js-camp/core/models/anime';
 
-import { Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
 
-import { CURRENT_PAGE_DEFAULT, PAGE_SIZE_DEFAULT } from 'apps/angular/src/core/constants/anime-table';
+import { Sort } from '@angular/material/sort';
+
+import { ORDERING_DEFAULT, PAGE_SIZE_DEFAULT } from '../../../../../core/constants/anime-table';
+
+import { PaginationParams } from '../../../../../core/models/pagination-params';
 
 import { AnimeService } from '../../../../../core/services/anime.service';
-
-const DEFAULT_ANIME_PARAMS = {
-  paginationParams: {
-    page: CURRENT_PAGE_DEFAULT,
-    limit: PAGE_SIZE_DEFAULT,
-  },
-} as const;
-
-/** Pagination params. */
-export interface PaginationParams {
-
-  /** Actual page. */
-  readonly page: number;
-
-  /** Limit elements to display on a page. */
-  readonly limit: number;
-}
 
 /**
  * Anime table component.
@@ -37,7 +24,7 @@ export interface PaginationParams {
 })
 export class AnimeTableComponent {
 
-  /** Anime. */
+  /** Anime list. */
   public readonly animeList$: Observable<readonly Anime[]>;
 
   /** Displayed columns. */
@@ -46,8 +33,14 @@ export class AnimeTableComponent {
   /** Total number of records for the current query. */
   public readonly pageSize = PAGE_SIZE_DEFAULT;
 
+  /** Count of anime in the database.  */
+  public animeCount = 0;
+
   /** Index of the current page.  */
-  public readonly pageIndex = 0;
+  public readonly pageIndex$ = new BehaviorSubject<number>(0);
+
+  /** Sort anime. */
+  public pageSort = ORDERING_DEFAULT;
 
   public constructor(
     animeService: AnimeService,
@@ -55,10 +48,16 @@ export class AnimeTableComponent {
     route: ActivatedRoute,
   ) {
     this.router.navigate([], {
-      queryParams: { ...DEFAULT_ANIME_PARAMS, ...route.snapshot.queryParams },
+      queryParams: { ...route.snapshot.queryParams },
     });
     this.animeList$ = route.queryParams.pipe(
-      switchMap(params => animeService.getAnimeList(params['pageIndex'], params['pageSize'])),
+      switchMap(params => animeService.getAnimeList(
+        { pageIndex: params['pageIndex'], pageSize: params['pageSize'], sort: params['sort'] },
+      )),
+      map(animeList => {
+        this.animeCount = animeList.count;
+        return animeList.results;
+      }),
     );
   }
 
@@ -67,14 +66,40 @@ export class AnimeTableComponent {
    * @param event Paginator event.
    */
   public onPaginateChange(event: PageEvent): void {
-    this.updateQueryParams({ page: event.pageIndex, limit: event.pageSize });
+    this.updateQueryParams({
+      pageIndex: event.pageIndex,
+      pageSize: event.pageSize,
+      sort: this.pageSort,
+    });
   }
 
+  /**
+   * Sort anime list.
+   * @param sort Selected sorting.
+   */
+  public sortAnimeList(sort: Sort): void {
+    if (!sort.active || sort.direction === 'asc') {
+      this.pageSort = sort.active;
+    } else {
+      this.pageSort = `-${sort.active}`;
+    }
+    this.updateQueryParams({
+      pageIndex: 0,
+      pageSize: this.pageSize,
+      sort: this.pageSort,
+    });
+  }
+
+  /**
+   * Update query params.
+   * @param paginationParams Paginator .
+   */
   private updateQueryParams(paginationParams: PaginationParams): void {
     this.router.navigate([], {
       queryParams: {
-        pageIndex: paginationParams.page,
-        pageSize: paginationParams.limit,
+        pageIndex: paginationParams.pageIndex,
+        pageSize: paginationParams.pageSize,
+        sort: paginationParams.sort,
       },
       queryParamsHandling: 'merge',
     });
