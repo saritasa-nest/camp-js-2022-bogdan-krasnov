@@ -6,7 +6,11 @@ import { Injectable } from '@angular/core';
 import { Anime } from '@js-camp/core/models/anime';
 import { Observable, map } from 'rxjs';
 
-import { CURRENT_PAGE_DEFAULT, ORDERING_DEFAULT, PAGE_SIZE_DEFAULT } from '../constants/anime-table';
+import { Pagination } from '@js-camp/core/models/pagination';
+
+import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
+
+import { PaginationParams } from './../models/pagination-params';
 
 import { AppConfigService } from './app-config.service';
 
@@ -22,16 +26,21 @@ export class AnimeService {
     this.animeListUrl = new URL('anime/anime/', appConfig.apiUrl);
   }
 
-  /** Reception with a configured URL. */
-  public getAnimeList(pageIndex = CURRENT_PAGE_DEFAULT, pageSize = PAGE_SIZE_DEFAULT): Observable<Anime[]> {
-    const offset = pageIndex * pageSize;
+  /** Reception with a configured URL.
+   * @param params Anime params.
+   */
+  public getAnimeList(params: PaginationParams): Observable<Pagination<Anime>> {
+    const offset = params.pageIndex * params.pageSize;
     return this.http.get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(), {
       params: new HttpParams()
-        .set('limit', pageSize)
+        .set('limit', params.pageSize)
         .set('offset', String(offset))
-        .set('ordering', ORDERING_DEFAULT),
+        .set('ordering', `${params.sort},id`),
     }).pipe(
-      map(animeDto => animeDto.results.map(anime => AnimeMapper.fromDto(anime))),
+      map(pagination => PaginationMapper.fromDto(
+        pagination,
+        animeDto => AnimeMapper.fromDto(animeDto),
+      )),
     );
   }
 }
