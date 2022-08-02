@@ -52,7 +52,7 @@
 
 <mat-paginator
   [length]="animeCount"
-  [pageIndex]="pageIndex$ | async"
+  [pageIndex]="pageIndex"
   [pageSize]="pageSize"
   [pageSizeOptions]="[5, 10, 15, 20]"
   (page)="onPaginateChange($event)"

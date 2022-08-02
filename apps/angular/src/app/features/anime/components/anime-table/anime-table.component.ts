@@ -12,6 +12,13 @@ import { ORDERING_DEFAULT, PAGE_SIZE_DEFAULT } from '../../../../../core/constan
 import { PaginationParams } from '../../../../../core/models/pagination-params';
 
 import { AnimeService } from '../../../../../core/services/anime.service';
+import { FormControl } from '@angular/forms';
+
+const DEFAULT_PAGINATION_PARAMS: PaginationParams = {
+  pageIndex: 0,
+  pageSize: PAGE_SIZE_DEFAULT,
+  sort: ORDERING_DEFAULT,
+}
 
 /**
  * Anime table component.
@@ -31,16 +38,16 @@ export class AnimeTableComponent {
   public readonly displayedColumns = ['imageSrc', 'titleEnglish', 'titleJapanese', 'type', 'status', 'airedStart'] as const;
 
   /** Total number of records for the current query. */
-  public readonly pageSize = PAGE_SIZE_DEFAULT;
+  public readonly pageSize = DEFAULT_PAGINATION_PARAMS.pageSize;
 
   /** Count of anime in the database.  */
   public animeCount = 0;
 
   /** Index of the current page.  */
-  public readonly pageIndex$ = new BehaviorSubject<number>(0);
+  public pageIndex = DEFAULT_PAGINATION_PARAMS.pageIndex;
 
   /** Sort anime. */
-  public pageSort = ORDERING_DEFAULT;
+  public pageSort = DEFAULT_PAGINATION_PARAMS.sort;
 
   public constructor(
     animeService: AnimeService,
@@ -48,7 +55,7 @@ export class AnimeTableComponent {
     route: ActivatedRoute,
   ) {
     this.router.navigate([], {
-      queryParams: { ...route.snapshot.queryParams },
+      queryParams: { ...DEFAULT_PAGINATION_PARAMS, ...route.snapshot.queryParams },
     });
     this.animeList$ = route.queryParams.pipe(
       switchMap(params => animeService.getAnimeList(
@@ -71,6 +78,7 @@ export class AnimeTableComponent {
       pageSize: event.pageSize,
       sort: this.pageSort,
     });
+    this.pageIndex = event.pageIndex;
   }
 
   /**
@@ -84,11 +92,13 @@ export class AnimeTableComponent {
       this.pageSort = `-${sort.active}`;
     }
     this.updateQueryParams({
-      pageIndex: 0,
+      pageIndex: this.pageIndex,
       pageSize: this.pageSize,
       sort: this.pageSort,
     });
   }
+
+    /** Searching input form controller. */
 
   /**
    * Update query params.
