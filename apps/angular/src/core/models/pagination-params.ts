@@ -11,4 +11,6 @@ export interface PaginationParams {
   sort?: string;
 
   filter?: string;
+
+  type?: string;
 }

@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Anime } from '@js-camp/core/models/anime';
 
-import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 
 import { Sort } from '@angular/material/sort';
 
@@ -13,6 +13,7 @@ import { PaginationParams } from '../../../../../core/models/pagination-params';
 
 import { AnimeService } from '../../../../../core/services/anime.service';
 import { FormControl } from '@angular/forms';
+import { AnimeType } from '@js-camp/core/utils/enums/table';
 
 const DEFAULT_PAGINATION_PARAMS: PaginationParams = {
   pageIndex: 0,
@@ -50,7 +51,16 @@ export class AnimeTableComponent {
   /** Sort anime. */
   public sort = DEFAULT_PAGINATION_PARAMS.sort;
 
-  public filterValue = '';
+  public filterAnimeValue = '';
+
+  public animeType = AnimeType;
+
+  /** Anime types. */
+  public readonly animeTypes = Object.values(AnimeType).filter(element => typeof element === 'string');
+
+  public filterFormControl = new FormControl('', {
+    nonNullable: true,
+  });
 
   public constructor(
     animeService: AnimeService,
@@ -62,7 +72,13 @@ export class AnimeTableComponent {
     });
     this.animeList$ = route.queryParams.pipe(
       switchMap(params => animeService.getAnimeList(
-        { pageIndex: params['pageIndex'], pageSize: params['pageSize'], sort: params['sort'], filter: params['filter']},
+        {
+          pageIndex: params['pageIndex'],
+          pageSize: params['pageSize'],
+          sort: params['sort'],
+          filter: params['filter'],
+          type: this.filterFormControl.value
+        },
       )),
       map(animeList => {
         this.animeCount = animeList.count;
@@ -80,7 +96,7 @@ export class AnimeTableComponent {
       pageIndex: event.pageIndex,
       pageSize: event.pageSize,
       sort: this.sort,
-      filter: this.filterValue,
+      filter: this.filterAnimeValue,
     });
     this.pageIndex = event.pageIndex;
   }
@@ -99,21 +115,22 @@ export class AnimeTableComponent {
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
       sort: this.sort,
-      filter: this.filterValue,
+      filter: this.filterAnimeValue,
     });
   }
 
-    /** Searching input form controller.
+    /**
+     * Searching input form controller.
      * @param filterValue Filter value.
      */
   public filterAnime(filterValue: string) {
     this.pageIndex = 0;
-    this.filterValue = filterValue;
+    this.filterAnimeValue = filterValue;
     this.updateQueryParams({
       pageIndex: 0,
       pageSize: this.pageSize,
       sort: this.sort,
-      filter: this.filterValue,
+      filter: this.filterAnimeValue,
     })
   }
 

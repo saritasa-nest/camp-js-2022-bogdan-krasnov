@@ -1,9 +1,23 @@
-<mat-form-field appearance="fill">
-  <input matInput type="text"
-  [(ngModel)]="filterValue"
-  (input)="filterAnime(filterValue)"
-  placeholder="Search anime"/>
-</mat-form-field>
+<div>
+  <mat-form-field appearance="fill">
+    <input matInput type="text"
+    [(ngModel)]="filterAnimeValue"
+    (input)="filterAnime(filterAnimeValue)"
+    placeholder="Search anime"/>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select
+      [formControl]="filterFormControl"
+      placeholder="Anime types"
+      multiple>
+      <mat-option
+        *ngFor="let type of animeTypes"
+        [value]="type">
+        {{ type }}
+       </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 <table
     matSort (matSortChange)="sortAnimeList($event)"
     mat-table

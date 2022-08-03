@@ -30,14 +30,15 @@ export class AnimeService {
    * @param params Anime params.
    */
   public getAnimeList(params: PaginationParams): Observable<Pagination<Anime>> {
+    console.log(params.type);
     const offset = params.pageIndex * params.pageSize;
-    console.log(params.pageIndex, params.pageSize, params.sort);
     return this.http.get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(), {
       params: new HttpParams()
         .set('limit', params.pageSize)
         .set('offset', String(offset))
         .set('ordering', `${params.sort},id`)
-        .set('title_eng__icontains', params.filter || ''),
+        .set('title_eng__icontains', params.filter ? params.filter : '')
+        .set('type__in', params.type ? params.type : ''),
     }).pipe(
       map(pagination => PaginationMapper.fromDto(
         pagination,
