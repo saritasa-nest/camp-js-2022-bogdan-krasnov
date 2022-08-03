@@ -9,4 +9,6 @@ export interface PaginationParams {
 
   /** The field by which to sort. */
   sort?: string;
+
+  filter?: string;
 }

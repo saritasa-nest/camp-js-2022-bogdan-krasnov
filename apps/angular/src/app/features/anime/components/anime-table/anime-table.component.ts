@@ -18,6 +18,7 @@ const DEFAULT_PAGINATION_PARAMS: PaginationParams = {
   pageIndex: 0,
   pageSize: PAGE_SIZE_DEFAULT,
   sort: ORDERING_DEFAULT,
+  filter: '',
 }
 
 /**
@@ -47,7 +48,9 @@ export class AnimeTableComponent {
   public pageIndex = DEFAULT_PAGINATION_PARAMS.pageIndex;
 
   /** Sort anime. */
-  public pageSort = DEFAULT_PAGINATION_PARAMS.sort;
+  public sort = DEFAULT_PAGINATION_PARAMS.sort;
+
+  public filterValue = '';
 
   public constructor(
     animeService: AnimeService,
@@ -59,7 +62,7 @@ export class AnimeTableComponent {
     });
     this.animeList$ = route.queryParams.pipe(
       switchMap(params => animeService.getAnimeList(
-        { pageIndex: params['pageIndex'], pageSize: params['pageSize'], sort: params['sort'] },
+        { pageIndex: params['pageIndex'], pageSize: params['pageSize'], sort: params['sort'], filter: params['filter']},
       )),
       map(animeList => {
         this.animeCount = animeList.count;
@@ -76,7 +79,8 @@ export class AnimeTableComponent {
     this.updateQueryParams({
       pageIndex: event.pageIndex,
       pageSize: event.pageSize,
-      sort: this.pageSort,
+      sort: this.sort,
+      filter: this.filterValue,
     });
     this.pageIndex = event.pageIndex;
   }
@@ -87,18 +91,31 @@ export class AnimeTableComponent {
    */
   public sortAnimeList(sort: Sort): void {
     if (!sort.active || sort.direction === 'asc') {
-      this.pageSort = sort.active;
+      this.sort = sort.active;
     } else {
-      this.pageSort = `-${sort.active}`;
+      this.sort = `-${sort.active}`;
     }
     this.updateQueryParams({
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
-      sort: this.pageSort,
+      sort: this.sort,
+      filter: this.filterValue,
     });
   }
 
-    /** Searching input form controller. */
+    /** Searching input form controller.
+     * @param filterValue Filter value.
+     */
+  public filterAnime(filterValue: string) {
+    this.pageIndex = 0;
+    this.filterValue = filterValue;
+    this.updateQueryParams({
+      pageIndex: 0,
+      pageSize: this.pageSize,
+      sort: this.sort,
+      filter: this.filterValue,
+    })
+  }
 
   /**
    * Update query params.
@@ -110,6 +127,7 @@ export class AnimeTableComponent {
         pageIndex: paginationParams.pageIndex,
         pageSize: paginationParams.pageSize,
         sort: paginationParams.sort,
+        filter: paginationParams.filter,
       },
       queryParamsHandling: 'merge',
     });

@@ -1,4 +1,10 @@
- <table
+<mat-form-field appearance="fill">
+  <input matInput type="text"
+  [(ngModel)]="filterValue"
+  (input)="filterAnime(filterValue)"
+  placeholder="Search anime"/>
+</mat-form-field>
+<table
     matSort (matSortChange)="sortAnimeList($event)"
     mat-table
     [dataSource]="animeList$"
