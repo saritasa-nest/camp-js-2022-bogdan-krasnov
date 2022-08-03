@@ -7,7 +7,7 @@ import { AnimeRoutingModule } from './anime.routing';
 
 import { AnimeTableComponent } from './components/anime-table/anime-table.component';
 import { AnimeComponent } from './anime.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /** Table view module. */
 @NgModule({
@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
     AnimeRoutingModule,
     MaterialExampleModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class AnimeModule { }
