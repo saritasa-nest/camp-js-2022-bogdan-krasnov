@@ -1,14 +1,14 @@
 <mat-form-field class="filter-anime" appearance="fill">
   <input matInput type="text"
-  [(ngModel)]="filterAnimeValue"
-  (input)="filterAnime(filterAnimeValue)"
+  <!-- [(ngModel)]="filterAnimeValue"
+  (input)="filterAnime(filterAnimeValue)" -->
   placeholder="Filter anime"/>
 </mat-form-field>
 <main class="main">
   <div class="sidebar">
     <mat-form-field>
       <mat-select
-        (selectionChange)="filterType($event)"
+        <!-- (selectionChange)="filterType($event)" -->
         placeholder="Anime types"
         multiple>
         <mat-option
@@ -67,7 +67,7 @@
 </main>
 <mat-paginator
   [length]="animeCount"
-  [pageIndex]="pageIndex"
+  [pageIndex]="pageIndex$ | async"
   [pageSize]="pageSize"
   [pageSizeOptions]="[5, 10, 15, 20]"
   (page)="onPaginateChange($event)"

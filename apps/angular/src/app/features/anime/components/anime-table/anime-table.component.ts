@@ -48,7 +48,7 @@ export class AnimeTableComponent implements OnInit {
   public animeCount = 0;
 
   /** Index of the current page.  */
-  private readonly pageIndex$ = new BehaviorSubject(DEFAULT_PAGINATION_PARAMS.pageIndex);
+  public readonly pageIndex$ = new BehaviorSubject(DEFAULT_PAGINATION_PARAMS.pageIndex);
 
   /** Sort anime. */
   public sort = DEFAULT_PAGINATION_PARAMS.sort;
@@ -67,13 +67,16 @@ export class AnimeTableComponent implements OnInit {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
   ) {
-    this.animeList$ = this.animeService.getAnimeList()
-      .pipe(
-        map(animeList => {
-          this.animeCount = animeList.length;
-          return animeList.results;
-        }),
-      );
+    this.animeList$ = this.pageIndex$.pipe(
+      switchMap(pageIndex => this.animeService.getAnimeList({
+        pageIndex: 0,
+        pageSize: 5,
+      })),
+      map(animeList => {
+        this.animeCount = animeList.count;
+        return animeList.results;
+      }),
+    );
   }
 
   public ngOnInit(): void {
@@ -110,30 +113,23 @@ export class AnimeTableComponent implements OnInit {
    * @param event Paginator event.
    */
   public onPaginateChange(event: PageEvent): void {
-    this.updateQueryParams({
-      pageIndex: event.pageIndex,
-      pageSize: event.pageSize,
-      sort: this.sort,
-      filter: this.searchString$,
-      type: this.typeAnimeValues,
-    });
-    this.pageIndex$ = event.pageIndex;
+    this.pageIndex$.next(event.pageIndex);
   }
 
   /**
    * Anime filtering by type.
    * @param select Select type value.
    */
-  public filterType(select: MatSelectChange): void {
-    this.updateQueryParams({
-      pageIndex: INITIAL_PAGE,
-      pageSize: this.pageSize,
-      filter: this.searchString$,
-      sort: this.sort,
-      type: select.value,
-    });
-    this.typeAnimeValues = select.value;
-  }
+  // public filterType(select: MatSelectChange): void {
+  //   this.updateQueryParams({
+  //     pageIndex: INITIAL_PAGE,
+  //     pageSize: this.pageSize,
+  //     // filter: this.searchString$,
+  //     sort: this.sort,
+  //     type: select.value,
+  //   });
+  //   this.typeAnimeValues = select.value;
+  // }
 
   /**
    * Sort anime list.
@@ -145,13 +141,6 @@ export class AnimeTableComponent implements OnInit {
     } else {
       this.sort = `-${sort.active}`;
     }
-    this.updateQueryParams({
-      pageIndex: this.pageIndex$,
-      pageSize: this.pageSize,
-      sort: this.sort,
-      filter: this.searchString$,
-      type: this.typeAnimeValues,
-    });
   }
 
   /**
@@ -161,30 +150,24 @@ export class AnimeTableComponent implements OnInit {
   public filterAnime(filterValue: string): void {
     this.pageIndex$.next(INITIAL_PAGE);
     this.searchString$.next(filterValue);
-    this.updateQueryParams({
-      pageIndex: INITIAL_PAGE,
-      pageSize: this.pageSize,
-      sort: this.sort,
-      filter: this.searchString$,
-    });
   }
 
   /**
    * Update query params.
    * @param paginationParams Paginator .
    */
-  private updateQueryParams(paginationParams: PaginationParams): void {
-    this.router.navigate([], {
-      queryParams: {
-        pageIndex: paginationParams.pageIndex,
-        pageSize: paginationParams.pageSize,
-        sort: paginationParams.sort,
-        filter: paginationParams.filter,
-        type: paginationParams.type,
-      },
-      queryParamsHandling: 'merge',
-    });
-  }
+  // private updateQueryParams(paginationParams: PaginationParams): void {
+  //   this.router.navigate([], {
+  //     queryParams: {
+  //       pageIndex: paginationParams.pageIndex,
+  //       pageSize: paginationParams.pageSize,
+  //       sort: paginationParams.sort,
+  //       filter: paginationParams.filter,
+  //       type: paginationParams.type,
+  //     },
+  //     queryParamsHandling: 'merge',
+  //   });
+  // }
 
   /**
    * Track anime by ID.
