@@ -7,7 +7,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-select
-      [formControl]="filterFormControl"
+      (selectionChange)="filterType($event)"
       placeholder="Anime types"
       multiple>
       <mat-option

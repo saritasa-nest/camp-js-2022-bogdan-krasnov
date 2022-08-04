@@ -1,3 +1,5 @@
+import { AnimeType } from '@js-camp/core/utils/enums/table';
+
 /** Anime params. */
 export interface PaginationParams {
 
@@ -10,7 +12,9 @@ export interface PaginationParams {
   /** The field by which to sort. */
   sort?: string;
 
+  /** The field by which to filter. */
   filter?: string;
 
-  type?: string;
+  /** The field by which to filter by type. */
+  type?: AnimeType[];
 }

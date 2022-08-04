@@ -7,20 +7,22 @@ import { map, Observable, switchMap } from 'rxjs';
 
 import { Sort } from '@angular/material/sort';
 
-import { ORDERING_DEFAULT, PAGE_SIZE_DEFAULT } from '../../../../../core/constants/anime-table';
+import { MatSelectChange } from '@angular/material/select';
+
+import { AnimeType } from '@js-camp/core/utils/enums/table';
+
+import { FIRST_PAGE, ORDERING_DEFAULT, PAGE_SIZE_DEFAULT } from '../../../../../core/constants/anime-table';
 
 import { PaginationParams } from '../../../../../core/models/pagination-params';
 
 import { AnimeService } from '../../../../../core/services/anime.service';
-import { FormControl } from '@angular/forms';
-import { AnimeType } from '@js-camp/core/utils/enums/table';
 
 const DEFAULT_PAGINATION_PARAMS: PaginationParams = {
   pageIndex: 0,
   pageSize: PAGE_SIZE_DEFAULT,
   sort: ORDERING_DEFAULT,
   filter: '',
-}
+};
 
 /**
  * Anime table component.
@@ -51,16 +53,14 @@ export class AnimeTableComponent {
   /** Sort anime. */
   public sort = DEFAULT_PAGINATION_PARAMS.sort;
 
+  /** Filter anime value. */
   public filterAnimeValue = '';
 
-  public animeType = AnimeType;
+  /** Type anime values. */
+  public typeAnimeValues: AnimeType[] = [];
 
   /** Anime types. */
   public readonly animeTypes = Object.values(AnimeType).filter(element => typeof element === 'string');
-
-  public filterFormControl = new FormControl('', {
-    nonNullable: true,
-  });
 
   public constructor(
     animeService: AnimeService,
@@ -77,7 +77,7 @@ export class AnimeTableComponent {
           pageSize: params['pageSize'],
           sort: params['sort'],
           filter: params['filter'],
-          type: this.filterFormControl.value
+          type: params['type'],
         },
       )),
       map(animeList => {
@@ -88,7 +88,7 @@ export class AnimeTableComponent {
   }
 
   /**
-   * Apply pagination to anime table.
+   * Changing the page numbering to the anime table.
    * @param event Paginator event.
    */
   public onPaginateChange(event: PageEvent): void {
@@ -97,8 +97,24 @@ export class AnimeTableComponent {
       pageSize: event.pageSize,
       sort: this.sort,
       filter: this.filterAnimeValue,
+      type: this.typeAnimeValues,
     });
     this.pageIndex = event.pageIndex;
+  }
+
+  /**
+   * Anime filtering by type.
+   * @param select Select type value.
+   */
+  public filterType(select: MatSelectChange): void {
+    this.updateQueryParams({
+      pageIndex: FIRST_PAGE,
+      pageSize: this.pageSize,
+      filter: this.filterAnimeValue,
+      sort: this.sort,
+      type: select.value,
+    });
+    this.typeAnimeValues = select.value;
   }
 
   /**
@@ -116,22 +132,23 @@ export class AnimeTableComponent {
       pageSize: this.pageSize,
       sort: this.sort,
       filter: this.filterAnimeValue,
+      type: this.typeAnimeValues,
     });
   }
 
-    /**
-     * Searching input form controller.
-     * @param filterValue Filter value.
-     */
-  public filterAnime(filterValue: string) {
-    this.pageIndex = 0;
+  /**
+   * Searching input form controller.
+   * @param filterValue Filter value.
+   */
+  public filterAnime(filterValue: string): void {
+    this.pageIndex = FIRST_PAGE;
     this.filterAnimeValue = filterValue;
     this.updateQueryParams({
-      pageIndex: 0,
+      pageIndex: FIRST_PAGE,
       pageSize: this.pageSize,
       sort: this.sort,
       filter: this.filterAnimeValue,
-    })
+    });
   }
 
   /**
@@ -145,6 +162,7 @@ export class AnimeTableComponent {
         pageSize: paginationParams.pageSize,
         sort: paginationParams.sort,
         filter: paginationParams.filter,
+        type: paginationParams.type,
       },
       queryParamsHandling: 'merge',
     });
