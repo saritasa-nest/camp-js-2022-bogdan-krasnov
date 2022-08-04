@@ -1,18 +1,16 @@
-import { AuthRoutingModule } from './auth.routing';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MaterialExampleModule } from 'apps/angular/src/material/material.module';
+import { MaterialExampleModule } from '../../../material/material.module';
 
-import { AuthComponent } from './auth.component';
+import { AuthRoutingModule } from '../auth/auth-routing.module';
+
+import { LoginComponent } from './login/login.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 /** Anime module. */
 @NgModule({
-  declarations: [AuthComponent],
-  imports: [
-    CommonModule,
-    AuthRoutingModule,
-    MaterialExampleModule,
-  ],
+  declarations: [LoginComponent, RegistrationComponent],
+  imports: [CommonModule, AuthRoutingModule, MaterialExampleModule],
 })
-export class AuthModule { }
+export class AuthModule {}
