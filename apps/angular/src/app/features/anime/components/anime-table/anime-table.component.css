@@ -1,3 +1,14 @@
+.main {
+  display: flex;
+  justify-content: space-around;
+  margin: 0 30px;
+}
+
+.sidebar {
+  margin-right: 30px;
+  width: 300px;
+}
+
 .table {
   width: 100%;
 }
@@ -5,4 +16,8 @@
 .anime-image {
   max-width: 150px;
   max-height: 150px;
+}
+
+.filter-anime {
+  width: 100%;
 }
