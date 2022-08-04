@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { Anime } from '@js-camp/core/models/anime';
 import { Observable, map } from 'rxjs';
 
-import { ORDERING_DEFAULT, PAGE_SIZE_DEFAULT } from '../constants/anime-table';
+import { PAGE_SIZE_DEFAULT } from '../constants/anime-table';
 
 import { AppConfigService } from './app-config.service';
 
@@ -22,14 +22,14 @@ export class AnimeService {
     this.animeListUrl = new URL('anime/anime/', appConfig.apiUrl);
   }
 
-  /** Reception with a configured URL. */
+  /** Getting a list of anime. */
   public getAnimeList(): Observable<Anime[]> {
     return this.http.get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(), {
       params: new HttpParams()
         .set('limit', PAGE_SIZE_DEFAULT)
-        .set('ordering', ORDERING_DEFAULT),
+        .set('ordering', 'id'),
     }).pipe(
-      map(animeDto => animeDto.results.map(anime => AnimeMapper.fromDto(anime)))
+      map(animeDto => animeDto.results.map(anime => AnimeMapper.fromDto(anime))),
     );
   }
 }
