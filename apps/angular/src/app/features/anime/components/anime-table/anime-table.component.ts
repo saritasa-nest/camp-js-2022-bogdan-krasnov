@@ -18,7 +18,7 @@ import { PaginationParams } from '../../../../../core/models/pagination-params';
 import { AnimeService } from '../../../../../core/services/anime.service';
 
 const DEFAULT_PAGINATION_PARAMS: PaginationParams = {
-  pageIndex: 0,
+  pageIndex: FIRST_PAGE,
   pageSize: PAGE_SIZE_DEFAULT,
   sort: ORDERING_DEFAULT,
   filter: '',
