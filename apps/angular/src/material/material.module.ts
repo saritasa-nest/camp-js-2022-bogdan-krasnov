@@ -103,4 +103,4 @@ const material = [
   imports: [material],
   exports: [material],
 })
-export class MaterialExampleModule {}
+export class MaterialModule {}

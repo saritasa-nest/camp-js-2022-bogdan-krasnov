@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MaterialExampleModule } from 'apps/angular/src/material/material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MaterialModule } from '../../../material/material.module';
 
 import { AnimeRoutingModule } from './anime.routing';
 
 import { AnimeTableComponent } from './components/anime-table/anime-table.component';
 import { AnimeComponent } from './anime.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /** Table view module. */
 @NgModule({
@@ -15,7 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     AnimeRoutingModule,
-    MaterialExampleModule,
+    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
   ],
