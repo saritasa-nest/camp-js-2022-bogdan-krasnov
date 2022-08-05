@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Anime } from '@js-camp/core/models/anime';
 
@@ -19,8 +19,8 @@ import { AnimeService } from '../../../../../core/services/anime.service';
 import { SearchParamsService } from './../../../../../core/services/search-params.service';
 
 const DEFAULT_PAGINATION_PARAMS: PaginationParams = {
-  pageIndex: INITIAL_PAGE,
-  pageSize: PAGE_SIZE_DEFAULT,
+  page: INITIAL_PAGE,
+  size: PAGE_SIZE_DEFAULT,
   sort: ORDERING_DEFAULT,
   filter: '',
 };
@@ -34,7 +34,7 @@ const DEFAULT_PAGINATION_PARAMS: PaginationParams = {
   styleUrls: ['./anime-table.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimeTableComponent implements OnInit {
+export class AnimeTableComponent {
 
   /** Anime list. */
   public animeList$: Observable<readonly Anime[]>;
@@ -43,7 +43,7 @@ export class AnimeTableComponent implements OnInit {
   public readonly displayedColumns = ['imageSrc', 'titleEnglish', 'titleJapanese', 'type', 'status', 'airedStart'] as const;
 
   /** Total number of records for the current query. */
-  public readonly pageSize = DEFAULT_PAGINATION_PARAMS.pageSize;
+  public readonly pageSize = DEFAULT_PAGINATION_PARAMS.size;
 
   public readonly filterAnimeValue = '';
 
@@ -51,16 +51,16 @@ export class AnimeTableComponent implements OnInit {
   public animeCount = 0;
 
   /** Index of the current page.  */
-  public readonly pageIndex$ = new BehaviorSubject(DEFAULT_PAGINATION_PARAMS.pageIndex);
+  public readonly pageIndex$ = new BehaviorSubject(DEFAULT_PAGINATION_PARAMS.page);
 
   /** Sort anime. */
-  public pageSort$ = new BehaviorSubject(DEFAULT_PAGINATION_PARAMS.sort);
-
-  /** Filter anime value. */
-  private readonly searchString$ = new BehaviorSubject('');
+  public readonly pageSort$ = new BehaviorSubject(DEFAULT_PAGINATION_PARAMS.sort);
 
   /** Type anime values. */
-  public pageType$ = new BehaviorSubject([] as AnimeType[]);
+  public readonly pageType$ = new BehaviorSubject([] as AnimeType[]);
+
+  /** Filter anime value. */
+  private readonly pageSearch$ = new BehaviorSubject('');
 
   /** Anime types. */
   public readonly animeTypes = Object.values(AnimeType).filter(element => typeof element === 'string');
@@ -72,26 +72,24 @@ export class AnimeTableComponent implements OnInit {
 
     const { page = 0, sort = 'title_eng', search = '', type = [] } = this.searchParamsService.getAnimeListSearchParams();
 
-    console.log(page, sort, search, type);
-
     this.pageIndex$.next(page);
-    this.searchString$.next(search);
+    this.pageSearch$.next(search);
     this.pageSort$.next(sort);
     this.pageType$.next(type);
 
     this.animeList$ = combineLatest([
       this.pageType$,
-      this.searchString$,
+      this.pageSearch$,
       this.pageSort$,
       this.pageIndex$,
     ]).pipe(
       debounceTime(500),
-      switchMap(([pageType, searchString, pageSort, pageIndex]) => {
+      switchMap(([pageType, pageSearch, pageSort, pageIndex]) => {
         const params = this.searchParamsService.changeSearchParams({
-          pageIndex,
-          pageSize: PAGE_SIZE_DEFAULT,
+          page: pageIndex,
+          size: PAGE_SIZE_DEFAULT,
           sort: pageSort,
-          filter: searchString,
+          filter: pageSearch,
           type: pageType,
         });
         console.log(params);
@@ -115,24 +113,6 @@ export class AnimeTableComponent implements OnInit {
   // );
   }
 
-  public ngOnInit(): void {
-    // this.animeList$ = route.queryParams.pipe(
-    //   switchMap(params => animeService.getAnimeList(
-    //     {
-    //       pageIndex: params['pageIndex'],
-    //       pageSize: params['pageSize'],
-    //       sort: params['sort'],
-    //       filter: params['filter'],
-    //       type: params['type'],
-    //     },
-    //   )),
-    //   map(animeList => {
-    //     this.animeCount = animeList.count;
-    //     return animeList.results;
-    //   }),
-    // );
-  }
-
   /**
    * Changing the page numbering to the anime table.
    * @param event Paginator event.
@@ -154,7 +134,7 @@ export class AnimeTableComponent implements OnInit {
    * Sort anime list.
    * @param sort Selected sorting.
    */
-  public sortAnimeList(sort: Sort): void {
+  public onSortChange(sort: Sort): void {
     if (!sort.active || sort.direction === 'asc') {
       this.pageSort$.next(sort.active);
     } else {
@@ -168,7 +148,7 @@ export class AnimeTableComponent implements OnInit {
    */
   public filterAnime(filterValue: string): void {
     this.pageIndex$.next(INITIAL_PAGE);
-    this.searchString$.next(filterValue);
+    this.pageSearch$.next(filterValue);
   }
 
   /**

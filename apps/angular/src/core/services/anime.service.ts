@@ -29,16 +29,12 @@ export class AnimeService {
   /** Reception with a configured URL.
    * @param params Anime params.
    */
-  public getAnimeList(params: PaginationParams): Observable<Pagination<Anime>> {
-    const offset = params.pageIndex * params.pageSize;
-    return this.http.get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(), {
-      params: new HttpParams()
-        .set('limit', params.pageSize)
-        .set('offset', String(offset))
-        .set('ordering', `${params.sort},id`)
-        .set('title_eng__icontains', params.filter ? params.filter : '')
-        .set('type__in', params.type ? params.type.join(',') : ''),
-    }).pipe(
+  public getAnimeList(params: HttpParams): Observable<Pagination<Anime>> {
+    // const offset = params.pageIndex * params.pageSize;
+    return this.http.get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(),
+      {
+        params,
+      }).pipe(
       map(pagination => PaginationMapper.fromDto(
         pagination,
         animeDto => AnimeMapper.fromDto(animeDto),

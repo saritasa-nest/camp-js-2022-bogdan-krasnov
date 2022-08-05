@@ -4,10 +4,10 @@ import { AnimeType } from '@js-camp/core/utils/enums/table';
 export interface PaginationParams {
 
   /** Actual page. */
-  pageIndex: number;
+  page: number;
 
   /** Limit elements to display on a page. */
-  pageSize: number;
+  size: number;
 
   /** The field by which to sort. */
   sort?: string;
