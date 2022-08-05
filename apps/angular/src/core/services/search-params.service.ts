@@ -12,7 +12,7 @@ export class SearchParamsService {
 
   public constructor(
     private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute,
+    private readonly route: ActivatedRoute,
   ) { }
 
   /**
@@ -41,7 +41,7 @@ export class SearchParamsService {
 
   /** Gets search params from browser address string. */
   public getAnimeListSearchParams(): Params {
-    const { queryParams } = this.activatedRoute.snapshot;
+    const { queryParams } = this.route.snapshot;
     return queryParams;
   }
 }
