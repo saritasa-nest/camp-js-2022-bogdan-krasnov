@@ -10,20 +10,18 @@ import { MatSelectChange } from '@angular/material/select';
 
 import { AnimeType } from '@js-camp/core/utils/enums/table';
 
-import { INITIAL_PAGE, ORDERING_DEFAULT, PAGE_SIZE_DEFAULT } from '../../../../../core/constants/anime-table';
-
 import { PaginationParams } from '../../../../../core/models/pagination-params';
 
 import { AnimeService } from '../../../../../core/services/anime.service';
 
 import { SearchParamsService } from './../../../../../core/services/search-params.service';
 
-const DEFAULT_PAGINATION_PARAMS: PaginationParams = {
-  page: INITIAL_PAGE,
-  size: PAGE_SIZE_DEFAULT,
-  sort: ORDERING_DEFAULT,
-  filter: '',
-};
+const DEBOUNCE_TIME = 500;
+const PAGE_SIZE_DEFAULT = 5;
+const INITIAL_PAGE = 0;
+const DEFAULT_ANIME_COUNT = 0;
+const ORDERING_DEFAULT = 'title_eng';
+const DEFAULT_SEARCH_VALUE = '';
 
 /**
  * Anime table component.
@@ -37,30 +35,31 @@ const DEFAULT_PAGINATION_PARAMS: PaginationParams = {
 export class AnimeTableComponent {
 
   /** Anime list. */
-  public animeList$: Observable<readonly Anime[]>;
+  public readonly animeList$: Observable<readonly Anime[]>;
 
   /** Displayed columns. */
   public readonly displayedColumns = ['imageSrc', 'titleEnglish', 'titleJapanese', 'type', 'status', 'airedStart'] as const;
 
   /** Number of records per page. */
-  public readonly pageSize = DEFAULT_PAGINATION_PARAMS.size;
+  public readonly pageSize$ = new BehaviorSubject(PAGE_SIZE_DEFAULT);
 
-  public readonly filterAnimeValue = '';
+  /** Anime Search field value. */
+  public searchValue = DEFAULT_SEARCH_VALUE;
 
   /** Count of anime taken from the request. */
-  public animeCount = 0;
+  public readonly animeCount$ = new BehaviorSubject(DEFAULT_ANIME_COUNT);
 
   /** Index of the current page.  */
-  public readonly pageIndex$ = new BehaviorSubject(DEFAULT_PAGINATION_PARAMS.page);
+  public readonly pageIndex$ = new BehaviorSubject(INITIAL_PAGE);
 
   /** Sorting anime on the page. */
-  public readonly pageSort$ = new BehaviorSubject(DEFAULT_PAGINATION_PARAMS.sort);
+  public readonly pageSort$ = new BehaviorSubject(ORDERING_DEFAULT);
 
   /** Filtering by type on the page. */
   public readonly pageType$ = new BehaviorSubject([] as AnimeType[]);
 
-  /**Filtering by anime name. */
-  private readonly pageSearch$ = new BehaviorSubject('');
+  /** Filtering by anime name. */
+  private readonly pageSearch$ = new BehaviorSubject(DEFAULT_SEARCH_VALUE);
 
   /** Anime types. */
   public readonly animeTypes = Object.values(AnimeType).filter(element => typeof element === 'string');
@@ -69,28 +68,25 @@ export class AnimeTableComponent {
     private readonly animeService: AnimeService,
     private readonly searchParamsService: SearchParamsService,
   ) {
-
-    const { page = 0, sort = 'title_eng', search = '', type = [] } = this.searchParamsService.getAnimeListSearchParams();
-
     this.animeList$ = combineLatest([
       this.pageType$,
       this.pageSearch$,
       this.pageSort$,
       this.pageIndex$,
+      this.pageSize$,
     ]).pipe(
-      debounceTime(500),
-      switchMap(([pageType, pageSearch, pageSort, pageIndex]) => {
-        const params = this.searchParamsService.changeSearchParams({
+      debounceTime(DEBOUNCE_TIME),
+      switchMap(([pageType, pageSearch, pageSort, pageIndex, pageSize]) => {
+        const params = this.searchParamsService.changeSearchParams(new PaginationParams({
           page: pageIndex,
-          size: PAGE_SIZE_DEFAULT,
+          size: pageSize,
           sort: pageSort,
-          filter: pageSearch,
+          search: pageSearch,
           type: pageType,
-        });
+        }));
         return this.animeService.getAnimeList(params).pipe(
           map(animeList => {
-            this.animeCount = animeList.count;
-            console.log(animeList);
+            this.animeCount$.next(animeList.count);
             return animeList.results;
           }),
         );
@@ -104,15 +100,16 @@ export class AnimeTableComponent {
    */
   public onPaginateChange(event: PageEvent): void {
     this.pageIndex$.next(event.pageIndex);
+    this.pageSize$.next(event.pageSize);
   }
 
   /**
    * Anime filtering by type.
-   * @param select Select type value.
+   * @param selectTypeValue Select type value.
    */
-  public filterType(select: MatSelectChange): void {
+  public filterType(selectTypeValue: MatSelectChange): void {
     this.pageIndex$.next(INITIAL_PAGE);
-    this.pageType$.next(select.value);
+    this.pageType$.next(selectTypeValue.value);
   }
 
   /**
@@ -127,13 +124,10 @@ export class AnimeTableComponent {
     }
   }
 
-  /**
-   * Searching input form controller.
-   * @param filterValue Filter value.
-   */
-  public filterAnime(filterValue: string): void {
+  /** Searching input form controller. */
+  public searchAnime(): void {
     this.pageIndex$.next(INITIAL_PAGE);
-    this.pageSearch$.next(filterValue);
+    this.pageSearch$.next(this.searchValue);
   }
 
   /**
