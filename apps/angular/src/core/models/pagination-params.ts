@@ -1,20 +1,32 @@
+import { Immerable, OmitImmerable } from '@js-camp/core/models/immerable';
 import { AnimeType } from '@js-camp/core/utils/enums/table';
 
 /** Anime params. */
-export interface PaginationParams {
+export class PaginationParams extends Immerable {
 
   /** Actual page. */
-  page: number;
+  public readonly page: number;
 
   /** Limit elements to display on a page. */
-  size: number;
+  public readonly size: number;
 
   /** The field by which to sort. */
-  sort?: string;
+  public readonly sort?: string;
 
   /** The field by which to filter. */
-  filter?: string;
+  public readonly search?: string;
 
   /** The field by which to filter by type. */
-  type?: AnimeType[];
+  public readonly type?: AnimeType[];
+
+  public constructor(data: InitArgs) {
+    super();
+    this.page = data.page;
+    this.size = data.size;
+    this.sort = data.sort;
+    this.type = data.type;
+    this.search = data.search;
+  }
 }
+
+type InitArgs = OmitImmerable<PaginationParams>;
