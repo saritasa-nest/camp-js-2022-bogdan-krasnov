@@ -25,9 +25,7 @@ export class SearchParamsService {
 
     const filteredNewSearchParams: Params = [];
     for (const [name, value] of Object.entries(newSearchParams)) {
-      if (value !== '' && value !== 0) {
-        filteredNewSearchParams[name] = value;
-      }
+      filteredNewSearchParams[name] = value;
     }
 
     this.router.navigate([], {

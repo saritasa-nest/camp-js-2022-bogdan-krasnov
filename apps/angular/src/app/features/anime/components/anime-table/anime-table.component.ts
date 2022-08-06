@@ -42,24 +42,24 @@ export class AnimeTableComponent {
   /** Displayed columns. */
   public readonly displayedColumns = ['imageSrc', 'titleEnglish', 'titleJapanese', 'type', 'status', 'airedStart'] as const;
 
-  /** Total number of records for the current query. */
+  /** Number of records per page. */
   public readonly pageSize = DEFAULT_PAGINATION_PARAMS.size;
 
   public readonly filterAnimeValue = '';
 
-  /** Count of anime in the database.  */
+  /** Count of anime taken from the request. */
   public animeCount = 0;
 
   /** Index of the current page.  */
   public readonly pageIndex$ = new BehaviorSubject(DEFAULT_PAGINATION_PARAMS.page);
 
-  /** Sort anime. */
+  /** Sorting anime on the page. */
   public readonly pageSort$ = new BehaviorSubject(DEFAULT_PAGINATION_PARAMS.sort);
 
-  /** Type anime values. */
+  /** Filtering by type on the page. */
   public readonly pageType$ = new BehaviorSubject([] as AnimeType[]);
 
-  /** Filter anime value. */
+  /**Filtering by anime name. */
   private readonly pageSearch$ = new BehaviorSubject('');
 
   /** Anime types. */
@@ -71,11 +71,6 @@ export class AnimeTableComponent {
   ) {
 
     const { page = 0, sort = 'title_eng', search = '', type = [] } = this.searchParamsService.getAnimeListSearchParams();
-
-    this.pageIndex$.next(page);
-    this.pageSearch$.next(search);
-    this.pageSort$.next(sort);
-    this.pageType$.next(type);
 
     this.animeList$ = combineLatest([
       this.pageType$,
@@ -92,25 +87,15 @@ export class AnimeTableComponent {
           filter: pageSearch,
           type: pageType,
         });
-        console.log(params);
         return this.animeService.getAnimeList(params).pipe(
           map(animeList => {
             this.animeCount = animeList.count;
+            console.log(animeList);
             return animeList.results;
           }),
         );
       }),
     );
-
-  //   switchMap(pageIndex => this.animeService.getAnimeList({
-  //     pageIndex: 0,
-  //     pageSize: 5,
-  //   })),
-  //   map(animeList => {
-  //     this.animeCount = animeList.count;
-  //     return animeList.results;
-  //   }),
-  // );
   }
 
   /**
