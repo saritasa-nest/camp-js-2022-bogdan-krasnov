@@ -28,7 +28,6 @@ export class AnimeService {
    * @param params Anime params.
    */
   public getAnimeList(params: HttpParams): Observable<Pagination<Anime>> {
-    // const offset = params.pageIndex * params.pageSize;
     return this.http.get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(),
       {
         params,
