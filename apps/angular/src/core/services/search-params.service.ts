@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { PaginationParams } from '../models/pagination-params';
+import { PaginationParamsMapper } from './mappers/paginationParams.mapper';
 
 /** Construct and redirecting by query search params. */
 @Injectable({
@@ -21,7 +22,7 @@ export class SearchParamsService {
    */
   public changeSearchParams(pagination: PaginationParams): HttpParams {
 
-    const newSearchParams = { ...pagination };
+    const newSearchParams = { ...PaginationParamsMapper.toDto(pagination) };
 
     const filteredNewSearchParams: Params = [];
     for (const [name, value] of Object.entries(newSearchParams)) {

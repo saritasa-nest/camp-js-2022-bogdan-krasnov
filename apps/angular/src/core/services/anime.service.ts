@@ -10,8 +10,6 @@ import { Pagination } from '@js-camp/core/models/pagination';
 
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
-import { PaginationParams } from './../models/pagination-params';
-
 import { AppConfigService } from './app-config.service';
 
 /** Anime service. */
