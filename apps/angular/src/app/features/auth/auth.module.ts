@@ -1,3 +1,4 @@
+import { AuthComponent } from './auth.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -10,7 +11,7 @@ import { RegistrationComponent } from './registration/registration.component';
 
 /** Anime module. */
 @NgModule({
-  declarations: [LoginComponent, RegistrationComponent],
+  declarations: [LoginComponent, RegistrationComponent, AuthComponent],
   imports: [CommonModule, AuthRoutingModule, MaterialExampleModule],
 })
 export class AuthModule {}

@@ -1,18 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TokenDto } from '@js-camp/core/dtos/token.dto';
 import { map, Observable } from 'rxjs';
+import { Login } from '../models/login';
 
 import { AppConfigService } from './app-config.service';
-
-export interface LoginForm {
-
-  /** Email of user. */
-  readonly email: string;
-
-  /** Password of user. */
-  readonly password: string;
-}
+import { UserSecretDto } from './mappers/dto/user-secret.dto';
 
 
 /** Anime service. */
@@ -21,23 +13,27 @@ export interface LoginForm {
 })
 export class AuthenticationService {
 
-  private readonly authLogin: URL;
+  private readonly loginUrl: URL;
 
   public constructor(
     appConfig: AppConfigService,
     private readonly http: HttpClient,
   ) {
-    this.authLogin = new URL('auth/login/', appConfig.apiUrl);
+    this.loginUrl = new URL('auth/login/', appConfig.apiUrl);
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-  login(loginForm: LoginForm): Observable<void> {
-    const { email, password } = loginForm;
-    return this.http.post<TokenDto>(this.authLogin.toString(), { email, password }).pipe(
+    /**
+   * Login a user with email and password.
+   * @param loginData Login data.
+   */
+  public login(loginData: Login): Observable<void> {
+    return this.http.post<UserSecretDto>(
+      this.loginUrl.toString(),
+      loginData,
+    ).pipe(
       map(
         tokenDto => {
-          localStorage.setItem('tokenAccess', tokenDto.access);
-          localStorage.setItem('tokenRefresh', tokenDto.refresh);
+          localStorage.setItem('token', tokenDto.token);
         },
       ),
     );
