@@ -12,7 +12,15 @@ import { AuthenticationService } from 'apps/angular/src/core/services/authentica
 })
 export class LoginComponent implements OnInit {
 
-  loginForm: FormGroup
+  // public loginForm = new FormGroup({
+  //   email: new FormControl(null, [
+  //     Validators.required,
+  //     Validators.email,
+  //   ]),
+  //   password: new FormGroup(null, [
+  //     Validators.required,
+  //   ]),
+  // });
 
   constructor(
     private authService: AuthenticationService,
@@ -21,31 +29,22 @@ export class LoginComponent implements OnInit {
 
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
   ngOnInit(): void {
-    this.loginForm = new FormGroup({
-      email: new FormControl(null, [
-        Validators.required,
-        Validators.email,
-      ]),
-      password: new FormGroup(null, [
-        Validators.required,
-        Validators.minLength(3),
-      ]),
-    });
+
   }
 
-  public onSubmit() {
-    if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe(data => {
-        console.log('data SUCCESS', data);
-      });
-    }
-  }
+  // public onSubmit() {
+  //   if (this.loginForm.valid) {
+  //     this.authService.login({
+  //       email: this.loginForm.value.email,
+  //       password: this.loginForm.value.password,
+  //     }).subscribe(data => {
+  //       console.log('data SUCCESS', data);
+  //     });
+  //   }
+  // }
 
-  public login() {
-    this.authService.login('bogdan@mail.ru', '71ilonud').subscribe(data => {
-      console.log('data SUCCESS', data);
-    });
-  }
+  // public login() {
+  //   this.onSubmit();
+  // }
 }
