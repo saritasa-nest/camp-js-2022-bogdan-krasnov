@@ -1,3 +1,4 @@
+/** Login. */
 export interface Login {
 
   /** Email of user. */

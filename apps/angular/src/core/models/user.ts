@@ -2,7 +2,7 @@
 export interface User {
 
   /** User id. */
-  readonly id: number;
+  readonly id?: number;
 
   /** User email. */
   readonly email: string;
