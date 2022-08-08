@@ -8,6 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialExampleModule as MaterialModule } from '../material/material.module';
 
+import { AuthInterceptor } from './../core/interceptors/auth-interceptor';
+
 import { SharedModule } from './../shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -19,6 +21,11 @@ const httpInterceptorProviders = [
   {
     provide: HTTP_INTERCEPTORS,
     useClass: ApiInterceptor,
+    multi: true,
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
     multi: true,
   },
 ];
