@@ -21,14 +21,18 @@ export class AuthService {
 
   private readonly registerUrl: URL;
 
-  private isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  private readonly isLoggedIn$ = new BehaviorSubject<boolean>(false);
+
+  /** Get token. */
+  public get token(): string | null {
+    return localStorage.getItem(TOKEN);
+  }
 
   public constructor(
     appConfig: AppConfigService,
     private readonly http: HttpClient,
   ) {
-    const token = localStorage.getItem(TOKEN);
-    this.isLoggedIn$.next(!!token);
+    this.isLoggedIn$.next(!!this.token);
 
     this.loginUrl = new URL('auth/login/', appConfig.apiUrl);
     this.registerUrl = new URL('auth/register/', appConfig.apiUrl);
