@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Anime } from '@js-camp/core/models/anime';
 
-import { BehaviorSubject, Observable, switchMap, combineLatest, map, debounceTime } from 'rxjs';
+import { BehaviorSubject, Observable, switchMap, combineLatest, map, tap, debounceTime } from 'rxjs';
 
 import { Sort } from '@angular/material/sort';
 
@@ -85,10 +85,8 @@ export class AnimeTableComponent {
           type: pageType,
         }));
         return this.animeService.getAnimeList(params).pipe(
-          map(animeList => {
-            this.animeCount$.next(animeList.count);
-            return animeList.results;
-          }),
+          tap(animeList => this.animeCount$.next(animeList.count)),
+          map(animeList => animeList.results),
         );
       }),
     );
