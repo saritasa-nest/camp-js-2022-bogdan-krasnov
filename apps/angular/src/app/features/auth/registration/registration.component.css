@@ -8,3 +8,7 @@
 .container > * {
   width: 40%;
 }
+
+.name-page {
+  text-align: center;
+}
