@@ -105,7 +105,7 @@ export class AnimeTableComponent {
    * Anime filtering by type.
    * @param selectTypeValue Select type value.
    */
-  public filterType(selectTypeValue: MatSelectChange): void {
+  public onFilterType(selectTypeValue: MatSelectChange): void {
     this.pageIndex$.next(INITIAL_PAGE);
     this.pageType$.next(selectTypeValue.value);
   }

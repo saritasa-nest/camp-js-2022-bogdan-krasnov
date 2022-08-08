@@ -17,10 +17,12 @@ import { AppConfigService } from './app-config.service';
   providedIn: 'root',
 })
 export class AnimeService {
-
   private readonly animeListUrl: URL;
 
-  public constructor(appConfig: AppConfigService, private readonly http: HttpClient) {
+  public constructor(
+    appConfig: AppConfigService,
+    private readonly http: HttpClient,
+  ) {
     this.animeListUrl = new URL('anime/anime/', appConfig.apiUrl);
   }
 
@@ -28,14 +30,14 @@ export class AnimeService {
    * @param params Anime params.
    */
   public getAnimeList(params: HttpParams): Observable<Pagination<Anime>> {
-    return this.http.get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(),
-      {
-        params,
-      }).pipe(
-      map(pagination => PaginationMapper.fromDto(
-        pagination,
-        animeDto => AnimeMapper.fromDto(animeDto),
-      )),
-    );
+    return this.http
+      .get<PaginationDto<AnimeDto>>(this.animeListUrl.toString(), {
+      params,
+    })
+      .pipe(
+        map(pagination =>
+          PaginationMapper.fromDto(pagination, animeDto =>
+            AnimeMapper.fromDto(animeDto))),
+      );
   }
 }
