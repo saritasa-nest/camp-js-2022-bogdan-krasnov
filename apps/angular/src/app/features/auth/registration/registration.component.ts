@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { tap } from 'rxjs';
+
+import { UrlService } from '../../../../core/services/url.service';
 
 import { AuthService } from '../../../../core/services/auth.service';
 
@@ -9,7 +12,7 @@ import { AuthService } from '../../../../core/services/auth.service';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent {
 
   /** Register form. */
   public readonly registerForm = new FormGroup({
@@ -20,24 +23,23 @@ export class RegistrationComponent implements OnInit {
     confirmPassword: new FormControl(null, [Validators.required]),
   });
 
-  constructor(
-    private authService: AuthService,
-  ) {
-  }
+  public constructor(
+    private readonly authService: AuthService,
+    private readonly urlService: UrlService,
+  ) { }
 
-  ngOnInit(): void {
-
-  }
-
+  /** OnInit. */
   public onSubmit(): void {
     if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
       this.authService.register({
         email: String(this.registerForm.value.email),
         firstName: String(this.registerForm.value.firstName),
         lastName: String(this.registerForm.value.lastName),
         password: String(this.registerForm.value.password),
-      }).subscribe();
+      }).pipe(
+        tap(() => this.urlService.navigateToLogin()),
+      )
+        .subscribe();
     }
   }
 }
