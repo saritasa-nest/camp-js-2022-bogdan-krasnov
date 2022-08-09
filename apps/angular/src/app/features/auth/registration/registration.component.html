@@ -1,5 +1,5 @@
 <h1 class="name-page">Register Page</h1>
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
   <div class="container">
     <mat-form-field>
       <input matInput placeholder="Email" formControlName="email" />
@@ -29,7 +29,7 @@
         placeholder="Password Confirmation"
         formControlName="confirmPassword"
       />
-      <mat-hint *ngIf="registerForm.hasError('passwordsNotMatching')"
+      <mat-hint *ngIf="registrationForm.hasError('passwordsNotMatching')"
         >Passwords not matching</mat-hint
       >
     </mat-form-field>
@@ -37,7 +37,7 @@
     <button
       mat-flat-button
       color="primary"
-      [disabled]="!registerForm.valid"
+      [disabled]="!registrationForm.valid"
       type="submit"
     >
       Register
