@@ -5,7 +5,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
 const material = [
   MatTableModule,
   MatButtonModule,
@@ -20,4 +19,4 @@ const material = [
   imports: [material],
   exports: [material],
 })
-export class MaterialExampleModule {}
+export class MaterialModule {}

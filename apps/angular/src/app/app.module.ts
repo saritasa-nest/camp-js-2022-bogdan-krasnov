@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MaterialExampleModule as MaterialModule } from '../material/material.module';
+import { MaterialModule } from '../material/material.module';
 
 import { AuthInterceptor } from './../core/interceptors/auth-interceptor';
 
