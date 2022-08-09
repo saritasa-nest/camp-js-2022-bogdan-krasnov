@@ -1,7 +1,9 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { AuthService } from '../../../../core/services/auth.service';
+import { tap } from 'rxjs/operators';
+
+import { UserService } from './../../../../core/services/user.service';
 
 /** Login component. */
 @Component({
@@ -9,7 +11,7 @@ import { AuthService } from '../../../../core/services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   /** Login form. */
   public readonly loginForm = new FormGroup({
@@ -18,25 +20,30 @@ export class LoginComponent implements OnInit {
   });
 
   /** Check login user. */
-  public readonly isLoggedIn$ = this.authService.isLoggedIn();
+  public readonly isLoggedIn$ = this.userService.isLoggedIn();
 
-  constructor(
-    private readonly authService: AuthService,
-  ) {
-
-  }
-
-  ngOnInit(): void {
-
-  }
+  public constructor(
+    private readonly userService: UserService,
+  ) { }
 
   /** OnSubmit. */
   public onSubmit(): void {
-    if (this.loginForm.valid) {
-      this.authService.login({
-        email: String(this.loginForm.value.email),
-        password: String(this.loginForm.value.password),
-      }).subscribe();
+    if (this.loginForm.invalid) {
+      return;
     }
+    this.userService.login({
+      email: String(this.loginForm.value.email),
+      password: String(this.loginForm.value.password),
+    }).pipe(
+      tap(errorMessage => {
+        if (errorMessage === null) {
+          return;
+        }
+        this.loginForm.setErrors({
+          email: errorMessage,
+        });
+      }),
+    )
+      .subscribe();
   }
 }
