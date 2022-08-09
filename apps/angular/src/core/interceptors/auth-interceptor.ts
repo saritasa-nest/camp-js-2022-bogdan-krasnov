@@ -1,3 +1,4 @@
+import { UserService } from './../services/user.service';
 import {
   HttpEvent,
   HttpHandler,
@@ -9,14 +10,14 @@ import { Observable } from 'rxjs';
 
 import { AppConfigService } from '../services/app-config.service';
 
-import { AuthService } from './../services/auth.service';
+const TOKEN_HEADER_KEY = 'Authorization';
 
 /** Interceptor to add access token to requests using Authorization HTTP header. */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   public constructor(
     private readonly appConfigService: AppConfigService,
-    private readonly authService: AuthService,
+    private readonly userService: UserService,
   ) {}
 
   /**
@@ -27,11 +28,11 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    if (this.authService.token) {
+    if (this.userService.token) {
       const clonedReq = req.clone({
         headers: req.headers.set(
-          'Authorization',
-          `Bearer ${this.authService.token}`,
+          TOKEN_HEADER_KEY,
+          `Bearer ${this.userService.token}`,
         ),
       });
       return next.handle(clonedReq);
