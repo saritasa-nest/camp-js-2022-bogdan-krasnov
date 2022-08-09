@@ -1,5 +1,5 @@
-/** User secret dto. */
-export interface UserSecretDto {
+/** Token. */
+export interface Token {
 
   /** Access token. */
   readonly access: string;
