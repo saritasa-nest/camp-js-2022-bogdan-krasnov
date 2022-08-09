@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -13,7 +12,9 @@ export class UrlService {
   ) {}
 
   /** Navigate to login page. */
-  public navigateToLogin(): Promise<boolean> {
-    return this.router.navigate(['/auth/login']);
+  public async navigateToLogin(): Promise<void> {
+    const DEFAULT_REDIRECT_URL = '/auth/login';
+    const route = this.router.createUrlTree([DEFAULT_REDIRECT_URL]);
+    await this.router.navigateByUrl(route);
   }
 }
