@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { PaginationParams } from '../models/pagination-params';
+
 import { PaginationParamsMapper } from './mappers/paginationParams.mapper';
 
 /** Construct and redirecting by query search params. */
@@ -36,11 +37,5 @@ export class SearchParamsService {
     return new HttpParams({
       fromObject: filteredNewSearchParams,
     });
-  }
-
-  /** Gets search params from browser address string. */
-  public getAnimeListSearchParams(): Params {
-    const { queryParams } = this.route.snapshot;
-    return queryParams;
   }
 }
