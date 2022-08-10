@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { tap } from 'rxjs';
 
-import { UrlService } from '../../../../core/services/url.service';
+import { NavigateService } from '../../../../core/services/navigate.service';
 
 import { UserService } from './../../../../core/services/user.service';
 
@@ -25,7 +25,7 @@ export class RegistrationComponent {
 
   public constructor(
     private readonly userService: UserService,
-    private readonly urlService: UrlService,
+    private readonly urlService: NavigateService,
   ) { }
 
   /** On submit. */

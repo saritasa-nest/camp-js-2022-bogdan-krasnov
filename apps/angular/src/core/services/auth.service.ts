@@ -15,7 +15,6 @@ import { TokenStorageService } from './token-storage.service';
 const AUTH_LOGIN = 'auth/login/';
 const AUTH_REGISTER = 'auth/register/';
 const AUTH_REFRESH = 'auth/token/refresh/';
-const AUTH_VERIFY = 'auth/token/verify/';
 
 /** Anime service. */
 @Injectable({
@@ -29,8 +28,6 @@ export class AuthService {
 
   private readonly refreshTokenUrl: URL;
 
-  private readonly accountVerificationUrl: URL;
-
   public constructor(
     appConfig: AppConfigService,
     private readonly httpClient: HttpClient,
@@ -41,7 +38,6 @@ export class AuthService {
     this.loginUrl = new URL(AUTH_LOGIN, appConfig.apiUrl);
     this.registerUrl = new URL(AUTH_REGISTER, appConfig.apiUrl);
     this.refreshTokenUrl = new URL(AUTH_REFRESH, appConfig.apiUrl);
-    this.accountVerificationUrl = new URL(AUTH_VERIFY, appConfig.apiUrl);
   }
 
   /**

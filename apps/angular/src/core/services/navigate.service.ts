@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
-export class UrlService {
+export class NavigateService {
 
   public constructor(
     private readonly router: Router,
