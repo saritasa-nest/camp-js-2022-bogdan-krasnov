@@ -1,42 +1,39 @@
-import { UserService } from './../services/user.service';
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+} from '@angular/common/http';
+import { map, Observable, switchMap } from 'rxjs';
 
 import { AppConfigService } from '../services/app-config.service';
+import { TokenStorageService } from '../services/token-storage.service';
 
-const TOKEN_HEADER_KEY = 'Authorization';
-
-/** Interceptor to add access token to requests using Authorization HTTP header. */
+/** Interceptor to add access token to request. */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+
   public constructor(
-    private readonly appConfigService: AppConfigService,
-    private readonly userService: UserService,
+    private readonly appConfig: AppConfigService,
+    private readonly tokenStorageService: TokenStorageService,
   ) {}
 
-  /**
-   * Appends bearer token.
-   * @inheritdoc
-   */
-  public intercept(
-    req: HttpRequest<unknown>,
-    next: HttpHandler,
-  ): Observable<HttpEvent<unknown>> {
-    if (this.userService.token) {
-      const clonedReq = req.clone({
-        headers: req.headers.set(
-          TOKEN_HEADER_KEY,
-          `Bearer ${this.userService.token}`,
-        ),
-      });
-      return next.handle(clonedReq);
+  /** @inheritdoc */
+  public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    if (request.url.startsWith(new URL('auth', this.appConfig.apiUrl).toString())) {
+      return next.handle(request);
     }
-    return next.handle(req);
+    return this.tokenStorageService.getToken().pipe(
+      map(token => {
+        if (token === null) {
+          return request;
+        }
+        return request.clone({
+          headers: request.headers.set('Authorization', `Bearer ${token.access}`),
+        });
+      }),
+      switchMap(clonedRequest => next.handle(clonedRequest)),
+    );
   }
 }
