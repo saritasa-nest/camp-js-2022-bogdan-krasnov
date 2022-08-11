@@ -10,6 +10,7 @@ import { User } from './../models/user';
 import { AppConfigService } from './app-config.service';
 import { TokenDto } from './mappers/dto/token.dto';
 import { UserDto } from './mappers/dto/user.dto';
+import { LoginDataMapper } from './mappers/login-data.mapper';
 import { TokenDataMapper } from './mappers/token-data.mapper';
 import { UserMapper } from './mappers/user.mapper';
 import { TokenStorageService } from './token-storage.service';
@@ -38,6 +39,7 @@ export class AuthService {
     private readonly httpClient: HttpClient,
     private readonly tokenDataMapper: TokenDataMapper,
     private readonly tokenStorageService: TokenStorageService,
+    private readonly loginDataMapper: LoginDataMapper,
   ) {
     this.userUrl = new URL(AUTH_USER, appConfig.apiUrl);
     this.loginUrl = new URL(AUTH_LOGIN, appConfig.apiUrl);
@@ -52,7 +54,7 @@ export class AuthService {
   public login(loginData: Login): Observable<Token> {
     return this.httpClient.post<TokenDto>(
       this.loginUrl.toString(),
-      loginData, // this.loginDataMapper.toDto(loginData),
+      this.loginDataMapper.toDto(loginData),
     ).pipe(
       switchMap(token => this.tokenStorageService.saveToken(token)),
       map(tokenDto => this.tokenDataMapper.fromDto(tokenDto)),
@@ -65,7 +67,7 @@ export class AuthService {
   public register(user: User): Observable<Token> {
     return this.httpClient.post<TokenDto>(
       this.registerUrl.toString(),
-      user, // this.userDataMapper.toDto(user),
+      user,
     ).pipe(
       switchMap(token => this.tokenStorageService.saveToken(token)),
       map(dto => this.tokenDataMapper.fromDto(dto)),
@@ -87,6 +89,7 @@ export class AuthService {
     );
   }
 
+  /** Get user. */
   public getUser(): Observable<User | null> {
     return this.httpClient.get<UserDto>(this.userUrl.toString())
       .pipe(
