@@ -1,17 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import { NavigateService } from './navigate.service';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, switchMap, switchMapTo } from 'rxjs';
+import { Observable, switchMap, throwError, first, catchError, of, mapTo, map } from 'rxjs';
 
 import { Login } from '../models/login';
 import { User } from '../models/user';
 
-import { AppConfigService } from './app-config.service';
-
 import { AuthService } from './auth.service';
-
-const USER_PROFILE = 'users/profile/';
-const TOKEN_KEY = 'auth-token';
+import { TokenStorageService } from './token-storage.service';
 
 /** Stateful service for storing/managing information about the current user. */
 @Injectable({
@@ -19,23 +15,17 @@ const TOKEN_KEY = 'auth-token';
 })
 export class UserService {
 
-  private readonly currentUserUrl: URL;
+  private readonly currentUser$: Observable<User | null>;
 
-  private readonly isLoggedIn$ = new BehaviorSubject<boolean>(false);
-
-  /** Get token. */
-  public get token(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
-  }
+  private readonly isLoggedIn$: Observable<boolean>;
 
   public constructor(
-    config: AppConfigService,
     private readonly authService: AuthService,
-    private readonly httpClient: HttpClient,
-    private readonly router: Router,
+    private readonly tokenStorageService: TokenStorageService,
+    private readonly navigateService: NavigateService,
   ) {
-    this.isLoggedIn$.next(!!this.token);
-    this.currentUserUrl = new URL(USER_PROFILE, config.apiUrl);
+    this.currentUser$ = this.initCurrentUser();
+    this.isLoggedIn$ = this.currentUser$.pipe(map(user => user !== null));
   }
 
   /** Login a user with email and password.
@@ -44,8 +34,9 @@ export class UserService {
   public login(loginData: Login): Observable<void> {
     return this.authService.login(loginData)
       .pipe(
-        switchMapTo(this.isLoggedIn$),
-        switchMap(() => this.redirectAfterAuthorization()),
+        switchMap(() => this.isLoggedIn$),
+        map(() => true),
+        switchMap(() => this.navigateService.redirectAfterAuthorization()),
       );
   }
 
@@ -55,18 +46,41 @@ export class UserService {
   public register(userData: User): Observable<void> {
     return this.authService.register(userData)
       .pipe(
-        switchMap(() => this.redirectAfterAuthorization()),
+        switchMap(() => this.isLoggedIn$),
+        map(() => true),
+        switchMap(() => this.navigateService.redirectAfterAuthorization()),
       );
   }
 
-  private async redirectAfterAuthorization(): Promise<void> {
-    const DEFAULT_REDIRECT_URL = '/';
-    const route = this.router.createUrlTree([DEFAULT_REDIRECT_URL]);
-    await this.router.navigateByUrl(route);
+  /** Refreshes access token. */
+  public refresh(): Observable<void> {
+    return this.tokenStorageService.getToken().pipe(
+      first(),
+      switchMap(token =>
+        token !== null ?
+          this.authService.refreshToken(token) :
+          throwError(() => new Error('Unauthorized'))),
+      catchError(() =>
+        this.tokenStorageService.clearToken()),
+      switchMap(newToken => newToken ?
+        this.tokenStorageService.saveToken(newToken) :
+        of(null)),
+      mapTo(void 0),
+    );
   }
 
   /** Is the user logged in. */
   public isLoggedIn(): Observable<boolean> {
-    return this.isLoggedIn$.asObservable();
+    return this.isLoggedIn$;
+  }
+
+  private initCurrentUser(): Observable<User | null> {
+    return this.tokenStorageService.getToken().pipe(
+      switchMap(token => token ? this.getUser() : of(null)),
+    );
+  }
+
+  private getUser(): Observable<User | null> {
+    return this.authService.getUser();
   }
 }
