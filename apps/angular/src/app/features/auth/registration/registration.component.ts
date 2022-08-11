@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { tap } from 'rxjs';
-
-import { NavigateService } from '../../../../core/services/navigate.service';
 
 import { UserService } from './../../../../core/services/user.service';
 

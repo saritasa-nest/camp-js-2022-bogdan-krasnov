@@ -43,4 +43,3 @@ export class RefreshInterceptor implements HttpInterceptor {
     return !url.startsWith(new URL('auth', this.appConfig.apiUrl).toString());
   }
 }
-

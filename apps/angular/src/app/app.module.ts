@@ -8,7 +8,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialModule } from '../material/material.module';
 
-import { AuthInterceptor } from './../core/interceptors/auth-interceptor';
+import { RefreshInterceptor } from '../core/interceptors/refresh-interceptor';
+
+import { AuthInterceptor } from '../core/interceptors/auth-interceptor';
 
 import { SharedModule } from './../shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,7 +18,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { ApiInterceptor } from './../core/interceptors/api-interceptor';
-import { RefreshInterceptor } from '../core/interceptors/refresh-interceptor';
 
 const httpInterceptorProviders = [
   {
