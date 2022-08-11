@@ -1,51 +1,46 @@
-import { catchError, Observable, switchMap, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
 import {
-  HttpEvent,
-  HttpHandler,
   HttpRequest,
+  HttpHandler,
+  HttpEvent,
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { catchError, Observable, switchMap, throwError } from 'rxjs';
 
 import { AppConfigService } from '../services/app-config.service';
-import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
-/** Refresh token interceptor. */
+/** Interceptor to refreshing token. */
 @Injectable()
 export class RefreshInterceptor implements HttpInterceptor {
 
+  private refreshTokenRequest$: Observable<void> | null = null;
+
   public constructor(
-    private readonly config: AppConfigService,
-    private readonly authService: AuthService,
-  ) { }
+    private readonly appConfig: AppConfigService,
+    private readonly userService: UserService,
+  ) {}
 
   /** @inheritdoc */
-  public intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler,
-  ): Observable<HttpEvent<unknown>> {
+  public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((error: unknown) => {
-        if (error instanceof HttpErrorResponse) {
-          if (error.status !== 401 || this.shouldRefreshTokenForUrl(request.url)) {
-            return throwError(() => error);
-          }
-
-          return this.authService.refreshToken().pipe(
-            switchMap(() => next.handle(request)),
-          );
+        if (error instanceof HttpErrorResponse && (error.status !== 401 || !this.shouldRefreshToken(request.url))) {
+          return throwError(() => error);
         }
 
-        return throwError(() => error);
+        this.refreshTokenRequest$ ??= this.userService.refresh();
+
+        return this.refreshTokenRequest$.pipe(
+          switchMap(() => next.handle(request)),
+        );
       }),
     );
   }
 
-  private shouldRefreshTokenForUrl(url: string): boolean {
-    return url.startsWith(
-      new URL('auth', this.config.apiUrl).toString(),
-    );
+  private shouldRefreshToken(url: string): boolean {
+    return !url.startsWith(new URL('auth', this.appConfig.apiUrl).toString());
   }
 }
 
