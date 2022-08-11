@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class LocalStorageService {
+
   /**
    * Save data to storage.
    * @param key Key.
@@ -38,4 +39,14 @@ export class LocalStorageService {
   public async remove(key: string): Promise<void> {
     localStorage.removeItem(key);
   }
+
+  /**
+   * Deletes value from local storage.
+   * @param key Key.
+   */
+  // eslint-disable-next-line require-await
+  public async delete(key: string): Promise<void> {
+    localStorage.removeItem(key);
+  }
+
 }
