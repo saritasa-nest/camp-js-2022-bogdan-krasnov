@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,7 +19,7 @@ import { AppComponent } from './app.component';
 
 import { ApiInterceptor } from './../core/interceptors/api-interceptor';
 
-const httpInterceptorProviders = [
+const httpInterceptorProviders: Provider[] = [
   {
     provide: HTTP_INTERCEPTORS,
     useClass: ApiInterceptor,

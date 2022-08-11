@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 /**
- * NotFound component.
+ * The page that was not found.
  */
 @Component({
   selector: 'camp-not-found',
   templateUrl: './not-found.component.html',
-  styleUrls: [],
+  styleUrls: ['./not-found.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+
 })
 export class NotFoundComponent {
 }

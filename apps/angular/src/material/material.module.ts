@@ -14,7 +14,7 @@ const material = [
   ReactiveFormsModule,
 ];
 
-/** Material Angular Module. */
+/** Material Angular module. */
 @NgModule({
   imports: [material],
   exports: [material],
