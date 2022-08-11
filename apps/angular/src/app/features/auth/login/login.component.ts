@@ -26,14 +26,14 @@ export class LoginComponent {
     private readonly userService: UserService,
   ) { }
 
-  /** OnSubmit. */
+  /** On submit login data. */
   public onSubmit(): void {
     if (this.loginForm.invalid) {
       return;
     }
     this.userService.login({
-      email: String(this.loginForm.value.email),
-      password: String(this.loginForm.value.password),
+      email: this.loginForm.value.email ?? '',
+      password: this.loginForm.value.password ?? '',
     }).pipe(
       tap(errorMessage => {
         if (errorMessage === null) {

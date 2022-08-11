@@ -11,9 +11,9 @@ export class NavigateService {
     private readonly router: Router,
   ) {}
 
-  /** Navigate to login page. */
-  public async navigateToLogin(): Promise<void> {
-    const DEFAULT_REDIRECT_URL = '/auth/login';
+  /** Redirect after authorization. */
+  public async redirectAfterAuthorization(): Promise<void> {
+    const DEFAULT_REDIRECT_URL = '/';
     const route = this.router.createUrlTree([DEFAULT_REDIRECT_URL]);
     await this.router.navigateByUrl(route);
   }

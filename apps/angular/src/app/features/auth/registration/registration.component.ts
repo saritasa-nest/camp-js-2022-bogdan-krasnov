@@ -25,7 +25,6 @@ export class RegistrationComponent {
 
   public constructor(
     private readonly userService: UserService,
-    private readonly navigateService: NavigateService,
   ) { }
 
   /** On submit. */
@@ -43,13 +42,10 @@ export class RegistrationComponent {
     }
 
     this.userService.register({
-      email: String(email),
-      firstName: String(firstName),
-      lastName: String(lastName),
-      password: String(password),
-    }).pipe(
-      tap(() => this.navigateService.navigateToLogin()),
-    )
-      .subscribe();
+      email: email ?? '',
+      firstName: firstName ?? '',
+      lastName: lastName ?? '',
+      password: password ?? '',
+    }).subscribe();
   }
 }
