@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { ApiInterceptor } from './../core/interceptors/api-interceptor';
+import { RefreshInterceptor } from '../core/interceptors/refresh-interceptor';
 
 const httpInterceptorProviders = [
   {
@@ -26,6 +27,11 @@ const httpInterceptorProviders = [
   {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
+    multi: true,
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: RefreshInterceptor,
     multi: true,
   },
 ];
