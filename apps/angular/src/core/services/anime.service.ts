@@ -34,4 +34,14 @@ export class AnimeService {
       map(animeDto => animeDto.results.map(anime => AnimeMapper.fromDto(anime))),
     );
   }
+
+  /** Get anime by id.
+   * @param id Anime id.
+   */
+  public getAnimeById(id: number): Observable<Anime> {
+    const animeUrl = new URL(`${id}/`, this.animeListUrl);
+    return this.http.get<AnimeDto>(animeUrl.toString()).pipe(
+      map(animeDetailsDto => AnimeMapper.fromDto(animeDetailsDto)),
+    );
+  }
 }
