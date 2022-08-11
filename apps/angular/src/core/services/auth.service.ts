@@ -77,8 +77,6 @@ export class AuthService {
   /**
    * Refresh user's token.
    * @param token Token.
-   * @todo Add refresh token in UserService.
-   * @todo Create RefreshInterceptor.
    */
   public refreshToken(token: Token): Observable<Token> {
     return this.httpClient.post<TokenDto>(

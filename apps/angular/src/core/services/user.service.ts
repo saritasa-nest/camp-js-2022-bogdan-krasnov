@@ -1,10 +1,10 @@
-import { NavigateService } from './navigate.service';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable, switchMap, throwError, first, catchError, of, mapTo, map } from 'rxjs';
 
 import { Login } from '../models/login';
 import { User } from '../models/user';
+
+import { NavigateService } from './navigate.service';
 
 import { AuthService } from './auth.service';
 import { TokenStorageService } from './token-storage.service';
