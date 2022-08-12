@@ -1,30 +1,20 @@
-import { MatSortModule } from '@angular/material/sort';
+import { NgModule } from '@angular/core';
+import { PortalModule } from '@angular/cdk/portal';
+import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { NgModule } from '@angular/core';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatTreeModule } from '@angular/material/tree';
-import { OverlayModule } from '@angular/cdk/overlay';
-import { CdkMenuModule } from '@angular/cdk/menu';
-import { DialogModule } from '@angular/cdk/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 const material = [
-  CdkMenuModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MatTreeModule,
-  OverlayModule,
-  MatFormFieldModule,
-  MatSelectModule,
-  DialogModule,
+  MatInputModule,
   MatPaginatorModule,
+  MatSelectModule,
   MatSortModule,
+  MatTableModule,
+  PortalModule,
+  MatFormFieldModule,
 ];
 
 /** Material Angular module. */
