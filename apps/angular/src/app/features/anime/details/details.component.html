@@ -1,12 +1,20 @@
-<div  class="main-div">
-  <!-- *ngIf="(anime$ | async) as anime" -->
-  <mat-card class="card">
+<div *ngIf="anime$ | async as anime" class="anime">
+  <mat-card class="anime__flexbox">
+    <div class="">
+      <img
+        class="anime__image"
+        [alt]="anime.titleEnglish"
+        [src]="anime.imageSrc"
+      />
+    </div>
+    <div class="anime__content">
       <mat-card-header>
-          <mat-card-title>{{ 1 }}</mat-card-title>
-          <mat-card-subtitle>{{ 'fsdf'}}</mat-card-subtitle>
+        <mat-card-title>{{ anime.titleEnglish }}</mat-card-title>
+        <mat-card-subtitle>{{ anime.status }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p>Anime synopsis</p>
       </mat-card-content>
+    </div>
   </mat-card>
 </div>

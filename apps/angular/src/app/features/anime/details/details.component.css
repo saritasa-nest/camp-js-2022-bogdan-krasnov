@@ -1,0 +1,4 @@
+.anime__flexbox {
+  display: flex;
+  flex-direction: row;
+}
