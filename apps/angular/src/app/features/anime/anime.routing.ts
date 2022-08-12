@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthorizedGuard } from '../../../core/guards/authorized.guard';
-
 import { AnimeComponent } from './anime.component';
 import { DetailsComponent } from './details/details.component';
 
@@ -14,7 +12,6 @@ const routes: Routes = [
   {
     path: ':id',
     component: DetailsComponent,
-    canActivate: [AuthorizedGuard],
   },
 ];
 
