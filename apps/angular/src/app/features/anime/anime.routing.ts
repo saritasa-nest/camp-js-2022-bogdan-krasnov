@@ -7,11 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: AnimeComponent,
-    children: [],
   },
 ];
 
-/** Table view module. */
+/** Anime routing module. */
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],

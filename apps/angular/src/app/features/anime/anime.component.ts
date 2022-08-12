@@ -6,7 +6,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'camp-anime',
   templateUrl: './anime.component.html',
-  styleUrls: [],
 })
 export class AnimeComponent {
 }

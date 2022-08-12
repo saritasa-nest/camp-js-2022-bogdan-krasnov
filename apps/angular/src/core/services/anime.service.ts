@@ -12,6 +12,10 @@ import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
 import { AppConfigService } from './app-config.service';
 
+const DEFAULT_PAGINATION_PARAMS = {
+  page: 0,
+};
+
 /** Anime service. */
 @Injectable({
   providedIn: 'root',
