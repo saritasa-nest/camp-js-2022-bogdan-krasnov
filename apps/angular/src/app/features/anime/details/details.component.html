@@ -1,6 +1,6 @@
 <div *ngIf="anime$ | async as anime" class="anime">
   <mat-card class="anime__flexbox">
-    <div class="">
+    <div>
       <img
         class="anime__image"
         [alt]="anime.titleEnglish"
@@ -13,7 +13,7 @@
         <mat-card-subtitle>{{ anime.status }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <p>Anime synopsis</p>
+        <p>{{ anime.synopsis }}</p>
       </mat-card-content>
     </div>
   </mat-card>

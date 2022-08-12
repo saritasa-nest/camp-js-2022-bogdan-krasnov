@@ -6,7 +6,7 @@ export namespace StudioMapper {
 
   /**
    * Maps dto to model.
-   * @param dto Genre dto.
+   * @param dto Studio dto.
    */
   export function fromDto(dto: StudioDto): Studio {
     return new Studio({

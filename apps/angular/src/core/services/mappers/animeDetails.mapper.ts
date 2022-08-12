@@ -11,7 +11,7 @@ export namespace AnimeDetailMapper {
 
   /**
    * Maps dto to anime model.
-   * @param dto Anime dto.
+   * @param dto Anime details dto.
    */
   export function fromDto(dto: AnimeDetailsDto): AnimeDetails {
     checkAnimeProperty(dto.type, dto.status);
