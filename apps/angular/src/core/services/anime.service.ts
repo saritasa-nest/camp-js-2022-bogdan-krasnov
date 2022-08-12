@@ -6,7 +6,11 @@ import { Injectable } from '@angular/core';
 import { Anime } from '@js-camp/core/models/anime';
 import { Observable, map } from 'rxjs';
 
+import { AnimeDetails } from './../models/animeDetails';
+
 import { AppConfigService } from './app-config.service';
+import { AnimeDetailsDto } from './mappers/dto/animeDetails.dto';
+import { AnimeDetailMapper } from './mappers/animeDetails.mapper';
 
 const DEFAULT_PAGINATION_PARAMS = {
   page: 0,
@@ -38,10 +42,10 @@ export class AnimeService {
   /** Get anime by id.
    * @param id Anime id.
    */
-  public getAnimeById(id: number): Observable<Anime> {
+  public getAnimeDetailsById(id: number): Observable<AnimeDetails> {
     const animeUrl = new URL(`${id}/`, this.animeListUrl);
-    return this.http.get<AnimeDto>(animeUrl.toString()).pipe(
-      map(animeDetailsDto => AnimeMapper.fromDto(animeDetailsDto)),
+    return this.http.get<AnimeDetailsDto>(animeUrl.toString()).pipe(
+      map(animeDetailsDto => AnimeDetailMapper.fromDto(animeDetailsDto)),
     );
   }
 }
