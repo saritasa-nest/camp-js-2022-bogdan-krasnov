@@ -1,9 +1,13 @@
 import { memo, FC } from 'react';
+import { LoginForm } from '../../components/LoginForm/LoginForm';
 
-// Template from MUI docs: https://mui.com/getting-started/templates/
+const initValues = {
+  email: '',
+  password: '',
+}
 const LoginPageComponent: FC = () => (
   <div>
-    <h1>LoginPage</h1>
+    <LoginForm />
   </div>
 );
 
