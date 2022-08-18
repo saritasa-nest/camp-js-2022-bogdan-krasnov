@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { authLogin } from './dispatchers';
+import { authLogin, authRegister } from './dispatchers';
 import { initialState } from './state';
 
 export const authSlice = createSlice({
@@ -13,11 +13,27 @@ export const authSlice = createSlice({
     })
     .addCase(authLogin.fulfilled, state => {
       state.isLoading = false;
+      state.isLoggedIn = true;
     })
     .addCase(authLogin.rejected, (state, action) => {
       if (action.error.message) {
         state.error = action.error.message;
       }
       state.isLoading = false;
+      state.user = null;
+    })
+
+    .addCase(authRegister.pending, state => {
+      state.isLoading = true;
+    })
+    .addCase(authRegister.fulfilled, state => {
+      state.isLoading = false;
+    })
+    .addCase(authRegister.rejected, (state, action) => {
+      if (action.error.message) {
+        state.error = action.error.message;
+      }
+      state.isLoading = false;
+      state.user = null;
     }),
 });
