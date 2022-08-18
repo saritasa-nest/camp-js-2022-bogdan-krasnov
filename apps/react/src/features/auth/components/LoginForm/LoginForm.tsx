@@ -5,19 +5,29 @@ import { Box, Button, Container, Link, Typography } from '@mui/material';
 
 import { TextField } from 'formik-mui';
 
-import { useAppDispatch } from '@js-camp/react/store/store';
+import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 
 import { authLogin } from '@js-camp/react/store/auth/dispatchers';
+
+import { selectUserLoggedIn } from '@js-camp/react/store/auth/selectors';
+
+import { Navigate } from 'react-router-dom';
 
 import { initValues, loginFormSchema, LoginFormValue } from './form-settings';
 
 const LoginFormComponent: FC = () => {
+
   const dispatch = useAppDispatch();
+
+  const isLoggedIn = useAppSelector(selectUserLoggedIn);
 
   const handleUserLogin = (values: LoginFormValue) => {
     dispatch(authLogin(values));
-  };
 
+  };
+  if (isLoggedIn) {
+    return <Navigate to="/register" />;
+  }
   return (
     <Container component="main" maxWidth="xs">
       <Formik
