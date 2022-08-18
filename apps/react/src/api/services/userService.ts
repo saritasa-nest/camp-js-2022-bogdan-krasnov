@@ -1,22 +1,17 @@
-import { Login } from '@js-camp/core/models/login';
+import { UserDto } from '@js-camp/core/dtos/user.dto';
+import { UserMapper } from '@js-camp/core/mappers/user.mapper';
+import { User } from '@js-camp/core/models/user';
 
-import { AuthService } from './authService';
+import { httpClient } from '..';
 
-import { TokenService } from './tokenService';
+const url = 'users/';
 
-/** Functionality for working with the user. */
 export namespace UserService {
 
-  /**
-   * Login user.
-   * @param loginData Login form data.
-   */
-  export async function loginUser(loginData: Login): Promise<void> {
-    try {
-      const token = await AuthService.login(loginData);
-      TokenService.setToken(token);
-    } catch (error: unknown) {
-      console.error(error);
-    }
+  /** Get user profile. */
+  export async function getUser(): Promise<User> {
+    const { data } = await httpClient.get<UserDto>(`${url}profile/`);
+    return UserMapper.fromDto(data);
   }
+
 }
