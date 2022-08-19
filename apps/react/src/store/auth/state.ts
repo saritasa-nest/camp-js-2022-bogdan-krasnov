@@ -6,11 +6,11 @@ export interface AuthState {
   /** Whether authentication is in process or not. */
   readonly isLoading: boolean;
 
-  /** Whether user is logged in or not. */
-  readonly isLoggedIn: boolean;
-
   /** Error message. */
   readonly error: string | null;
+
+  /** Is logged in user. */
+  readonly isLoggedIn: boolean;
 
   /** Whether user is logged in or not. */
   readonly user: User | null;

@@ -11,9 +11,10 @@ export const authSlice = createSlice({
     .addCase(authLogin.pending, state => {
       state.isLoading = true;
     })
-    .addCase(authLogin.fulfilled, state => {
+    .addCase(authLogin.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isLoggedIn = true;
+      state.user = action.payload;
     })
     .addCase(authLogin.rejected, (state, action) => {
       if (action.error.message) {
@@ -28,6 +29,7 @@ export const authSlice = createSlice({
     })
     .addCase(authRegister.fulfilled, state => {
       state.isLoading = false;
+      state.isLoggedIn = true;
     })
     .addCase(authRegister.rejected, (state, action) => {
       if (action.error.message) {
