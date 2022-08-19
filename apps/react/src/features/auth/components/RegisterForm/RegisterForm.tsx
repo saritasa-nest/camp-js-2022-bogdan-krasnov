@@ -1,22 +1,45 @@
-import { memo, FC } from 'react';
+import { memo, FC, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 
-import { Box, Button, Container, Link, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Link, Typography } from '@mui/material';
 
 import { TextField } from 'formik-mui';
 
-import { useAppDispatch } from '@js-camp/react/store/store';
+import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 
 import { authRegister } from '@js-camp/react/store/auth/dispatchers';
 
-import { initValues, registerFormSchema, RegisterFormValue } from './form-settings';
+import { selectUser, selectUserError, selectUserLoading } from '@js-camp/react/store/auth/selectors';
+
+import { Navigate, To } from 'react-router-dom';
+
+import {
+  initValues,
+  registerFormSchema,
+  RegisterFormValue,
+} from './form-settings';
 
 const RegisterFormComponent: FC = () => {
+
   const dispatch = useAppDispatch();
+
+  const isLoading = useAppSelector(selectUserLoading);
+  const loginError = useAppSelector(selectUserError);
+  const isLoggedIn = useAppSelector(selectUser);
 
   const handleUserRegister = (values: RegisterFormValue) => {
     dispatch(authRegister(values));
   };
+
+  /** @todo - add a condition to redirect to login page if user is already logged in */
+  useEffect(() => {
+    if (isLoggedIn) {
+      const redirect: To = {
+        pathname: '/',
+      };
+      return <Navigate to={redirect} replace />;
+    }
+  }, [isLoggedIn]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -44,28 +67,25 @@ const RegisterFormComponent: FC = () => {
               id="email"
               label="Email Address"
               name="email"
-              autoComplete="email"
               autoFocus
             />
             <Field
               component={TextField}
               margin="normal"
               required
-              name="first name"
+              name="firstName"
               label="first name"
-              type="text"
               id="firstName"
             />
             <Field
               component={TextField}
               margin="normal"
               required
-              name="last name"
+              name="lastName"
               label="last name"
-              type="text"
               id="lastName"
             />
-            {/* <Field
+            <Field
               component={TextField}
               margin="normal"
               required
@@ -73,21 +93,27 @@ const RegisterFormComponent: FC = () => {
               label="password"
               type="password"
               id="password"
-            /> */}
+            />
             <Field
               component={TextField}
               margin="normal"
               required
-              name="password"
-              label="Password"
+              name="passwordConfirmation"
+              label="passwordConfirmation"
               type="password"
-              id="password"
-              autoComplete="current-password"
+              id="passwordConfirmation"
             />
-            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Sign In
-            </Button>
-            <Link href="#" variant="body2">
+            {loginError ? 'Error' : null}
+            {
+              isLoading ? (
+                <CircularProgress />
+              ) : (
+                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+                  Sign Up
+                </Button>
+              )
+            }
+            <Link href="/login" variant="body2">
               {'Already have an account? Sign Up'}
             </Link>
           </Box>
