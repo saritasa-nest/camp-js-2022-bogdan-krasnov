@@ -29,4 +29,9 @@ export namespace TokenService {
   export function resetToken(): void {
     LocalStorageService.setValue(TOKEN, null);
   }
+
+  /** Removes token. */
+  export function removeToken(): void {
+    return LocalStorageService.remove(TOKEN);
+  }
 }

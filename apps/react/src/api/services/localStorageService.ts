@@ -19,4 +19,12 @@ export namespace LocalStorageService {
   export function setValue<T>(key: string, value: T): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
+
+  /**
+   * Removes value from storage by key.
+   * @param key The key by which the value is stored.
+   */
+  export function remove(key: string): void {
+    localStorage.removeItem(key);
+  }
 }
