@@ -4,14 +4,13 @@ import { User } from '@js-camp/core/models/user';
 
 import { httpClient } from '..';
 
-const url = 'users/';
+const url = 'users/profile/';
 
 export namespace UserService {
 
   /** Get user profile. */
   export async function getUser(): Promise<User> {
-    const { data } = await httpClient.get<UserDto>(`${url}profile/`);
+    const { data } = await httpClient.get<UserDto>(url);
     return UserMapper.fromDto(data);
   }
-
 }

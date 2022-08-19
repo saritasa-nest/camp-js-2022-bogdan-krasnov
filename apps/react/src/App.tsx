@@ -1,4 +1,4 @@
-import { FC, Suspense } from 'react';
+import { FC } from 'react';
 import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
 
@@ -9,9 +9,7 @@ export const App: FC = () => (
   <Provider store={store}>
     <HashRouter>
       <div>
-        <Suspense fallback={<div>Brrr... here should be your loader component</div>}>
-          <RootRouter />
-        </Suspense>
+        <RootRouter />
       </div>
     </HashRouter>
   </Provider>
