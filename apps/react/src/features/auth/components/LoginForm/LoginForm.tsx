@@ -1,7 +1,7 @@
 import { memo, FC } from 'react';
 import { Formik, Form, Field } from 'formik';
 
-import { Box, Button, Container, Link, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Link, Typography } from '@mui/material';
 
 import { TextField } from 'formik-mui';
 
@@ -9,9 +9,7 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 
 import { authLogin } from '@js-camp/react/store/auth/dispatchers';
 
-import { selectUserLoggedIn } from '@js-camp/react/store/auth/selectors';
-
-import { Navigate } from 'react-router-dom';
+import { selectUserError, selectUserLoading } from '@js-camp/react/store/auth/selectors';
 
 import { initValues, loginFormSchema, LoginFormValue } from './form-settings';
 
@@ -19,15 +17,13 @@ const LoginFormComponent: FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const isLoggedIn = useAppSelector(selectUserLoggedIn);
+  const isLoading = useAppSelector(selectUserLoading);
+  const loginError = useAppSelector(selectUserError);
 
   const handleUserLogin = (values: LoginFormValue) => {
     dispatch(authLogin(values));
-
   };
-  if (isLoggedIn) {
-    return <Navigate to="/register" />;
-  }
+
   return (
     <Container component="main" maxWidth="xs">
       <Formik
@@ -67,10 +63,19 @@ const LoginFormComponent: FC = () => {
               id="password"
               autoComplete="current-password"
             />
-            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Sign In
-            </Button>
-            <Link href="#" variant="body2">
+            {
+              loginError ? 'Error, incorrect password or email.' : null
+            }
+            {
+              isLoading ? (
+                <CircularProgress />
+              ) : (
+                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+                  Sign In
+                </Button>
+              )
+            }
+            <Link href="/" variant="body2">
               {'No have an account? Sign Up'}
             </Link>
           </Box>
