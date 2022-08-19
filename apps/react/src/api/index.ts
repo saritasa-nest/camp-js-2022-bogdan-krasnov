@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 import { CONFIG } from './config';
+import { addTokenBeforeRequest, refreshToken } from './interceptors';
 
 /** Pre-configured axios instance. */
 export const httpClient: AxiosInstance = axios.create({
@@ -10,3 +11,6 @@ export const httpClient: AxiosInstance = axios.create({
     'Api-Key': CONFIG.apiKey,
   },
 });
+
+httpClient.interceptors.request.use(addTokenBeforeRequest, refreshToken);
+httpClient.interceptors.response.use(response => response, refreshToken);
