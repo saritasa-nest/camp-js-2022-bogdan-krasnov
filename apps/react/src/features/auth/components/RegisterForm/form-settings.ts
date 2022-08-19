@@ -9,11 +9,18 @@ export const initValues: RegisterFormValue = {
   lastName: '',
   email: '',
   password: '',
+  passwordConfirmation: '',
 };
 
 export const registerFormSchema: Yup.SchemaOf<RegisterFormValue> = Yup.object().shape({
-  firstName: Yup.string().required('First name is required'),
-  lastName: Yup.string().required('Last name is required'),
+  firstName: Yup
+    .string()
+    .min(3, 'Too Short!')
+    .required('Required'),
+  lastName: Yup
+    .string()
+    .min(3, 'Too Short!')
+    .required('Required'),
 
   email: Yup.string().email()
     .required()
