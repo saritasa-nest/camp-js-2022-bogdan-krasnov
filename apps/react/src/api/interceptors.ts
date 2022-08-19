@@ -1,7 +1,10 @@
-import { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 import { CONFIG } from './config';
+import { AuthService } from './services/authService';
 import { TokenService } from './services/tokenService';
+
+import { httpClient } from '.';
 
 /**
  * Checks if a request should be intercepted.
@@ -38,7 +41,33 @@ export const addTokenBeforeRequest = (config: AxiosRequestConfig): AxiosRequestC
     ...config,
     headers: {
       ...headers,
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token.access}`,
     },
   };
 };
+
+/**
+ * Interceptor refresh token.
+ * @param error Some error.
+ */
+export async function refreshToken(error: unknown) {
+  const token = TokenService.getToken();
+
+  if (!axios.isAxiosError(error) || token == null) {
+    throw error;
+  }
+
+  if (shouldInterceptToken(error.config) && Number(error.response) !== 401) {
+    throw error;
+  }
+
+  try {
+    const newToken = await AuthService.refreshToken(token);
+    TokenService.setToken(newToken);
+    return httpClient(error.config);
+  } catch {
+    TokenService.removeToken();
+  }
+
+  throw error;
+}
