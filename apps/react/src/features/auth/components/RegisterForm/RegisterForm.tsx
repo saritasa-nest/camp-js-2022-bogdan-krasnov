@@ -9,9 +9,9 @@ import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
 
 import { authRegister } from '@js-camp/react/store/auth/dispatchers';
 
-import { selectUser, selectUserError, selectUserLoading } from '@js-camp/react/store/auth/selectors';
+import { selectUserError, selectUserLoading, selectUserLoggedIn } from '@js-camp/react/store/auth/selectors';
 
-import { Navigate, To } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import {
   initValues,
@@ -25,19 +25,16 @@ const RegisterFormComponent: FC = () => {
 
   const isLoading = useAppSelector(selectUserLoading);
   const loginError = useAppSelector(selectUserError);
-  const isLoggedIn = useAppSelector(selectUser);
+  const isLoggedIn = useAppSelector(selectUserLoggedIn);
+  const navigate = useNavigate();
 
   const handleUserRegister = (values: RegisterFormValue) => {
     dispatch(authRegister(values));
   };
 
-  /** @todo - add a condition to redirect to login page if user is already logged in */
   useEffect(() => {
     if (isLoggedIn) {
-      const redirect: To = {
-        pathname: '/',
-      };
-      return <Navigate to={redirect} replace />;
+      navigate('/');
     }
   }, [isLoggedIn]);
 
@@ -113,7 +110,7 @@ const RegisterFormComponent: FC = () => {
                 </Button>
               )
             }
-            <Link href="/login" variant="body2">
+            <Link href="#/login" variant="body2">
               {'Already have an account? Sign Up'}
             </Link>
           </Box>
