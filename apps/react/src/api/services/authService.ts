@@ -27,7 +27,7 @@ export namespace AuthService {
   export async function login(loginData: Login): Promise<User> {
     const { data } = await httpClient.post<TokenDto>(AUTH_LOGIN, loginData);
     const token = TokenDataMapper.fromDto(data);
-    await TokenService.setToken(token);
+    TokenService.setToken(token);
     return UserService.getUser();
   }
 
