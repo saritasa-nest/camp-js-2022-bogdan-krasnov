@@ -26,9 +26,7 @@ const httpInterceptorProviders: Provider[] = [
     AppRoutingModule,
     HttpClientModule,
   ],
-  providers: [
-    ...httpInterceptorProviders,
-  ],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

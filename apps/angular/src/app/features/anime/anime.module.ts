@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MaterialModule } from 'apps/angular/src/material/material.module';
+import { MaterialModule } from '../../../material/material.module';
 
 import { AnimeRoutingModule } from './anime.routing';
 
