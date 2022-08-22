@@ -9,9 +9,9 @@ export const fetchUser = createAsyncThunk('auth/fetchUser', () => UserService.ge
 
 export const authLogin = createAsyncThunk(
   'auth/login',
-  (loginData: Login, thunkApi) => {
+  async(loginData: Login, thunkApi) => {
     try {
-      return AuthService.login(loginData);
+      return await AuthService.login(loginData);
     } catch (error: unknown) {
       return thunkApi.rejectWithValue(error);
     }
@@ -20,9 +20,9 @@ export const authLogin = createAsyncThunk(
 
 export const authRegister = createAsyncThunk(
   'auth/register',
-  (registerData: Registration, thunkApi) => {
+  async(registerData: Registration, thunkApi) => {
     try {
-      return AuthService.register(registerData);
+      return await AuthService.register(registerData);
     } catch (error: unknown) {
       return thunkApi.rejectWithValue(error);
     }
