@@ -1,7 +1,7 @@
 import { memo, FC, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 
-import { Box, Button, CircularProgress, Container, Link, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Typography } from '@mui/material';
 
 import { TextField } from 'formik-mui';
 
@@ -11,7 +11,7 @@ import { authRegister } from '@js-camp/react/store/auth/dispatchers';
 
 import { selectUserError, selectUserLoading, selectUserLoggedIn } from '@js-camp/react/store/auth/selectors';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import {
   initValues,
@@ -110,9 +110,11 @@ const RegisterFormComponent: FC = () => {
                 </Button>
               )
             }
-            <Link href="#/login" variant="body2">
-              {'Already have an account? Sign Up'}
-            </Link>
+            <Typography variant="body2" component='span'>
+              <Link to={'../login'}>
+                {'Already have an account? Sign Up'}
+              </Link>
+            </Typography>
           </Box>
         </Form>
       </Formik>

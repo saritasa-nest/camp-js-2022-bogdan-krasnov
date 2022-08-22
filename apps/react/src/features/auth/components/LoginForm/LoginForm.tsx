@@ -1,7 +1,9 @@
 import { memo, FC } from 'react';
 import { Formik, Form, Field } from 'formik';
 
-import { Box, Button, CircularProgress, Container, Link, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Typography } from '@mui/material';
+
+import { Link } from 'react-router-dom';
 
 import { TextField } from 'formik-mui';
 
@@ -75,9 +77,11 @@ const LoginFormComponent: FC = () => {
                 </Button>
               )
             }
-            <Link href="/" variant="body2">
-              {'No have an account? Sign Up'}
-            </Link>
+            <Typography component='span'>
+              <Link to={'../register'}>
+                {'No have an account? Sign Up'}
+              </Link>
+            </Typography>
           </Box>
         </Form>
       </Formik>
