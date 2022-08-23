@@ -3,6 +3,7 @@ import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { Anime } from '@js-camp/core/models/anime';
+import { AnimeListSearchParams } from '@js-camp/core/models/anime-list-search-params';
 
 import { httpClient } from '..';
 
@@ -16,8 +17,11 @@ export namespace AnimeService {
     ordering: 'id',
   });
 
-  /** Get anime list. */
-  export async function getAnimeList(): Promise<readonly Anime[]> {
+  /**
+   * Get anime list.
+   * @param animeListSearchParams Anime list parameters.
+   */
+  export async function getAnimeList(animeListSearchParams: AnimeListSearchParams): Promise<readonly Anime[]> {
     const { data } = await httpClient.get<PaginationDto<AnimeDto>>(ANIME_URL, {
       params: defaultSearchParams,
     });
