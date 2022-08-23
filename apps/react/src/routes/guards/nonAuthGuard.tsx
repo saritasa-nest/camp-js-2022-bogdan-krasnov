@@ -9,7 +9,7 @@ const NonAuthGuardComponent: FC = () => {
   const user = useAppSelector(selectUser);
 
   const redirect: To = {
-    pathname: '/',
+    pathname: '/anime',
   };
   if (user != null) {
     return <Navigate to={redirect} replace />;
