@@ -18,7 +18,7 @@ const AnimeListComponent: FC = () => {
 
   useEffect(() => {
     if (animeList.length === 0) {
-      dispatch(getAnimeList());
+      dispatch(getAnimeList(1));
     }
   }, [dispatch, animeList]);
 
