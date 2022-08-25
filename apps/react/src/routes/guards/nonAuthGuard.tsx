@@ -11,7 +11,7 @@ const NonAuthGuardComponent: FC = () => {
   const redirect: To = {
     pathname: '/',
   };
-  if (user != null) {
+  if (user !== null) {
     return <Navigate to={redirect} replace />;
   }
 
