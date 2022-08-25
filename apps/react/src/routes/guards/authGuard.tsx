@@ -10,7 +10,7 @@ const AuthGuardComponent = () => {
     pathname: '/login',
   };
 
-  if (!user) {
+  if (user === null) {
     return <Navigate to={redirect} replace />;
   }
   return <Outlet />;

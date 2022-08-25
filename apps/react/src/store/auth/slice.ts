@@ -22,6 +22,7 @@ export const authSlice = createSlice({
       }
       state.isLoading = false;
       state.user = null;
+      state.isLoggedIn = false;
     })
 
     .addCase(authRegister.pending, state => {

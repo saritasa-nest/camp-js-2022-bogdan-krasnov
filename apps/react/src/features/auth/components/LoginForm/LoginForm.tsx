@@ -1,19 +1,17 @@
 import { memo, FC } from 'react';
+
 import { Formik, Form, Field } from 'formik';
+import { TextField } from 'formik-mui';
 
 import { Box, Button, CircularProgress, Container, Typography } from '@mui/material';
 
 import { Link } from 'react-router-dom';
 
-import { TextField } from 'formik-mui';
-
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-
 import { authLogin } from '@js-camp/react/store/auth/dispatchers';
-
 import { selectUserError, selectUserLoading } from '@js-camp/react/store/auth/selectors';
 
-import { initValues, loginFormSchema, LoginFormValue } from './form-settings';
+import { initValues, loginFormSchema, LoginFormValue } from './formSettings';
 
 const LoginFormComponent: FC = () => {
 
@@ -78,8 +76,8 @@ const LoginFormComponent: FC = () => {
               )
             }
             <Typography component='span'>
-              <Link to={'../register'}>
-                {'No have an account? Sign Up'}
+              <Link to="../register">
+                No have an account? Sign Up
               </Link>
             </Typography>
           </Box>
