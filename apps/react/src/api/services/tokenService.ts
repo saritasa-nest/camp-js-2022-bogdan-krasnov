@@ -7,11 +7,6 @@ const TOKEN = 'token';
 /** Functionality for working with Token. */
 export namespace TokenService {
 
-  /** Checks if the token exists in local storage. */
-  export function isToken(): boolean {
-    return LocalStorageService.getValue<Token>(TOKEN) !== null;
-  }
-
   /**
    * Adds token to local storage.
    * @param tokens Authentication tokens.
