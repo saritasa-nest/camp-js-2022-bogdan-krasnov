@@ -1,14 +1,12 @@
 import { memo, FC, useEffect } from 'react';
+
 import { Formik, Form, Field } from 'formik';
+import { TextField } from 'formik-mui';
 
 import { Box, Button, CircularProgress, Container, Typography } from '@mui/material';
 
-import { TextField } from 'formik-mui';
-
 import { useAppDispatch, useAppSelector } from '@js-camp/react/store/store';
-
 import { authRegister } from '@js-camp/react/store/auth/dispatchers';
-
 import { selectUserError, selectUserLoading, selectUserLoggedIn } from '@js-camp/react/store/auth/selectors';
 
 import { useNavigate, Link } from 'react-router-dom';
@@ -17,7 +15,7 @@ import {
   initValues,
   registerFormSchema,
   RegisterFormValue,
-} from './form-settings';
+} from './formSettings';
 
 const RegisterFormComponent: FC = () => {
 
