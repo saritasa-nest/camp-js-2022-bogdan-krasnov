@@ -26,6 +26,5 @@ export const animeRoutes: RouteObject[] = [
         element: <Navigate to="/anime" />,
       },
     ],
-
   },
 ];
