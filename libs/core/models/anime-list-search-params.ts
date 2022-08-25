@@ -4,4 +4,7 @@ export interface AnimeListSearchParams {
   /** Current page number. */
   readonly page: number;
 
+  /** Page size number. */
+  readonly pageSize?: number;
+
 }

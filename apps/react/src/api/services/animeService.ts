@@ -11,19 +11,18 @@ import { httpClient } from '..';
 export namespace AnimeService {
   const ANIME_URL = 'anime/anime/';
 
-  const defaultSearchParams = new URLSearchParams({
-    limit: '10',
-    offset: '0',
-    ordering: 'id',
-  });
-
   /**
    * Get anime list.
    * @param animeListSearchParams Anime list parameters.
    */
   export async function getAnimeList(animeListSearchParams: AnimeListSearchParams): Promise<readonly Anime[]> {
+    const { page, pageSize = 10 } = animeListSearchParams;
+    const offset = page * pageSize;
     const { data } = await httpClient.get<PaginationDto<AnimeDto>>(ANIME_URL, {
-      params: defaultSearchParams,
+      params: {
+        limit: pageSize,
+        offset,
+      },
     });
     const animeList = PaginationMapper.fromDto(
       data,
