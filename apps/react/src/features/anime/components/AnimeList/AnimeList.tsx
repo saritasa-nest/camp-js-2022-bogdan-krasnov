@@ -34,7 +34,7 @@ const AnimeListComponent: FC = () => {
           ))
         }
       </List>
-      {isAnimeListLoading ? <CircularProgress /> : null}
+      {isAnimeListLoading && <CircularProgress />}
     </Box>
 
   );
